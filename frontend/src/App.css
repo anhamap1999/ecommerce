@@ -1,7 +1,23 @@
+
+@import '~antd/dist/antd.css';
+
 .App {
   text-align: center;
 }
-
+a {
+  color:  #141414 !important;
+  text-decoration: none !important;
+}
+a:hover {
+  color:  #8a8a8a !important;
+ 
+}
+i.bx.bx-shopping-bag {
+  font-size: 32px;
+  padding-top: 10px;
+  position: absolute;
+  right: 0;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -12,7 +28,18 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+body{
+  font-family: 'Poppins', sans-serif !important;
+  margin: 0;
+  width: 100%;
+  height:auto;
+  
+}
+.bg-menu{
+  background-color: #8a8a8a !important;
+  transition: .7s ease-in-out;
+  border-bottom: 3px solid #141414a8;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -213,14 +240,7 @@ li{
   height: 40px;
 }
 /* siginin */
-body{
-  margin: 0;
-  padding: 20px;
-  font-family: sans-serif;
-  background: #6b8360;
-  width: 100%;
-  height: 100%;
-}
+
 .bg-main {
   width: 100%;
   height: 100%;

@@ -1,14 +1,17 @@
 import React from 'react';
-import MenuTop from '../components/menu';
+import BannerTop from '../components/banner';
+import NavbarTop from '../components/menutop/index';
+import ProductsNike from '../components/products';
 
-function HomePage(props) {
+
+function HomePage() {
   return ( 
-      <div className="bg-main">
-        <MenuTop />
-          <div className="main">
-            {props.children}
-          </div>
-     </div>
+        <>
+          <NavbarTop />
+          <BannerTop />
+          <ProductsNike />
+        </>
+     
   );
 }
 
