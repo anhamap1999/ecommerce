@@ -14,6 +14,7 @@ export const NavbarHeader = styled.header`
     padding-bottom:10px;
     transition:0.7s ease-in-out;
     background-color: #f2f2f2;
+    
 `;
 
 export const NavbarToggle = styled.div``;
@@ -32,7 +33,7 @@ export const NavbarUl = styled.ul`
  `;
 export const NavbarLi = styled.li`
     padding: 0 25px;
-    font-size: 28px;
+    font-size: 26px;
     line-height: 55px;
 `;
 export const NavbarLink = styled(Link)``;

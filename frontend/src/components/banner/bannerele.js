@@ -6,7 +6,15 @@ export const BannerContainer = styled.div`
     margin-top: 70px;
     margin-bottom: 10px;
     background-color: #f2f2f2;
-  
+    position: relative;
+    animation: move 3s ;
+    
+    @keyframes move {
+    0%   {top: 0px; opacity: 0;}
+    50%  {top: 100px;  opacity: 0.5;}
+    100% {top: 0px;  opacity: 1;}
+    }  
+     
 `;
 export const BannerText = styled.div`
     display: flex;
@@ -31,17 +39,53 @@ export const BannerDetails = styled.div`
     font-weight: 600;
 `;
 export const BannerButton = styled.div`
-    margin-top:20px;
-    width: 115px;
-    height: 41px;
-    background-color: #141414;
-    color: #fff;
-    border-radius: 9px;
+    transition: all 0.5s;
+    position: relative;
+    color: #141414;
+    line-height: 50px;
+    height: 50px;
     text-align: center;
-    padding-top: 8px;
-    &:hover{
-        background-color: #14141480;
-    }
+    width: 140px;
+    background:none;
+    border:none;
+    cursor: pointer;
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+                opacity: 0;
+                transition: all 0.3s;
+                border: 2px solid #14141450;
+                -webkit-transform: scale(1.2,1.2);
+                transform: scale(1.2,1.2);
+            }
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+                background-color:#14141425;
+                transition: all 0.3s;
+                border:1px solid black;
+            }
+            &:hover::before {
+                opacity: 0;
+                transform: scale(0.5,0.5);
+            }
+            &:hover::after {
+                opacity: 1;
+                transform: scale(1,1);
+            }       
+            &span{
+                color:#141414 ;
+            }
 `;
 export const BannerImg = styled.div`
     display:flex;

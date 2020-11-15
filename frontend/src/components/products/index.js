@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col , Row } from 'antd';
 import Img from './giay.png';
-import { ProductContainer,ProductWrapper,ProductSale,ProductImg,ProductText,ProductPrice ,ProductTitle,Productbutton} from './productele';
+import { ProductContainer,ProductWrapper,ProductSaleSpan,ProductSaleButton,ProductSale,ProductImg,ProductText,ProductPrice ,ProductTitle,Productbutton, ProductSaleOff, ProductSaleH2, ProductSaledes} from './productele';
 
 
 
@@ -11,10 +11,10 @@ const ProductsNike = () => {
        
         <div className="container">
                 <h1 className="text-center">Nike Men</h1>
-                <ProductContainer>
+                <ProductContainer id="product">
                     <Row>
                         <Col md={{span:8}}>
-                            <ProductWrapper>
+                            <ProductWrapper >
                                 <ProductImg>
                                     <img src={Img}></img>
                                 </ProductImg>
@@ -57,6 +57,17 @@ const ProductsNike = () => {
                         </Col>         
                     </Row>
                 </ProductContainer>
+                <div className="container">
+                    <ProductSaleOff>
+                        <ProductSaleH2>50% OFF</ProductSaleH2>
+                        <ProductSaledes>In Adidas </ProductSaledes>
+                        <ProductSaleButton>
+                            <ProductSaleSpan>
+                             Shop Now
+                            </ProductSaleSpan>
+                        </ProductSaleButton>
+                    </ProductSaleOff>
+                </div>
         </div>
        
     </>

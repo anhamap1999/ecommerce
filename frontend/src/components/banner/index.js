@@ -2,11 +2,24 @@ import React from 'react';
 import { Col , Row } from 'antd';
 import { BannerContainer, BannerText ,BannerTitle,BannerName,BannerDetails,BannerButton, BannerImg } from './bannerele';
 import Img from './giay.png';
+
+
+window.onscroll = () =>{
+    const nav =document.getElementById('banner')
+    console.log(nav);
+    if(window.pageYOffset >= 10)
+    {
+        nav.classList.add('bg-menu');
+    }
+    else{
+        nav.classList.remove('bg-menu');
+    }
+}
 const BannerTop = () => {
     
     return <>
        <BannerContainer>
-        <div className="container">
+        <div className="container"id="banner">
                 <Row>
                     <Col md={{span:12}}>
                         <BannerText>
@@ -18,7 +31,9 @@ const BannerTop = () => {
                                 Explore the new collections of  sneakers
                             </BannerDetails>
                             <BannerButton>
-                                Explore now
+                                <span>
+                                    Explore now
+                                </span>
                             </BannerButton>
                         </BannerText>
                     </Col>

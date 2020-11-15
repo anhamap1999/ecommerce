@@ -36,9 +36,19 @@ body{
   
 }
 .bg-menu{
-  background-color: #8a8a8a !important;
+  background-color: #8a8a8a60 !important;
   transition: .7s ease-in-out;
-  border-bottom: 3px solid #141414a8;
+ 
+}
+.product-ani{
+  position: relative;
+  animation: mymove 3s ;
+}
+
+@keyframes mymove {
+  0%   {top: 0px; opacity: 0;}
+  50%  {top: 100px;  opacity: 0.5;}
+  100% {top: 0px;  opacity: 1;}
 }
 .App-header {
   background-color: #282c34;

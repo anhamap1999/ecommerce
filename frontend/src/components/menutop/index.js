@@ -23,7 +23,8 @@ const sections =document.querySelectorAll("id");
 // window.addEventListener('scroll',scrollActive);
 window.onscroll = () =>{
     const nav =document.getElementById('header')
-    console.log("a",window.pageYOffset)
+    const pro =document.getElementById('product')
+    console.log(window.pageYOffset)
     if(window.pageYOffset >= 100)
     {
         nav.classList.add('bg-menu');
@@ -31,6 +32,15 @@ window.onscroll = () =>{
     else{
         nav.classList.remove('bg-menu');
     }
+    if(window.pageYOffset >= 200)
+    {
+       pro.classList.add('product-ani');
+    }
+    else{
+       pro.classList.remove('product-ani');
+    }
+   
+    
 }
 const NavbarTop = () => {
     
