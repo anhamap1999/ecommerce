@@ -9,7 +9,7 @@ exports.generateToken = (user, secretSignature, tokenLife) => {
     };
 
     jwt.sign(
-      { data: userData },
+      { data: user },
       secretSignature,
       { algorithm: "HS256", expiresIn: tokenLife },
       (err, token) => {
