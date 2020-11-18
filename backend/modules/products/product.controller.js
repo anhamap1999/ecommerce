@@ -25,7 +25,7 @@ exports.saveProduct = async ( req, res)=>{
         stock : req.body.stock,
         numReviews : req.body.numReviews,
     });
-    
+    console.log("a",product);
     const newProduct = await product.save();
     if(newProduct){
         return res.status(201).send({ message : 'new product created' , data:newProduct});

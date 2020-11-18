@@ -37,4 +37,7 @@ export const NavbarLi = styled.li`
     line-height: 55px;
 `;
 export const NavbarLink = styled(Link)``;
-export const NavbarShop= styled.div``;
+
+export const NavbarShop= styled(Link)`
+`;
+export const NavbarLogin = styled(Link)``;

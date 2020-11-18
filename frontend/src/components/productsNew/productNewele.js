@@ -11,7 +11,6 @@ export const ProductsNewEle = styled.div`
     background: rgba(138,138,138,.5);
     border-radius: 5px;
     padding: 25px;
-   
 `;
 
 export const ProductNewEleImg = styled.div`

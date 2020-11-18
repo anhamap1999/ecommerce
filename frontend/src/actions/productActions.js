@@ -38,10 +38,10 @@ const addProduct = (product) => async (dispatch, getState) =>{
         const { userSignin : { userInfo } } = getState();
        
         if (!product._id) {
-            console.log("k id");
+            console.log("k id" ,userInfo);
             const { data } = await axios.post('/api/products', product, {
                 headers:{
-                    'authorization' : 'liem ' + userInfo.token
+                    authorization : 'Bearer ' + userInfo.token
                 },
             });
             dispatch( { type : PRODUCT_ADD_SUCCESS , payload : data }  );
@@ -51,7 +51,7 @@ const addProduct = (product) => async (dispatch, getState) =>{
             console.log("co id:",product._id);
             const { data }  = await axios.put('/api/products/' + product._id, product, {
                 headers:{
-                    'authorization' : 'liem ' + userInfo.token
+                    authorization : 'Bearer ' + userInfo.token
                 },
             });
             
@@ -68,13 +68,12 @@ const removeProductID =  ( productId )  => async ( dispatch ,getState ) =>{
         dispatch( { type : PRODUCT_REMOVE_REQUEST , payload : productId }  );
         const { data } = await axios.delete('/api/products/' + productId, {
             headers:{
-                'authorization' : 'liem ' + userInfo.token
+                authorization : 'Bearer ' + userInfo.token
             },
         });
         dispatch( { type : PRODUCT_REMOVE_SUCCESS , payload : data , success : true} );
 
     } catch (error) {
-
         dispatch( { type : PRODUCT_REMOVE_FAIL ,payload : error.message} );
     }
 }

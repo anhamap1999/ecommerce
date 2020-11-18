@@ -4,12 +4,14 @@ import dotenv from 'dotenv';
 import config from './config';
 import mongoose from 'mongoose';
 import userRouter from './modules/users/user.router';
+import categoryRouter from './modules/category/category.router';
 import productRouter from './modules/products/product.router';
+import orderRouter from './modules/order/order.router';
 import bodyParser from 'body-parser';
 
 dotenv.config();
 
-const mongodbUrl =config.MONGODB_URL;
+const mongodbUrl =config.DB_CONNECT;
 
 mongoose.connect(mongodbUrl,{   
     useNewUrlParser:true,
@@ -21,6 +23,8 @@ mongoose.connect(mongodbUrl,{
 const app = express();
 
 app.use(bodyParser.json());
+app.use("/api/categories",categoryRouter);
+app.use("/api/orders",orderRouter);
 app.use("/api/users",userRouter);
 app.use("/api/products",productRouter);
 

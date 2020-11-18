@@ -5,7 +5,9 @@ import { USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_
 const signin = (email, password) => async (dispatch) => {
     dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } });
     try {
+      
       const { data } = await axios.post("/api/users/signin", { email, password });
+      console.log("a",data);
       dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
       Cookie.set('userInfo', JSON.stringify(data));
     } catch (error) {

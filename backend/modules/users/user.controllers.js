@@ -18,7 +18,6 @@ exports.getUser = async (req , res )=> {
       } else {
         res.status(401).send({ message: 'Invalid Email or Password.' });
       }
-    
 };
 exports.userRegister = async (req , res )=> {
   const user = new User({
@@ -48,7 +47,6 @@ exports.getAdmin = async( req, res) =>{
             email : 'liemdonduong@gmail.com',
             password: 'liem123',
             isAdmin : true
-
         });
         const newUser = await user.save();
         res.send(newUser);

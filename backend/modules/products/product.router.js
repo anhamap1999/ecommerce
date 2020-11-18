@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/",getProduct);
 router.get("/:id",getProductdetails);
-router.post("/",isAdmin,isAuth,saveProduct);
-router.put("/:id",updateProduct);
-router.delete('/:id',isAdmin,isAuth,deteleProduct);
-module.exports = router;
+router.post("/",isAuth,isAdmin,saveProduct);
+router.put("/:id",isAuth,isAdmin,updateProduct);
+router.delete('/:id',isAuth,isAdmin,deteleProduct);
+module.exports = router;    

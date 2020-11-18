@@ -4,17 +4,7 @@ import { BannerContainer, BannerText ,BannerTitle,BannerName,BannerDetails,Banne
 import Img from './giay.png';
 
 
-window.onscroll = () =>{
-    const nav =document.getElementById('banner')
-    console.log(nav);
-    if(window.pageYOffset >= 10)
-    {
-        nav.classList.add('bg-menu');
-    }
-    else{
-        nav.classList.remove('bg-menu');
-    }
-}
+
 const BannerTop = () => {
     
     return <>
