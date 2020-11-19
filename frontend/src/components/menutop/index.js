@@ -58,9 +58,8 @@ const NavbarTop = () => {
                         </NavbarMenu>
                     </Col>    
                     <Col  md={{span:3}}>
-                        <NavbarShop to="/cart">
-                            <i className="bx bx-shopping-bag"></i>
-                            
+                        <NavbarShop >
+                           <Link to="/cart" > <i className="bx bx-shopping-bag"></i></Link>
                         </NavbarShop>
                         <NavbarLogin to={ userInfo ? "/profile" : "/signin"}>
                             {
@@ -69,11 +68,25 @@ const NavbarTop = () => {
                                     <i> { userInfo.name }
                                         <ul>
                                             <li onClick={logout}>Sign Out</li>
-                                            <li><Link to="/profile">Profile</Link></li>
-                                            <li><Link  to="/categoryadd">category</Link></li>
+                                            <li> <Link to="/profile">Profile</Link> </li>
+                                            <>
+                                                {
+                                                    userInfo.isAdmin ?
+                                                <>
+                                                    
+                                                     <li><Link  to="/categoryadd">category</Link></li>
+                                                     <li>
+                                                        <Link to="/orders">
+                                                            order
+                                                        </Link>
+                                                     </li>
+                                                </>
+                                                :
+                                                " "
+                                                }
+                                            </>                                           
                                         </ul>
-                                    </i>
-                                    <i>{userInfo.isAdmin ? "Admin" : ""}</i>
+                                    </i>                      
                                 </div>
                                 :
                                 <i className="bx bx-user"></i>

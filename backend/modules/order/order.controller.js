@@ -33,13 +33,13 @@ exports.removeOrder = async (req, res) => {
 };
 
 exports.saveOrder = async (req, res) => {
+  console.log("co zo day");
     const newOrder = new Order({
       orderItems: req.body.orderItems,
       user: req.user._id,
       shipping: req.body.shipping,
       payment: req.body.payment,
       itemsPrice: req.body.itemsPrice,
-      taxPrice: req.body.taxPrice,
       shippingPrice: req.body.shippingPrice,
       totalPrice: req.body.totalPrice,
     });

@@ -54,7 +54,7 @@ body{
   animation: mymove 3s ;
 }
 .userInfo{
-  width: 100%;
+  width: 100px;
   height: auto;
   position: relative;
 }
@@ -109,7 +109,9 @@ body{
     transform: rotate(360deg);
   }
 }
-
+.signin-form a{
+  color: white !important;
+}
 .open{
   display: flex !important;
   transition: 0.7s;

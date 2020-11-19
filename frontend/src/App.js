@@ -17,6 +17,8 @@ import PaymentSreen from './components/payment';
 import PlaceOrderScreen from './components/placeorder';
 import SigninScreen from './components/signin';
 import AddCategoryScreen from './components/category';
+import OrdersScreen from './components/orders';
+import OrderScreen from './components/order';
 
 function App() {
   
@@ -35,6 +37,8 @@ function App() {
       <Route path='/payment'  component={PaymentSreen}></Route>
       <Route path='/placeorder'  component={PlaceOrderScreen}></Route>
       <Route path='/categoryadd'  component={AddCategoryScreen}></Route>
+      <Route path='/orders'  component={OrdersScreen}></Route>
+      <Route path="/order/:id" component={OrderScreen} />
     </BrowserRouter>
   );
 }
