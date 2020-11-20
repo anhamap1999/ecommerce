@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     dropDups: true,
+    minlength: 8,
     maxlength: 50,
     lowercase: true,
     match: [/[\w]+?@[\w]+?\.[a-z]{2,4}/, 'Email must have correct format!'],
@@ -40,6 +41,7 @@ const userSchema = new mongoose.Schema({
   },
   phone_number: {
     type: String,
+    minlength: 10,
     maxlength: 10,
     // match: [/^0[0-9]{8}$/, 'Phone number must have correct format!'],
   },
