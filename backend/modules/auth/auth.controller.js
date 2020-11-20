@@ -10,7 +10,6 @@ const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
 const User = require('../users/user.model');
 
-
 exports.loginByEmail = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -29,7 +28,7 @@ exports.loginByEmail = async (req, res, next) => {
     if (!compare_result) {
       throw new Error({
         statusCode: 400,
-        message: 'user.passwordIsIncorrect',
+        message: 'auth.passwordIsIncorrect',
         error: 'password is incorrect',
       });
     }
@@ -77,7 +76,7 @@ exports.loginByPhone = async (req, res, next) => {
     if (!compare_result) {
       throw new Error({
         statusCode: 400,
-        message: 'user.passwordIsIncorrect',
+        message: 'auth.passwordIsIncorrect',
         error: 'password is incorrect',
       });
     }
@@ -88,7 +87,7 @@ exports.loginByPhone = async (req, res, next) => {
     );
 
     user.access_tokens.push({ token: accessToken });
-    console.log(accessToken)
+    console.log(accessToken);
     await user.save();
 
     const data = {
@@ -123,7 +122,7 @@ exports.logout = async (req, res, next) => {
 
     await user.save();
 
-    const success = new Success();
+    const success = new Success({});
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -143,7 +142,7 @@ exports.forgotPassword = async (req, res, next) => {
         error: 'user has been not registered',
       });
     }
-    const resetPasswordToken = await jwtHelper.generateToken(
+    const resetPasswordToken = await generateToken(
       user,
       config.RESET_PASSWORD_SECRET_KEY,
       config.RESET_PASSWORD_TOKEN_LIFE
@@ -152,21 +151,23 @@ exports.forgotPassword = async (req, res, next) => {
     //res.json(`http://localhost:27017/user/reset-password/${resetPasswordToken}`);
 
     const transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      service: 'gmail',
+      host: 'gmail.com',
       auth: {
-        user: 'tuananhtruong1950@gmail.com',
-        pass: 'tuananhtruong1950',
+        user: config.EMAIL_ADDRESS,
+        pass: config.EMAIL_PASSWORD,
       },
     });
     const mailOptions = {
       to: user.email,
-      from: 'tuananhtruong1950@gmail.com',
+      from: config.EMAIL_ADDRESS,
       subject: 'Reset password',
-      text: `<div style="color: red">Click here to reset password: ${config.HOST}/api/auth/reset-password/${resetPasswordToken}. This link will be expired in 5 minutes.</div>`,
+      html: `<div style="font-weight: bold">Click the link below to reset password:</div> 
+        <div style="font-weight: bold; color: red">This link will be expired in 5 minutes.</div>
+        <div>${config.HOST}/api/auth/reset-password/${resetPasswordToken}</div>`,
     };
     await transporter.sendMail(mailOptions);
-
-    const success = new Success();
+    const success = new Success({});
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -182,7 +183,7 @@ exports.resetPassword = async (req, res, next) => {
     );
     if (!decoded) {
       throw new Error({
-        message: 'user.tokenIsExpired',
+        message: 'auth.tokenIsExpired',
         statusCode: 400,
         error: 'token is expired',
       });
@@ -198,7 +199,7 @@ exports.resetPassword = async (req, res, next) => {
     );
     if (!compare_result) {
       throw new Error({
-        message: 'user.passwordsNotMatch',
+        message: 'auth.passwordsNotMatch',
         statusCode: 400,
         error: 'password and confirm_password do not matched',
       });
@@ -221,7 +222,7 @@ exports.resetPassword = async (req, res, next) => {
     };
     await transporter.sendMail(mailOptions);
 
-    const success = new Success();
+    const success = new Success({});
     res.status(200).send(success);
   } catch (error) {
     next(error);
