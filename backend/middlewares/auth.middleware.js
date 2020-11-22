@@ -1,43 +1,42 @@
 const jwt = require('jsonwebtoken');
 const { Error } = require('../utils/Error');
+const { verifyToken } = require('../middlewares/jwt.middleware');
+const config = require('../commons/config');
 
 exports.isAuth = (req, res, next) => {
-  const token = req.headers.authorization;
-
-  if (token) {
-    const onlyToken = token.slice(7, token.length);
-    jwt.verify(onlyToken, config.JWT_SECRET, (err, decode) => {
-      if (err) {
-        throw new Error({
-          statusCode: 401,
-          message: 'token.invalid',
-          error: 'invalid token',
-        });
-        // return res.status(401).send({ message: 'Invalid Token' });
-      }
-      req.user = decode;
-      next();
-      return;
-    });
-  } else {
-    throw new Error({
-      statusCode: 401,
-      message: 'token.notFound',
-      error: 'token not found',
-    });
-    // return res.status(401).send({ message: 'Token is not supplied.' });
+  try {
+    if (!req.header('Authorization')) {
+      throw new Error({
+        statusCode: 401,
+        message: 'token.notFound',
+        error: 'token not found',
+      });
+    }
+    const token = req.header('Authorization').replace('Bearer ', '');
+    const decoded = verifyToken(token, config.JWT_SECRET_KEY);
+    if (!decoded) {
+      throw new Error({
+        statusCode: 401,
+        message: 'token.invalid',
+        error: 'invalid token',
+      });
+    }
+    req.user = decoded;
+    next();
+  } catch(error) {
+    next(error);
   }
 };
 
 exports.isAdmin = (req, res, next) => {
-  console.log(req.user);
   if (req.user && req.user.isAdmin) {
-    return next();
+    next();
   }
-  throw new Error({
+  const error = new Error({
     statusCode: 401,
     message: 'permission.notAdmin',
     error: '',
   });
+  next(error);
   // return res.status(401).send({ message: 'Admin Token is not valid.' });
 };
