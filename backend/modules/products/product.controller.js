@@ -1,5 +1,7 @@
 import Product from './product.model'
 import { getToken } from '../../utils/ultil';
+const { Error } = require('../../utils/Error');
+const { Success } = require('../../utils/Success');
 
 exports.getProduct = async (req , res )=> {
    
@@ -67,3 +69,7 @@ exports.deteleProduct = async (req,res) => {
         res.send({msg: 'failed'});
     }
 }
+
+// exports.getProducts = (req, res, next) => {
+
+// }

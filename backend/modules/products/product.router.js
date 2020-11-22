@@ -1,11 +1,21 @@
-import express from 'express';
-import { getProduct , saveProduct ,updateProduct,getProductdetails,deteleProduct} from './product.controller';
-import { isAdmin,isAuth } from '../../utils/ultil';
-const router = express.Router();    
+const express = require('express');
+const {
+  getProduct,
+  saveProduct,
+  updateProduct,
+  getProductdetails,
+  deteleProduct,
+} = require('./product.controller');
+// import { isAdmin,isAuth } from '../../utils/ultil';
+const { isAuth, isAdmin } = require('../../middlewares/auth.middleware');
+const router = express.Router();
+const { handleError } = require('../../middlewares/error.middleware');
 
-router.get("/",getProduct);
-router.get("/:id",getProductdetails);
-router.post("/",isAdmin,isAuth,saveProduct);
-router.put("/:id",updateProduct);
-router.delete('/:id',isAdmin,isAuth,deteleProduct);
+router.get('/', isAuth, getProduct);
+router.get('/:id', getProductdetails);
+router.post('/', isAuth, isAdmin, saveProduct);
+router.put('/:id', updateProduct);
+router.delete('/:id', isAuth, isAdmin, deteleProduct);
+
+router.use(handleError);
 module.exports = router;
