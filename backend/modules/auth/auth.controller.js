@@ -5,6 +5,7 @@ const {
 const config = require('../../commons/config');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const tinyUrl = require('tinyurl');
 
 const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
@@ -19,7 +20,7 @@ exports.loginByEmail = async (req, res, next) => {
     });
     if (!user) {
       throw new Error({
-        statusCode: 400,
+        statusCode: 404,
         message: 'user.notFound',
         error: 'user has been not registered',
       });
@@ -67,7 +68,7 @@ exports.loginByPhone = async (req, res, next) => {
     });
     if (!user) {
       throw new Error({
-        statusCode: 400,
+        statusCode: 404,
         message: 'user.notFound',
         error: 'user has been not registered',
       });
@@ -137,7 +138,7 @@ exports.forgotPassword = async (req, res, next) => {
     });
     if (!user) {
       throw new Error({
-        statusCode: 400,
+        statusCode: 404,
         message: 'user.notFound',
         error: 'user has been not registered',
       });
@@ -149,7 +150,10 @@ exports.forgotPassword = async (req, res, next) => {
     );
 
     //res.json(`http://localhost:27017/user/reset-password/${resetPasswordToken}`);
-
+    // let url = await tinyUrl.shorten(`${config.HOST}/api/reset-password/${resetPasswordToken}`);
+    // if (!url) {
+      const url = `${config.HOST}/auth/reset-password/${resetPasswordToken}`;
+    // }
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       host: 'gmail.com',
@@ -164,9 +168,10 @@ exports.forgotPassword = async (req, res, next) => {
       subject: 'Reset password',
       html: `<div style="font-weight: bold">Click the link below to reset password:</div> 
         <div style="font-weight: bold; color: red">This link will be expired in 5 minutes.</div>
-        <div>${config.HOST}/api/auth/reset-password/${resetPasswordToken}</div>`,
+        <div>${url}</div>`,
     };
-    await transporter.sendMail(mailOptions);
+    // await transporter.sendMail(mailOptions);
+    console.log(url)
     const success = new Success({});
     res.status(200).send(success);
   } catch (error) {
@@ -208,19 +213,20 @@ exports.resetPassword = async (req, res, next) => {
     await user.save();
 
     const transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      service: 'gmail',
+      host: 'gmail.com',
       auth: {
-        user: 'tuananhtruong1950@gmail.com',
-        pass: 'tuananhtruong1950',
+        user: config.EMAIL_ADDRESS,
+        pass: config.EMAIL_PASSWORD,
       },
     });
     const mailOptions = {
       to: user.email,
-      from: 'tuananhtruong1950@gmail.com',
+      from: config.EMAIL_ADDRESS,
       subject: 'Reset password',
-      text: `<div>Reset password successfully.</div>`,
+      html: `<div>Reset password successfully.</div>`,
     };
-    await transporter.sendMail(mailOptions);
+    // await transporter.sendMail(mailOptions);
 
     const success = new Success({});
     res.status(200).send(success);
@@ -228,3 +234,7 @@ exports.resetPassword = async (req, res, next) => {
     next(error);
   }
 };
+
+// exports.loginByFacebook = (req, res, next) => {
+//   //npm passport-facebook
+// }
