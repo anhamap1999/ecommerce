@@ -3,7 +3,7 @@ const { Error } = require('../utils/Error');
 const { verifyToken } = require('../middlewares/jwt.middleware');
 const config = require('../commons/config');
 
-exports.isAuth = (req, res, next) => {
+exports.isAuth = async (req, res, next) => {
   try {
     if (!req.header('Authorization')) {
       throw new Error({
@@ -13,7 +13,7 @@ exports.isAuth = (req, res, next) => {
       });
     }
     const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = verifyToken(token, config.JWT_SECRET_KEY);
+    const decoded = await verifyToken(token, config.JWT_SECRET_KEY);
     if (!decoded) {
       throw new Error({
         statusCode: 401,
@@ -21,7 +21,7 @@ exports.isAuth = (req, res, next) => {
         error: 'invalid token',
       });
     }
-    req.user = decoded;
+    req.user = decoded.data;
     next();
   } catch(error) {
     next(error);
@@ -30,7 +30,7 @@ exports.isAuth = (req, res, next) => {
 
 exports.isAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
-    next();
+    return next();
   }
   const error = new Error({
     statusCode: 401,
