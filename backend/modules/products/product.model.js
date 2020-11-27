@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
+const paginate = require('mongoose-paginate-v2');
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -26,7 +27,10 @@ const productSchema = new mongoose.Schema({
     enum: ['pending', 'approved', 'rejected', 'disabled'],
     default: 'approved',
   },
-  attributes: { type: Array, required: false }
+  attributes: { type: Array, required: false },
+  color: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now(), required: true }
 });
+productSchema.plugin(paginate);
 const productModel = mongoose.model('Product', productSchema);
-export default productModel;
+module.exports = productModel;
