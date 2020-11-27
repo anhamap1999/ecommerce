@@ -58,7 +58,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     default: 'customer',
-    enum: ['customer', 'admin'],
+    enum: ['customer', 'admin', 'staff'],
   },
   full_name: {
     type: String,
@@ -77,6 +77,8 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  createdAt: { type: Date, default: Date.now(), required: true },
+  like_products: { type: Array, default: [], required: true}
 });
 const userModel = mongoose.model('user', userSchema);
 module.exports = userModel;
