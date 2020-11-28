@@ -1,14 +1,20 @@
+import  Footer  from '../components/footer';
 import React from 'react';
-import MenuTop from '../components/menu';
+import NavbarTop from '../components/menutop/index';
+
 
 function HomePage(props) {
   return ( 
-      <div className="bg-main">
-        <MenuTop />
-          <div className="main">
-            {props.children}
-          </div>
-     </div>
+        <>
+          <NavbarTop />
+            <div className="main">
+              {
+                props.children
+              }
+            </div>
+          <Footer />
+        </>
+     
   );
 }
 

@@ -5,8 +5,8 @@ function ProfileScreen() {
 
   return <HomePage>
       <div>
-    <Link to="/createproduct">Create Product</Link>
-    </div>
+      <Link to="/createproduct">Create Product</Link>
+      </div>
   </HomePage>
   
 }

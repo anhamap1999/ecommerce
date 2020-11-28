@@ -41,9 +41,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(bodyParser.json());
-app.use('/api/users', userRouter);
-app.use('/api/products', productRouter);
 app.use('/api/auth', authRouter);
+app.use("/api/categories",categoryRouter);
+app.use("/api/orders",orderRouter);
+app.use("/api/users",userRouter);
+app.use("/api/products",productRouter);
 
 app.listen(5000, () => {
   console.log('server is running : 5000   ');

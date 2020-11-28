@@ -15,23 +15,30 @@ import CreateProductScreen from './components/createProduct';
 import ShippingScreen from './components/shipping';
 import PaymentSreen from './components/payment';
 import PlaceOrderScreen from './components/placeorder';
+import SigninScreen from './components/signin';
+import AddCategoryScreen from './components/category';
+import OrdersScreen from './components/orders';
+import OrderScreen from './components/order';
 
 function App() {
   
   return (
     <BrowserRouter>
-      <Route exact path='/' component={HomePage} />
-      <Route path='/about' component={AboutScreen} />
+     
+      <Route exact path='/' component={AboutScreen} />
       <Route path='/products' component={ProductScreen} />
       <Route path='/product/:id' component={DetailsScreen} />
       <Route path='/cart/:id?' component={CartScreen} />
       <Route path='/profile' component={ProfileScreen} />
       <Route path='/register' component={RegisterScreen} />
       <Route path='/createproduct' component={CreateProductScreen} />
-      <Route path='/signin'  component={SigninPage}></Route>
+      <Route path='/signin'  component={SigninScreen}></Route>
       <Route path='/shipping'  component={ShippingScreen}></Route>
       <Route path='/payment'  component={PaymentSreen}></Route>
       <Route path='/placeorder'  component={PlaceOrderScreen}></Route>
+      <Route path='/categoryadd'  component={AddCategoryScreen}></Route>
+      <Route path='/orders'  component={OrdersScreen}></Route>
+      <Route path="/order/:id" component={OrderScreen} />
     </BrowserRouter>
   );
 }

@@ -1,7 +1,23 @@
+
+@import '~antd/dist/antd.css';
+
 .App {
   text-align: center;
 }
-
+a {
+  color:  #141414 !important;
+  text-decoration: none !important;
+}
+a:hover {
+  color:  #8a8a8a !important;
+ 
+}
+i.bx.bx-shopping-bag {
+  font-size: 32px;
+  padding-top: 10px;
+  position: absolute;
+  right: 0;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -12,7 +28,64 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.main{
+   margin-top:70px;
+}
+i.bx.bx-user {
+  font-size: 32px;
+  padding-top: 10px;
+  position: absolute;
+ 
+}
+body{
+  font-family: 'Poppins', sans-serif !important;
+  margin: 0;
+  width: 100%;
+  height:auto;
+  
+}
+.bg-menu{
+  background-color: #8a8a8a60 !important;
+  transition: .7s ease-in-out;
+ 
+}
+.product-ani{
+  position: relative;
+  animation: mymove 3s ;
+}
+.userInfo{
+  width: 100px;
+  height: auto;
+  position: relative;
+}
+.userInfo i {
+  font-size: 20px;
+  width: 100%;
+  height: 100px;
+  line-height: 50px;
+}
+.userInfo i:hover ul{
+  display: block !important;
+}
+.userInfo ul {
+  display: none;
+  position: absolute;
+  padding: 0;
+  top:34px;
+  margin: 0;
+  width: 130px;
+  height: auto;
+  background: blanchedalmond;
+}
+.userInfo li{
+  font-size: 16px;
+  padding:0 20px;
+}
+@keyframes mymove {
+  0%   {top: 0px; opacity: 0;}
+  50%  {top: 100px;  opacity: 0.5;}
+  100% {top: 0px;  opacity: 1;}
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -36,7 +109,9 @@
     transform: rotate(360deg);
   }
 }
-
+.signin-form a{
+  color: white !important;
+}
 .open{
   display: flex !important;
   transition: 0.7s;
@@ -213,14 +288,7 @@ li{
   height: 40px;
 }
 /* siginin */
-body{
-  margin: 0;
-  padding: 20px;
-  font-family: sans-serif;
-  background: #6b8360;
-  width: 100%;
-  height: 100%;
-}
+
 .bg-main {
   width: 100%;
   height: 100%;
