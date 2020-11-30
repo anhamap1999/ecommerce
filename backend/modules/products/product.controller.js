@@ -85,9 +85,11 @@ exports.getProducts = async (req, res, next) => {
     await Product.paginate({ ...query, status: 'approved' }, options)
       .then((result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          success.addField('data', result.docs).addField('total_page', result.totalPages)
-          .addField('page', result.page)
-          .addField('total', result.totalDocs);
+          success
+            .addField('data', result.docs)
+            .addField('total_page', result.totalPages)
+            .addField('page', result.page)
+            .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }
@@ -114,9 +116,11 @@ exports.getProductsByAdmin = async (req, res, next) => {
     await Product.paginate(query, options)
       .then((result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          success.addField('data', result.docs).addField('total_page', result.totalPages)
-          .addField('page', result.page)
-          .addField('total', result.totalDocs);
+          success
+            .addField('data', result.docs)
+            .addField('total_page', result.totalPages)
+            .addField('page', result.page)
+            .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }
@@ -124,13 +128,37 @@ exports.getProductsByAdmin = async (req, res, next) => {
       .catch((error) => {
         next(error);
       });
-      res.status(200).send(success);
+    res.status(200).send(success);
   } catch (error) {
     next(error);
   }
 };
 
 exports.getProductById = async (req, res, next) => {
+  try {
+    const { select } = req.query;
+    const { id } = req.params;
+
+    const product = await Product.findOne({
+      _id: id,
+      status: 'approved',
+    }).select(select);
+
+    if (!product) {
+      throw new Error({
+        statusCode: 404,
+        message: 'product.notFound',
+        error: 'product not found',
+      });
+    }
+    const success = new Success({ data: product });
+    res.status(200).send(success);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.adminGetProductById = async (req, res, next) => {
   try {
     const { select } = req.query;
     const { id } = req.params;
@@ -177,6 +205,7 @@ exports.updateProduct = async (req, res, next) => {
       });
     }
     product = { ...product._doc, ...req.body };
+    product.pure_name = utils.removeAccents(product.name);
     await Product.findByIdAndUpdate(req.params.id, product);
     const success = new Success({ data: product });
     res.status(200).send(success);
@@ -233,4 +262,3 @@ exports.likeProduct = async (req, res, next) => {
     next(error);
   }
 };
-

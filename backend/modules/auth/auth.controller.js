@@ -170,8 +170,7 @@ exports.forgotPassword = async (req, res, next) => {
         <div style="font-weight: bold; color: red">This link will be expired in 5 minutes.</div>
         <div>${url}</div>`,
     };
-    // await transporter.sendMail(mailOptions);
-    console.log(url)
+    await transporter.sendMail(mailOptions);
     const success = new Success({});
     res.status(200).send(success);
   } catch (error) {
@@ -226,7 +225,7 @@ exports.resetPassword = async (req, res, next) => {
       subject: 'Reset password',
       html: `<div>Reset password successfully.</div>`,
     };
-    // await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
 
     const success = new Success({});
     res.status(200).send(success);

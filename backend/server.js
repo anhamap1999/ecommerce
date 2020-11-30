@@ -6,6 +6,7 @@ const userRouter = require('./modules/users/user.router');
 const productRouter = require('./modules/products/product.router');
 const bodyParser = require('body-parser');
 const authRouter = require('./modules/auth/auth.router');
+const categoryRouter = require('./modules/category/category.router');
 
 // import dotenv from 'dotenv';
 // import config from './config';
@@ -23,6 +24,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false
   })
   .then(console.log('connected!'))
   .catch((error) => console.log(error.reason));
@@ -42,8 +44,8 @@ app.use(express.json());
 
 app.use(bodyParser.json());
 app.use('/api/auth', authRouter);
-app.use("/api/categories",categoryRouter);
-app.use("/api/orders",orderRouter);
+app.use("/api/categories", categoryRouter);
+// app.use("/api/orders",orderRouter);
 app.use("/api/users",userRouter);
 app.use("/api/products",productRouter);
 

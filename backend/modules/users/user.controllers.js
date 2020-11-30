@@ -1,5 +1,8 @@
-import User from './user.model';
-import { getToken } from '../../utils/ultil';
+const User = require('./user.model');
+const { getToken } = require('../../utils/ultil');
+const bcrypt = require('bcrypt');
+const { Error } = require('../../utils/Error');
+const { Success } = require('../../utils/Success');
 
 exports.getUser = async (req , res )=> {
     const signinUser = await User.findOne({
@@ -57,3 +60,101 @@ exports.getAdmin = async( req, res) =>{
 exports.demo = async( req, res) =>{
     res.send("hello");
 };
+
+exports.register = async (req, res, next) => {
+  try {
+    const existedUser = await User.findOne({
+      email: req.body.email,
+      status: 'active',
+    });
+    if (existedUser) {
+      throw new Error({
+        statusCode: 400,
+        message: 'user.emailExisted',
+        error: 'email has been registered',
+      });
+    }
+    const hash = await bcrypt.hash(req.body.password, 10);
+    const compare_result = await bcrypt.compare(
+      req.body.confirm_password,
+      hash
+    );
+    if (!compare_result) {
+      throw new Error({
+        statusCode: 400,
+        message: 'user.passwordsNotMatch',
+        error: 'password and confirm_password do not matched',
+      });
+    }
+    const user = new User(req.body);
+    user.role = 'customer';
+    user.password = hash;
+    const savedUser = await user.save();
+
+    const success = new Success({ data: savedUser });
+    res.status(200).send(success);
+  } catch (error) {
+    next(error);
+  }
+}
+
+exports.changePassword = async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      _id: req.user._id,
+      status: 'active',
+    });
+    if (!user) {
+      throw new Error({
+        statusCode: 400,
+        message: 'user.notFound',        
+        error: 'user not found',
+      });
+    }
+    const hash = await bcrypt.hash(req.body.new_password, 10);
+    const compare_result = await bcrypt.compare(
+      req.body.confirm_new_password,
+      hash
+    );
+    if (!compare_result) {
+      throw new Error({
+        message: 'user.passwordsNotMatch',
+        statusCode: 400,
+        error: 'password and confirm_password do not matched',
+      });
+    }
+    user.password = hash;
+    req.user.password = hash;
+    await User.findByIdAndUpdate(req.user._id, user);
+
+    const success = new Success({});
+    res.status(200).send(success);
+  } catch (error) {
+    next(error);
+  }
+}
+
+exports.updateUser = async (req, res, next) => {
+  try {
+    let user = await User.findOne({
+      id: req.user._id,
+      status: 'active',
+    });
+    if (!user) {
+      throw new Error({
+        statusCode: 400,
+        message: 'user.notFound',        
+        error: 'user not found',
+      });
+    }
+    
+    user = { ...user, ...req.body };
+    req.user = { ...req.user, ...user };
+    await User.findByIdAndUpdate(req.user._id, user);
+
+    const success = new Success({ data: user });
+    res.status(200).send(success);
+  } catch (error) {
+    next(error);
+  }
+}
