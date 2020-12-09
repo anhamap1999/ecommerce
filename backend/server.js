@@ -11,6 +11,9 @@ const addressRouter = require('./modules/address/address.router');
 const deliveryAddressRouter = require('./modules/delivery_address/delivery_address.router');
 const configRouter = require('./modules/config/config.router');
 const searchRouter = require('./modules/search/search.router');
+const bankAccountRouter = require('./modules/bank_account/bank_account.router');
+const commentRouter = require('./modules/comment/comment.router');
+const banksRouter = require('./modules/banks/banks.router');
 
 // import dotenv from 'dotenv';
 // import config from './config';
@@ -56,6 +59,9 @@ app.use("/api/address", addressRouter);
 app.use("/api/delivery-address", deliveryAddressRouter);
 app.use("/api/config", configRouter);
 app.use("/api/search", searchRouter);
+app.use("/api/bank-account", bankAccountRouter);
+app.use("/api/comment", commentRouter);
+app.use("/api/banks", banksRouter);
 
 app.listen(5000, () => {
   console.log('server is running : 5000   ');

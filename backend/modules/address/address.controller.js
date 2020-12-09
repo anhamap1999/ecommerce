@@ -21,6 +21,15 @@ exports.getDistricts = async (req, res, next) => {
   try {
     const { sort, province_number } = req.query;
 
+    const province = await Province.findOne({ number: province_number });
+    if (!province) {
+      throw new Error({
+        statusCode: 404,
+        message: 'province.notFound',
+        messages: { province: 'province not found' },
+      });
+    }
+
     const districts = await District.find({ province_number }).sort(
       sort ? sort : 'number'
     );
@@ -35,6 +44,24 @@ exports.getDistricts = async (req, res, next) => {
 exports.getWards = async (req, res, next) => {
   try {
     const { sort, province_number, district_number } = req.query;
+
+    const province = await Province.findOne({ number: province_number });
+    if (!province) {
+      throw new Error({
+        statusCode: 404,
+        message: 'province.notFound',
+        messages: { province: 'province not found' },
+      });
+    }
+
+    const district = await District.findOne({ number: district_number });
+    if (!district) {
+      throw new Error({
+        statusCode: 404,
+        message: 'district.notFound',
+        messages: { district: 'district not found' },
+      });
+    }
 
     const wards = await Ward.find({ province_number, district_number }).sort(
       sort ? sort : 'number'

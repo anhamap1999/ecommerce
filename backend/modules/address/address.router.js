@@ -7,7 +7,7 @@ const validator = require('./address.validation');
 router.get('/province', validator.getProvincesValidator, controller.getProvinces);
 router.get('/district', validator.getDistrictsValidator, controller.getDistricts);
 router.get('/ward', validator.getWardsValidator, controller.getWards);
-router.post('/', controller.postAddress);
+// router.post('/', controller.postAddress);
 
 router.use(handleError);
 module.exports = router;

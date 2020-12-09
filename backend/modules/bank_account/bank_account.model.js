@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const bankSchema = new mongoose.Schema({
+const bankAccountSchema = new mongoose.Schema({
   account_number: { type: String, required: true },
   account_name: { type: String, required: true },
   bank: { type: String, required: true },
@@ -16,5 +16,5 @@ const bankSchema = new mongoose.Schema({
   updated_at: { type: String, required: false }
 });
 
-const bankModel = mongoose.model('Bank', bankSchema);
-module.exports = bankModel;
+const bankAccountModel = mongoose.model('BankAccount', bankAccountSchema);
+module.exports = bankAccountModel;

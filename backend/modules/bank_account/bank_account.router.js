@@ -1,26 +1,26 @@
 const express = require('express');
-const controller = require('./bank.controller');
+const controller = require('./bank_account.controller');
 const { isAuth, isAdmin } = require('../../middlewares/auth.middleware');
 const router = express.Router();
 const { handleError } = require('../../middlewares/error.middleware');
-const validator = require('./bank.validation');
+const validator = require('./bank_account.validation');
 
-router.get('/', isAuth, controller.getBanks);
+router.get('/', isAuth, controller.getBankAccounts);
 router.get(
   '/:id',
   isAuth,
-  controller.getBankById
+  controller.getBankAccountById
 );
 router.post(
   '/',
   isAuth,
-  validator.createBankValidator,
-  controller.createBank
+  validator.createBankAccountValidator,
+  controller.createBankAccount
 );
 router.delete(
   '/:id',
   isAuth,
-  controller.deleteBank
+  controller.deleteBankAccount
 );
 
 router.use(handleError);

@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const { validate } = require('../../commons/utils');
 
-exports.createBankValidator = async (req, res, next) => {
+exports.createBankAccountValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
       account_number: Joi.string().required(),

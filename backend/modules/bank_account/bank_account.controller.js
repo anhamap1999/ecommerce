@@ -1,11 +1,11 @@
-const Bank = require('./bank.model');
+const BankAccount = require('./bank_account.model');
 const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
 const utils = require('../../commons/utils');
 
-exports.getBanks = async (req, res, next) => {
+exports.getBankAccounts = async (req, res, next) => {
   try {
-    const banks = Bank.find({ created_by: req.user._id, status: 'active' });
+    const banks = BankAccount.find({ created_by: req.user._id, status: 'active' });
     const success = new Success({ data: banks });
     res.status(200).send(success);
   } catch (error) {
@@ -13,9 +13,9 @@ exports.getBanks = async (req, res, next) => {
   }
 };
 
-exports.getBankById = async (req, res, next) => {
+exports.getBankAccountById = async (req, res, next) => {
   try {
-    const bank = await Bank.findById(req.params.id);
+    const bank = await BankAccount.findById(req.params.id);
 
     if (!bank) {
       throw new Error({
@@ -31,9 +31,9 @@ exports.getBankById = async (req, res, next) => {
   }
 };
 
-exports.createBank = async (req, res, next) => {
+exports.createBankAccount = async (req, res, next) => {
   try {
-    const bank = new Bank(req.body);
+    const bank = new BankAccount(req.body);
     bank.created_by = req.user._id;
     const result = await bank.save();
     const success = new Success({ data: result });
@@ -43,9 +43,9 @@ exports.createBank = async (req, res, next) => {
   }
 };
 
-// exports.updateBank = async (req, res, next) => {
+// exports.updateBankAccount = async (req, res, next) => {
 //   try {
-//     let bank = await Bank.findById(req.params.id);
+//     let bank = await BankAccount.findById(req.params.id);
 
 //     if (!bank) {
 //       throw new Error({
@@ -63,9 +63,9 @@ exports.createBank = async (req, res, next) => {
 //   }
 // };
 
-exports.deleteBank = async (req, res, next) => {
+exports.deleteBankAccount = async (req, res, next) => {
   try {
-    const bank = await Bank.findById(req.params.id);
+    const bank = await BankAccount.findById(req.params.id);
 
     if (!bank) {
       throw new Error({
