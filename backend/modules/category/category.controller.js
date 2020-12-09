@@ -89,24 +89,25 @@ exports.createCategory = async (req, res, next) => {
         throw new Error({
           statusCode: 404,
           message: 'parent_category.notFound',
-          error: 'parent_category not found',
+          messages: { category: 'parent_category not found' },
         });
       }
       if (parent_category.status !== 'active') {
         throw new Error({
           statusCode: 400,
           message: 'parent_category.isNotActive',
-          error: 'parent_category is not active',
+          messages: { category: 'parent_category is not active' },
         });
       }
       if (parent_category.type > category.type) {
         throw new Error({
           statusCode: 400,
           message: 'category.typeIsNotValid',
-          error: 'category type is less than parent category type',
+          messages: { category: 'category type is less than parent category type' },
         });
       }
     }
+    category.created_by = req.user._id;
     const result = await category.save();
     const success = new Success({ data: result });
     res.status(200).send(success);
@@ -123,7 +124,7 @@ exports.updateCategory = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'category.notFound',
-        error: 'category not found',
+        messages: { category: 'category not found' },
       });
     }
     category = { ...category._doc, ...req.body };
@@ -135,24 +136,26 @@ exports.updateCategory = async (req, res, next) => {
         throw new Error({
           statusCode: 404,
           message: 'parent_category.notFound',
-          error: 'parent_category not found',
+          messages: { category: 'parent_category not found' },
         });
       }
       if (parent_category.status !== 'active') {
         throw new Error({
           statusCode: 400,
           message: 'parent_category.isNotActive',
-          error: 'parent_category is not active',
+          messages: { category: 'parent_category is not active' },
         });
       }
       if (parent_category.type > category.type) {
         throw new Error({
           statusCode: 400,
           message: 'category.typeIsNotValid',
-          error: 'category type is less than parent category type',
+          messages: { category: 'category type is less than parent category type' },
         });
       }
     }
+    category.updated_by = req.user._id;
+    category.updated_at = Date.now();
     await Category.findByIdAndUpdate(req.params.id, category);
     const success = new Success({ data: category });
     res.status(200).send(success);
@@ -169,10 +172,12 @@ exports.updateStatusCategory = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'category.notFound',
-        error: 'category not found',
+        messages: { category: 'category not found' },
       });
     }
     category.status = req.body.status;
+    category.updated_by = req.user._id;
+    category.updated_at = Date.now();
     await Category.findByIdAndUpdate(req.params.id, category);
     const success = new Success({ data: category });
     res.status(200).send(success);
@@ -189,21 +194,26 @@ exports.deleteCategory = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'category.notFound',
-        error: 'category not found',
+        messages: { category: 'category not found' },
       });
     }
-    if (category.type > 1) {
+    // if (category.type > 1) {
       const categories = await Category.find({
         status: 'active',
-        parent_id: category,
+        parent_id: category._id,
       });
       if (categories.length > 0) {
-        categories.forEach(async (item) => {
-          await Category.findByIdAndRemove(item._id);
+        throw new Error({
+          statusCode: 404,
+          message: 'category.canNotDelete',
+          messages: { category: 'category is parent of other categories' },
         });
       }
-    }
-    await Category.findByIdAndRemove(req.params.id);
+    // }
+    category.status = 'disabled';
+    category.updated_by = req.user._id;
+    category.updated_at = Date.now();
+    await Category.findByIdAndUpdate(req.params.id, category);
     const success = new Success({ data: category });
     res.status(200).send(success);
   } catch (error) {
@@ -225,22 +235,22 @@ exports.getCategoryById = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'category.notFound',
-        error: 'category not found',
+        messages: { category: 'category not found' },
       });
     }
-    if (category.parent_id) {
-      const parent_category = await Category.findById(
-        category.parent_id
-      ).select('name status');
-      if (!parent_category) {
-        throw new Error({
-          statusCode: 404,
-          message: 'parent_category.notFound',
-          error: 'parent_category not found',
-        });
-      }
-      category.parent_id = parent_category;
-    }
+    // if (category.parent_id) {
+    //   const parent_category = await Category.findById(
+    //     category.parent_id
+    //   ).select('name status');
+    //   if (!parent_category) {
+    //     throw new Error({
+    //       statusCode: 404,
+    //       message: 'parent_category.notFound',
+    //       messages: { category: 'parent_category not found' },
+    //     });
+    //   }
+    //   category.parent_id = parent_category;
+    // }
     const success = new Success({ data: category });
     res.status(200).send(success);
   } catch (error) {
@@ -259,7 +269,7 @@ exports.adminGetCategoryById = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'category.notFound',
-        error: 'category not found',
+        messages: { category: 'category not found' },
       });
     }
     if (category.parent_id) {
@@ -270,7 +280,7 @@ exports.adminGetCategoryById = async (req, res, next) => {
         throw new Error({
           statusCode: 404,
           message: 'parent_category.notFound',
-          error: 'parent_category not found',
+          messages: { category: 'parent_category not found' },
         });
       }
       category.parent_id = parent_category;
@@ -287,10 +297,10 @@ exports.getCategories = async (req, res, next) => {
   try {
     const { select, sort } = req.query;
 
-    const categories_1 = await Category.find({ status: 'active', type: 1 })
-      .select(select)
+    const categories = await Category.find({ status: 'active' })
+      .select(select ? select : '')
       .sort(sort ? sort : 'name');
-    for (const [index, item] of categories_1.entries()) {
+    for (const [index, item] of categories.entries()) {
 
     }
     // for (const [index, item] of categories.entries()) {
@@ -302,7 +312,7 @@ exports.getCategories = async (req, res, next) => {
     //       throw new Error({
     //         statusCode: 404,
     //         message: 'parent_category.notFound',
-    //         error: 'parent_category not found',
+    //         messages: { category: 'parent_category not found' },
     //       });
     //     }
     //     categories[index].parent_id = parent_category;
@@ -322,7 +332,7 @@ exports.getCategoriesByAdmin = async (req, res, next) => {
     const { select, sort, page, limit, ...query } = req.query;
     const options = {
       select: select ? select : '',
-      sort: sort ? sort : '-createdAt',
+      sort: sort ? sort : '-created_at',
       page: page && page >= 1 ? page : 1,
       limit: limit && limit >= 10 ? limit : 10,
     };

@@ -76,7 +76,7 @@ exports.getProducts = async (req, res, next) => {
     const { select, sort, page, limit, ...query } = req.query;
     const options = {
       select: select ? select : '',
-      sort: sort ? sort : '-createdAt',
+      sort: sort ? sort : '-created_at',
       page: page && page >= 1 ? page : 1,
       limit: limit && limit >= 10 ? limit : 10,
     };
@@ -108,7 +108,7 @@ exports.getProductsByAdmin = async (req, res, next) => {
     const { select, sort, page, limit, ...query } = req.query;
     const options = {
       select: select ? select : '',
-      sort: sort ? sort : '-createdAt',
+      sort: sort ? sort : '-created_at',
       page: page && page >= 1 ? page : 1,
       limit: limit && limit >= 10 ? limit : 10,
     };
@@ -148,7 +148,7 @@ exports.getProductById = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'product.notFound',
-        error: 'product not found',
+        messages: { product: 'product not found' },
       });
     }
     const success = new Success({ data: product });
@@ -161,15 +161,14 @@ exports.getProductById = async (req, res, next) => {
 exports.adminGetProductById = async (req, res, next) => {
   try {
     const { select } = req.query;
-    const { id } = req.params;
 
-    const product = await Product.findById(id).select(select);
+    const product = await Product.findById(req.params.id).select(select);
 
     if (!product) {
       throw new Error({
         statusCode: 404,
         message: 'product.notFound',
-        error: 'product not found',
+        messages: { product: 'product not found' },
       });
     }
     const success = new Success({ data: product });
@@ -183,8 +182,8 @@ exports.createProduct = async (req, res, next) => {
   try {
     const product = new Product(req.body);
     product.user_id = req.user._id;
-    product.status = 'pending';
     product.pure_name = utils.removeAccents(product.name);
+    product.created_by = req.user._id;
     const result = await product.save();
     const success = new Success({ data: result });
     res.status(200).send(success);
@@ -201,11 +200,13 @@ exports.updateProduct = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'product.notFound',
-        error: 'product not found',
+        messages: { product: 'product not found' },
       });
     }
     product = { ...product._doc, ...req.body };
     product.pure_name = utils.removeAccents(product.name);
+    product.updated_by = req.user._id;
+    product.updated_at = Date.now();
     await Product.findByIdAndUpdate(req.params.id, product);
     const success = new Success({ data: product });
     res.status(200).send(success);
@@ -222,10 +223,12 @@ exports.updateStatusProduct = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'product.notFound',
-        error: 'product not found',
+        messages: { product: 'product not found' },
       });
     }
     product.status = req.body.status;
+    product.updated_by = req.user._id;
+    product.updated_at = Date.now();
     await Product.findByIdAndUpdate(req.params.id, product);
     const success = new Success({ data: product });
     res.status(200).send(success);
@@ -243,7 +246,7 @@ exports.likeProduct = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'product.notFound',
-        error: 'product not found',
+        messages: { product: 'product not found' },
       });
     }
     if (state === 'like') {

@@ -25,12 +25,17 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ['pending', 'approved', 'rejected', 'disabled'],
-    default: 'approved',
+    default: 'pending',
   },
   attributes: { type: Array, required: false },
   color: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now(), required: true }
+  created_at: { type: Date, default: Date.now(), required: true },
+  updated_at: { type: Date, required: false },
+  created_by: { type: String, required: false },
+  updated_by: { type: String, required: false }
 });
+// productSchema.indexes()
+productSchema.index({ name: 'text'});
 productSchema.plugin(paginate);
 const productModel = mongoose.model('Product', productSchema);
 module.exports = productModel;

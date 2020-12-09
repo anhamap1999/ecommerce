@@ -19,6 +19,11 @@ router.get(
   validator.getProductByIdValidator,
   controller.getProductById
 );
+router.get(
+  '/admin/:id',
+  validator.getProductByIdValidator,
+  controller.adminGetProductById
+);
 router.post(
   '/admin',
   isAuth,

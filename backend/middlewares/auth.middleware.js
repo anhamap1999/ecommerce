@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const { Error } = require('../utils/Error');
 const { verifyToken } = require('../middlewares/jwt.middleware');
 const config = require('../commons/config');
+const User = require('../modules/users/user.model');
 
 exports.isAuth = async (req, res, next) => {
   try {
@@ -9,7 +10,7 @@ exports.isAuth = async (req, res, next) => {
       throw new Error({
         statusCode: 401,
         message: 'token.notFound',
-        error: 'token not found',
+        messages: { auth: 'token not found' },
       });
     }
     const token = req.header('Authorization').replace('Bearer ', '');
@@ -18,10 +19,19 @@ exports.isAuth = async (req, res, next) => {
       throw new Error({
         statusCode: 401,
         message: 'token.invalid',
-        error: 'invalid token',
+        messages: { auth: 'invalid token' },
       });
     }
-    req.user = decoded.data;
+
+    const user = await User.findOne({ _id: decoded.data._id, status: 'active' });
+    if (!user) {
+      throw new Error({
+        statusCode: 401,
+        message: 'user.isDisabled',
+        messages: { user: 'user is disabled' },
+      });
+    }
+    req.user = user;
     next();
   } catch(error) {
     next(error);
@@ -35,7 +45,7 @@ exports.isAdmin = (req, res, next) => {
   const error = new Error({
     statusCode: 401,
     message: 'permission.notAdmin',
-    error: '',
+    messages: { auth: 'do not have permission' },
   });
   next(error);
   // return res.status(401).send({ message: 'Admin Token is not valid.' });

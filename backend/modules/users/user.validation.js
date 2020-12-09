@@ -21,19 +21,52 @@ exports.registerValidator = async (req, res, next) => {
   }
 };
 
+exports.changePasswordValidator = async (req, res, next) => {
+  try {
+    const schema = Joi.object().keys({
+      new_password: Joi.string().required().max(100).min(6),
+      confirm_new_password: Joi.string().required().max(100).min(6),
+    });
+    const result = await validate(req.body, schema);
+    req.body = result;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.updateUserValidator = async (req, res, next) => {
-    try {
-      const schema = Joi.object().keys({
-        full_name: Joi.string().required().max(50),
-        gender: Joi.string().required().valid('female', 'male', 'other'),
-        birthday: Joi.string(),
-        phone_number: Joi.string().length(10)
-      });
-      const result = await validate(req.body, schema);
-      req.body = result;
-      next();
-    } catch (error) {
-      next(error);
-    }
-  };
-  
+  try {
+    const schema = Joi.object().keys({
+      full_name: Joi.string().required().max(50),
+      gender: Joi.string().required().valid('female', 'male', 'other'),
+      birthday: Joi.string(),
+      phone_number: Joi.string().length(10),
+    });
+    const result = await validate(req.body, schema);
+    req.body = result;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getUsersValidator = async (req, res, next) => {
+  try {
+    const schema = Joi.object().keys({
+      status: Joi.string()
+        .optional()
+        .valid('active', 'disabled'),
+      role: Joi.string().optional().valid('admin', 'staff', 'customer'),
+      select: Joi.string().optional(),
+      limit: Joi.number().optional(),
+      page: Joi.number().optional(),
+      sort: Joi.string().optional(),
+    });
+    const result = await validate(req.query, schema);
+    req.query = result;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};

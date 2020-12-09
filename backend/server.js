@@ -7,6 +7,10 @@ const productRouter = require('./modules/products/product.router');
 const bodyParser = require('body-parser');
 const authRouter = require('./modules/auth/auth.router');
 const categoryRouter = require('./modules/category/category.router');
+const addressRouter = require('./modules/address/address.router');
+const deliveryAddressRouter = require('./modules/delivery_address/delivery_address.router');
+const configRouter = require('./modules/config/config.router');
+const searchRouter = require('./modules/search/search.router');
 
 // import dotenv from 'dotenv';
 // import config from './config';
@@ -46,8 +50,12 @@ app.use(bodyParser.json());
 app.use('/api/auth', authRouter);
 app.use("/api/categories", categoryRouter);
 // app.use("/api/orders",orderRouter);
-app.use("/api/users",userRouter);
+app.use("/api/users", userRouter);
 app.use("/api/products",productRouter);
+app.use("/api/address", addressRouter);
+app.use("/api/delivery-address", deliveryAddressRouter);
+app.use("/api/config", configRouter);
+app.use("/api/search", searchRouter);
 
 app.listen(5000, () => {
   console.log('server is running : 5000   ');

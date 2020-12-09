@@ -21,7 +21,7 @@ router.post(
   controller.createCategory
 );
 router.put(
-  '/admin',
+  '/admin/:id',
   isAuth,
   isAdmin,
   validator.updateCategoryValidator,
@@ -34,10 +34,13 @@ router.put(
   validator.updateStatusCategoryValidator,
   controller.updateStatusCategory
 );
-router.delete('/', isAuth, isAdmin, controller.deleteCategory);
-router.get('/:id', controller.getCategoryById);
+router.get('/admin', isAuth, isAdmin, validator.getCategoriesValidator, controller.getCategoriesByAdmin);
 router.get('/admin/:id', isAuth, isAdmin, controller.adminGetCategoryById);
+router.delete('/:id', isAuth, isAdmin, controller.deleteCategory);
+router.get('/:id', controller.getCategoryById);
+
 router.get('/', controller.getCategories);
+
 
 router.use(handleError);
 // router.post('/add',isAuth,isAdmin, addCategory);

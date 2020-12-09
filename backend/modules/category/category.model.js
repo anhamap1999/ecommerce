@@ -34,7 +34,10 @@ const CategorySchema = new schema({
     enum: ['active', 'disabled'],
     required: true,
   },
-  createdAt: { type: Date, default: Date.now(), required: true },
+  created_at: { type: Date, default: Date.now(), required: true },
+  updated_at: { type: Date, required: false },
+  created_by: { type: String, required: false },
+  updated_at: { type: String, required: false },
 });
 CategorySchema.plugin(paginate);
 const categoryModel = mongoose.model('category', CategorySchema);

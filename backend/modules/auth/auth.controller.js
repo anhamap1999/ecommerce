@@ -22,7 +22,7 @@ exports.loginByEmail = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'user.notFound',
-        error: 'user has been not registered',
+        messages: { user: 'user has been not registered' },
       });
     }
     const compare_result = await bcrypt.compare(password, user.password);
@@ -30,7 +30,7 @@ exports.loginByEmail = async (req, res, next) => {
       throw new Error({
         statusCode: 400,
         message: 'auth.passwordIsIncorrect',
-        error: 'password is incorrect',
+        messages: { auth: 'password is incorrect' },
       });
     }
     const accessToken = await generateToken(
@@ -70,7 +70,7 @@ exports.loginByPhone = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'user.notFound',
-        error: 'user has been not registered',
+        messages: { user: 'user has been not registered' },
       });
     }
     const compare_result = await bcrypt.compare(password, user.password);
@@ -78,7 +78,7 @@ exports.loginByPhone = async (req, res, next) => {
       throw new Error({
         statusCode: 400,
         message: 'auth.passwordIsIncorrect',
-        error: 'password is incorrect',
+        messages: { auth: 'password is incorrect' },
       });
     }
     const accessToken = await generateToken(
@@ -140,7 +140,7 @@ exports.forgotPassword = async (req, res, next) => {
       throw new Error({
         statusCode: 404,
         message: 'user.notFound',
-        error: 'user has been not registered',
+        messages: { user: 'user has been not registered' },
       });
     }
     const resetPasswordToken = await generateToken(
@@ -189,7 +189,7 @@ exports.resetPassword = async (req, res, next) => {
       throw new Error({
         message: 'auth.tokenIsExpired',
         statusCode: 400,
-        error: 'token is expired',
+        messages: { auth: 'token is expired' },
       });
     }
     const user = await User.findOne({
@@ -205,7 +205,7 @@ exports.resetPassword = async (req, res, next) => {
       throw new Error({
         message: 'auth.passwordsNotMatch',
         statusCode: 400,
-        error: 'password and confirm_password do not matched',
+        messages: { auth: 'password and confirm_password do not matched' },
       });
     }
     user.password = hash;

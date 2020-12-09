@@ -1,5 +1,6 @@
 // import mongoose from 'mongoose';
 const mongoose = require('mongoose');
+const paginate = require('mongoose-paginate-v2');
 
 const TokenSchema = new mongoose.Schema({
   token: {
@@ -73,10 +74,16 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   access_tokens: [TokenSchema],
-  version: {
-    type: Number,
-    default: 0,
+  created_at: {
+    type: Date,
+    default: Date.now(),
+    required: true
   },
+  updated_at: {
+    type: String,
+    required: false
+  }
 });
+userSchema.plugin(paginate);
 const userModel = mongoose.model('user', userSchema);
 module.exports = userModel;
