@@ -12,7 +12,7 @@ exports.registerValidator = async (req, res, next) => {
       password: Joi.string().required().min(6).max(100),
       confirm_password: Joi.string().required().min(6).max(100),
       phone_number: Joi.string().length(10),
-    });
+    }); 
     const result = await validate(req.body, schema);
     req.body = result;
     next();
@@ -41,7 +41,7 @@ exports.updateUserValidator = async (req, res, next) => {
       full_name: Joi.string().required().max(50),
       gender: Joi.string().required().valid('female', 'male', 'other'),
       birthday: Joi.string(),
-      phone_number: Joi.string().length(10),
+      // phone_number: Joi.string().length(10),
     });
     const result = await validate(req.body, schema);
     req.body = result;

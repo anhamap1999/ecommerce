@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const config = require('./commons/config');
 const mongoose = require('mongoose');
@@ -43,7 +44,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(cors());
 //app.use(multer().array());
 //app.use(express.static('public'));
 

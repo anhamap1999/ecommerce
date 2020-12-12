@@ -29,24 +29,26 @@ const NavbarTop = () => {
     const logout = (e) => {
         e.preventDefault();
         Cookies.remove('userInfo')
+        Cookies.remove('userFulInfo')
         window.location.href = '/';
     }
     
-    const userSignin = useSelector(state => state.userSignin);
-    const { userInfo } = userSignin;
+    const userSignin = useSelector((state) => state.userSignin);
+    const { userInfo ,loading,error } = userSignin;
+
+    
+   
     return <>
         <NavbarHeader className="navbarheader" id="header">
             <div className="container">
                 <Row>
-                    <Col md={{span:5}}>
+                    <Col md={{span:3}}>
                         <NavbarLogo ><NavbarLink to='/'>Home</NavbarLink></NavbarLogo>
                     </Col>
-                    <Col md={{span:16}}>    
+                    <Col md={{span:6}}>    
                         <NavbarMenu>
                             <NavbarUl >
-                                <NavbarLi>
-                                    <NavbarLink to='/'>Home</NavbarLink>
-                                </NavbarLi>
+        
                                 <NavbarLi>
                                     <NavbarLink  to='/'>Service</NavbarLink>
                                 </NavbarLi>
@@ -57,18 +59,19 @@ const NavbarTop = () => {
                             </NavbarUl>
                         </NavbarMenu>
                     </Col>    
-                    <Col  md={{span:3}}>
+                    <Col  md={{span:15}}>
                         <NavbarShop >
                            <Link to="/cart" > <i className="bx bx-shopping-bag"></i></Link>
                         </NavbarShop>
-                        <NavbarLogin to={ userInfo ? "/profile" : "/signin"}>
-                            {
+                        <NavbarLogin to={ userInfo ? "/profile/user" : "/signin"}>
+                            {   
+                                
                                 userInfo ?
                                 <div className="userInfo">
-                                    <i> { userInfo.name }
+                                    <i>{userInfo.data.user.email}
                                         <ul>
                                             <li onClick={logout}>Sign Out</li>
-                                            <li> <Link to="/profile">Profile</Link> </li>
+                                            <li> <Link to="/profile/user">Profile</Link> </li>
                                             <>
                                                 {
                                                     userInfo.isAdmin ?

@@ -6,6 +6,7 @@ const User = require('../modules/users/user.model');
 
 exports.isAuth = async (req, res, next) => {
   try {
+   
     if (!req.header('Authorization')) {
       throw new Error({
         statusCode: 401,
@@ -14,6 +15,7 @@ exports.isAuth = async (req, res, next) => {
       });
     }
     const token = req.header('Authorization').replace('Bearer ', '');
+  
     const decoded = await verifyToken(token, config.JWT_SECRET_KEY);
     if (!decoded) {
       throw new Error({
@@ -32,6 +34,7 @@ exports.isAuth = async (req, res, next) => {
       });
     }
     req.user = user;
+  
     next();
   } catch(error) {
     next(error);

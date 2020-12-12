@@ -22,11 +22,12 @@ exports.loginByEmailValidator = async (req, res, next) => {
 
 exports.loginByPhoneValidator = async (req, res, next) => {
   try {
+ 
     const schema = Joi.object().keys({
       phone_number: Joi.string()
         .length(10)
-        .required()
-        .regex(/[\w]+?@[\w]+?\.[a-z]{2,4}/),
+        .required(),
+        // .regex(/[\w]+?@[\w]+?\.[a-z]{2,4}/),
       password: Joi.string().min(6).max(100).required(),
     });
     const result = await validate(req.body, schema);

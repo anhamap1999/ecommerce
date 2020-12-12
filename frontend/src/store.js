@@ -3,18 +3,23 @@ import { productListReducer, productDetailsReducer, productAddReducer, productRe
 import thunk from 'redux-thunk';
 import { cartReducer } from './reducers/cartReducers';
 import Cookie from 'js-cookie';
-import { userRegisterReducer, userSigninReducer } from './reducers/userReducers';
+import { getFullInfoReducer, userRegisterReducer, userSigninReducer } from './reducers/userReducers';
 import { categorySaveReducer } from './reducers/categoryReducers';
 import { orderSaveReducer, ordersListReducer } from './reducers/orderReduces';
 
 const cartItems = Cookie.getJSON("cartItems") || [];
 const userInfo = Cookie.getJSON('userInfo') || null;
-const initialState = { cart : { cartItems },shipping: {}, payment: {},
-                       userSignin : { userInfo }} ;
+const userFulInfo = Cookie.getJSON('userFulInfo') || null;
+const initialState = {  cart : { cartItems },
+                        shipping: {}, payment: {},
+                        userSignin : { userInfo },
+                        getFullInfo : { userFulInfo },
+                      } ;
 const reducer = combineReducers({
     productList : productListReducer,
     productDetails : productDetailsReducer,
     cart : cartReducer,
+    getFullInfo :getFullInfoReducer,
     userSignin : userSigninReducer,
     userRegister :userRegisterReducer,
     createProduct: productAddReducer,
