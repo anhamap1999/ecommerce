@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CREATE_ADDRESS_NEW_FAIL, CREATE_ADDRESS_NEW_REQUEST, CREATE_ADDRESS_NEW_SUCCESS } from '../constants/delivery_addressConstant';
+import { CREATE_ADDRESS_NEW_FAIL, CREATE_ADDRESS_NEW_REQUEST, CREATE_ADDRESS_NEW_SUCCESS, GET_LIST_ADDRESS_FAIL, GET_LIST_ADDRESS_REQUEST, GET_LIST_ADDRESS_SUCCESS } from '../constants/delivery_addressConstant';
 
 const creareAddressNew = ({full_name,phone_number,province_number,district_number,ward_number,text}) => async (dispatch,getState) => {
 
@@ -16,4 +16,19 @@ const creareAddressNew = ({full_name,phone_number,province_number,district_numbe
       dispatch({ type: CREATE_ADDRESS_NEW_FAIL, payload: error.message });
     }
   }
-export {  creareAddressNew };
+  const getListAddressNew = () => async (dispatch,getState) => {
+
+    dispatch({ type: GET_LIST_ADDRESS_REQUEST } ); 
+    try {
+      const { userSignin : { userInfo } } = getState();
+      const { data } = await axios.get("/api/delivery-address",{
+        headers:{
+            authorization : 'Bearer ' + userInfo.data.access_token
+        },
+    });
+      dispatch({ type: GET_LIST_ADDRESS_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: GET_LIST_ADDRESS_FAIL, payload: error.message });
+    }
+  }
+export {  creareAddressNew ,getListAddressNew };

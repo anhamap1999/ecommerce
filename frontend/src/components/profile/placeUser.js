@@ -6,7 +6,7 @@ import {  Modal  } from 'antd';
 import {Link} from 'react-router-dom';
 import ProfileScreen from './profile';
 import Axios from 'axios';
-import { creareAddressNew } from '../../actions/delivery_addressAction';
+import { creareAddressNew, getListAddressNew } from '../../actions/delivery_addressAction';
 
 export default function PlaceUserScreen(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -34,8 +34,11 @@ const [text, setText] = useState('');
 const [provinceData, setProvinceData] = useState({ });
 const [districtData, setDistrictData] = useState({ });
 const [wardData, setWardData] = useState({ });  
+const listAddress = useSelector(state => state.listAddress)
+const { addressList ,loading ,error} = listAddress;
   const dispatch = useDispatch();
   useEffect(() => {
+      dispatch(getListAddressNew());
       const fetchData = async () => {
         const result = await Axios.get('/api/address/province');
         setProvinceData(result.data);
@@ -49,7 +52,7 @@ const [wardData, setWardData] = useState({ });
     setDistrictData(result1.data);
      
   } ;
-  console.log("dasdasr",province_number)
+
   const onChangeDistrict = async (e) =>{
     setdistrict_number(e.target.value);
     const result2 = await Axios.get(`/api/address/ward?district_number=${e.target.value}&province_number=${province_number}`);
@@ -61,7 +64,9 @@ const [wardData, setWardData] = useState({ });
     dispatch(creareAddressNew({
       full_name,phone_number,province_number,district_number,ward_number,text
     }))
+    setIsModalVisible(false);
   }
+  console.log(full_name,phone_number,province_number,district_number,ward_number,text)
   return <ProfileScreen >  
     <div className="" style={{marginTop : '20px'}}>
       <div className="header__title">
@@ -166,6 +171,44 @@ const [wardData, setWardData] = useState({ });
       <hr>
       </hr>
     </div>
+                                
+    {/* List  address */}
+    { loading ?  <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div> :
+        error ? <div>{error}</div>:
+    addressList.data && addressList.data.map(address => 
+      <div className="container">
+      <div className="row">
+        <div className="col-sm-3">
+          <div className="text-muted" style={{height: '35px'}}>
+            Họ và Tên
+          </div>
+          <div className="text-muted"  style={{height: '35px'}}>
+            Số điện thoại
+          </div>
+        <div className="text-muted"  style={{height: '35px'}}>
+          Địa chỉ
+        </div>
+        </div>
+        <div className="col-sm-7">
+        <div className="text-dark" style={{height: '35px'}}>
+           {address.full_name}
+          </div>
+          <div className="text-dark"  style={{height: '35px'}}>
+          {address.phone_number}
+          </div>
+        <div className="text-dark"  style={{height: '35px'}}>
+          {address.normalizedAddress}
+        </div>
+        </div>
+        <div className="col-sm-2"></div>
+
+      </div>
+      <hr ></hr>
+    </div>
+    )
+    }
   </ProfileScreen>
   
 }
