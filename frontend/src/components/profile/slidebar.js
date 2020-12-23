@@ -18,8 +18,9 @@ export default function SlideBarProfile({userInfo}) {
   return <div style={style}>
     
     <Link  to='/profile/user' style={styleA}>Thông Tin Tài Khoản</Link>
-    <Link  to='/profile/order' style={styleA}>Đơn hàng</Link>
+    <Link  to='/profile/place' style={styleA}>Địa chỉ giao hàng</Link>   
     <Link to='/profile/payment' style={styleA}>Tài khoản thanh toán</Link>
+    <Link  to='/profile/order' style={styleA}>Đơn hàng</Link>
 </div>
 }
 

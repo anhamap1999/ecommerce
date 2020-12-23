@@ -29,11 +29,12 @@ function userRegisterReducer(state = {}, action) {
       case GET_FULL_INFO_REQUEST:
         return { loading: true };
       case GET_FULL_INFO_SUCCESS:
-        return { loading: false, userFulInfo: action.payload };
+        return { loading: false, userFullInfo: action.payload };
       case GET_FULL_INFO_FAIL:
         return { loading: false, error: action.payload };
       default:
         return state;
     }
   }
+  
 export { userSigninReducer,userRegisterReducer, getFullInfoReducer }

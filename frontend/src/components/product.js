@@ -17,15 +17,17 @@ function ProductScreen(props) {
     return () => {
     };
   }, []);
-console.log("product:",products)
+  console.log("products",products)
   return <HomePage>
       {
-        loading ? <div>loading..</div> :
+        loading ?  <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div> :
         error ? <div>{error}</div>:
         <ul className="container">
           <div className="row">
-          {/* {
-            products.map(product =>
+          {
+           products && products.data && products.data.map(product =>
               <div className="col-md-4">
                 <li>
                   <div className="productmain">
@@ -42,7 +44,7 @@ console.log("product:",products)
                 </li>
               </div>
             )
-          } */}
+          }
           </div>
         </ul>
       }

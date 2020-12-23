@@ -20,6 +20,9 @@ import AddCategoryScreen from './components/category';
 import OrdersScreen from './components/orders';
 import OrderScreen from './components/order';
 import ProfileUserScreen from './components/profile/profileUser';
+import OrderUserScreen from './components/profile/orderUser';
+import BankingUserScreen from './components/profile/bankingUser';
+import PlaceUserScreen from './components/profile/placeUser';
 
 function App() {
   
@@ -31,8 +34,9 @@ function App() {
       <Route path='/product/:id' component={DetailsScreen} />
       <Route path='/cart/:id?' component={CartScreen} />
       <Route path='/profile/user'  component={ProfileUserScreen} />
-      <Route path='/profile/payment'  component={ProfileUserScreen} />
-      <Route path='/profile/order'  component={ProfileUserScreen} />
+      <Route path='/profile/place'  component={PlaceUserScreen} />
+      <Route path='/profile/payment'  component={BankingUserScreen} />
+      <Route path='/profile/order'  component={OrderUserScreen} />
       <Route path='/register' component={RegisterScreen} />
       <Route path='/createproduct' component={CreateProductScreen} />
       <Route path='/signin'  component={SigninScreen}></Route>

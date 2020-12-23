@@ -9,11 +9,11 @@ import { orderSaveReducer, ordersListReducer } from './reducers/orderReduces';
 
 const cartItems = Cookie.getJSON("cartItems") || [];
 const userInfo = Cookie.getJSON('userInfo') || null;
-const userFulInfo = Cookie.getJSON('userFulInfo') || null;
+const userFullInfo = Cookie.getJSON('userFullInfo') || null;
 const initialState = {  cart : { cartItems },
                         shipping: {}, payment: {},
                         userSignin : { userInfo },
-                        getFullInfo : { userFulInfo },
+                        getFullInfo : { userFullInfo },
                       } ;
 const reducer = combineReducers({
     productList : productListReducer,

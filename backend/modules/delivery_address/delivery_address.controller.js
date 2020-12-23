@@ -37,6 +37,7 @@ exports.getAddressById = async (req, res, next) => {
 exports.createAddress = async (req, res, next) => {
   try {
     const address = new DeliveryAddress(req.body);
+    console.log("zoo")
     address.created_by = req.user._id;
     const addressPromises = [
       Province.findOne({ number: address.province_number }),

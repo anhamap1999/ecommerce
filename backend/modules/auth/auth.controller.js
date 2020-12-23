@@ -181,10 +181,12 @@ exports.forgotPassword = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
   try {
     const resetPasswordToken = req.params.token;
+    
     const decoded = await verifyToken(
       resetPasswordToken,
       config.RESET_PASSWORD_SECRET_KEY
     );
+    console.log("zoo dayay:",  decoded );
     if (!decoded) {
       throw new Error({
         message: 'auth.tokenIsExpired',
@@ -196,6 +198,7 @@ exports.resetPassword = async (req, res, next) => {
       _id: decoded.data._id,
       status: 'active',
     });
+    console.log("zoo dayay:",user);
     const hash = await bcrypt.hash(req.body.new_password, 10);
     const compare_result = await bcrypt.compare(
       req.body.confirm_new_password,
