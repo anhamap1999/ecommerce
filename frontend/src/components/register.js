@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import {Link, useLocation} from 'react-router-dom';
 import { register } from '../actions/userActions';
 function RegisterScreen(props) {
-    const [name, setName] = useState('');
+    const [phone_number, setPhone_number] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [repassword, setRepassword] = useState('');
+    const [confirm_password, setConfirm_password] = useState('');
     const userRegister = useSelector(state =>state.userRegister);
     const {  loading , userInfo , error} = userRegister;
     const dispatch =useDispatch();
@@ -22,7 +22,7 @@ function RegisterScreen(props) {
     }, [userInfo]);
     const submitHandler = (e) => { 
         e.preventDefault();
-        dispatch(register(name,email,password,repassword));
+        dispatch(register(phone_number,email,password,confirm_password));
     }
   return <div className="signin-form">
       <form className="box" onSubmit={submitHandler}>
@@ -34,7 +34,7 @@ function RegisterScreen(props) {
             </li>
             <li>
                  
-                 <input type="text" placeholder="Username" name="name" id="name" onChange={(e) => setName(e.target.value)} ></input>
+                 <input type="text" placeholder="Phone number" name="phone_number" id="phone_number" onChange={(e) => setPhone_number(e.target.value)} ></input>
              </li>
              <li>
                  
@@ -46,7 +46,7 @@ function RegisterScreen(props) {
              </li>
              <li>
                  
-                 <input type="password" name="repassword" placeholder="password" id="repassword" onChange={(e) => setRepassword(e.target.value)} ></input>
+                 <input type="password" name="confirm_password" placeholder="password" id="confirm_password" onChange={(e) => setConfirm_password(e.target.value)} ></input>
              </li>
              <li>
              <Link to={ redirect === "/" ? "signin" : "signin?redirect=" + redirect} className="register">Create your account</Link>

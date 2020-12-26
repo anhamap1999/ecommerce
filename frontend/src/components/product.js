@@ -17,21 +17,23 @@ function ProductScreen(props) {
     return () => {
     };
   }, []);
-
+  console.log("products",products)
   return <HomePage>
       {
-        loading ? <div>loading..</div> :
+        loading ?  <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div> :
         error ? <div>{error}</div>:
         <ul className="container">
           <div className="row">
           {
-            products.map(product =>
+           products && products.data && products.data.map(product =>
               <div className="col-md-4">
                 <li>
                   <div className="productmain">
                     <div className="product">
                       <div className="product-img"> 
-                        <img src={product.image} alt="giay"></img>
+                        <img src='' alt="giay"></img>
                       </div>
                       <div className="product-text">
                         <h3> { product.name } </h3>

@@ -91,7 +91,7 @@ exports.getProducts = async (req, res, next) => {
             .addField('page', result.page)
             .addField('total', result.totalDocs);
         } else {
-          success.addField('data', []);
+          success.addField('dataaa',  result.docs);
         }
       })
       .catch((error) => {

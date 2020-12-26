@@ -9,7 +9,7 @@ a {
   text-decoration: none !important;
 }
 a:hover {
-  color:  #8a8a8a !important;
+  color:  #14141480 !important;
  
 }
 i.bx.bx-shopping-bag {
@@ -45,7 +45,7 @@ body{
   
 }
 .bg-menu{
-  background-color: #8a8a8a60 !important;
+  background-color: #9eb8be !important;
   transition: .7s ease-in-out;
  
 }
@@ -54,14 +54,14 @@ body{
   animation: mymove 3s ;
 }
 .userInfo{
-  width: 100px;
+  width: 100%;
   height: auto;
   position: relative;
 }
 .userInfo i {
   font-size: 20px;
-  width: 100%;
-  height: 100px;
+  position: absolute;
+   right: 70px;
   line-height: 50px;
 }
 .userInfo i:hover ul{
@@ -73,9 +73,9 @@ body{
   padding: 0;
   top:34px;
   margin: 0;
-  width: 130px;
+  width: 200px;
   height: auto;
-  background: blanchedalmond;
+  background: rgb(187, 187, 183);
 }
 .userInfo li{
   font-size: 16px;
