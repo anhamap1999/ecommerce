@@ -110,6 +110,16 @@ exports.changePassword = async (req, res, next) => {
         messages: { user: 'user not found' },
       });
     }
+    
+    const result = await bcrypt.compare(req.body.password, user.password);
+    if (!result) {
+      throw new Error({
+        statusCode: 404,
+        message: 'auth.passwordIsIncorrect',
+        messages: { auth: 'password is incorrect' },
+      })
+    }
+
     const hash = await bcrypt.hash(req.body.new_password, 10);
     const compare_result = await bcrypt.compare(
       req.body.confirm_new_password,

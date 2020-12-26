@@ -44,13 +44,14 @@ exports.loginByEmail = async (req, res, next) => {
 
     const data = {
       access_token: accessToken,
-      user: {
-        _id: user._id,
-        email: user.email,
-        phone_number: user.phone_number,
-        user_name: user.user_name,
-        full_name: user.full_name,
-      },
+      // user: {
+      //   _id: user._id,
+      //   email: user.email,
+      //   phone_number: user.phone_number,
+      //   user_name: user.user_name,
+      //   full_name: user.full_name,
+      // },
+      user
     };
     const success = new Success({ data });
     res.status(200).send(success);
@@ -93,13 +94,14 @@ exports.loginByPhone = async (req, res, next) => {
 
     const data = {
       access_token: accessToken,
-      user: {
-        _id: user._id,
-        email: user.email,
-        phone_number: user.phone_number,
-        user_name: user.user_name,
-        full_name: user.full_name,
-      },
+      // user: {
+      //   _id: user._id,
+      //   email: user.email,
+      //   phone_number: user.phone_number,
+      //   user_name: user.user_name,
+      //   full_name: user.full_name,
+      // },
+      user
     };
     const success = new Success({ data });
     res.status(200).send(success);

@@ -2,11 +2,13 @@ const BankAccount = require('./bank_account.model');
 const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
 const utils = require('../../commons/utils');
+const { Bank, Branch } = require('../banks/banks.model');
 
 exports.getBankAccounts = async (req, res, next) => {
   try {
-    const banks = BankAccount.find({ created_by: req.user._id, status: 'active' });
-    const success = new Success({ data: banks });
+    const banks = await BankAccount.find({ created_by: req.user._id, status: 'active' });
+    const result = await BankAccount.populate(banks, [{ path: 'bank' }, { path: 'branch' }]);
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -20,11 +22,13 @@ exports.getBankAccountById = async (req, res, next) => {
     if (!bank) {
       throw new Error({
         statusCode: 404,
-        message: 'bank.notFound',
-        messages: { bank: 'bank not found' },
+        message: 'bankAccount.notFound',
+        messages: { bankAccount: 'bank account not found' },
       });
     }
-    const success = new Success({ data: bank });
+
+    const result = await BankAccount.populate(bank, [{ path: 'bank' }, { path: 'branch' }]);
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -33,9 +37,15 @@ exports.getBankAccountById = async (req, res, next) => {
 
 exports.createBankAccount = async (req, res, next) => {
   try {
-    const bank = new BankAccount(req.body);
-    bank.created_by = req.user._id;
-    const result = await bank.save();
+    const bankAccount = new BankAccount(req.body);
+
+    const bank = await Bank.findOne({ number: bankAccount.bank_number });
+    const branch = await Branch.findOne({ number: bankAccount.branch_number });
+    bankAccount.created_by = req.user._id;
+    bankAccount.bank = bank._id;
+    bankAccount.branch = branch._id;
+
+    const result = await bankAccount.save();
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
@@ -70,12 +80,12 @@ exports.deleteBankAccount = async (req, res, next) => {
     if (!bank) {
       throw new Error({
         statusCode: 404,
-        message: 'bank.notFound',
-        messages: { bank: 'bank not found' },
+        message: 'bankAccount.notFound',
+        messages: { bankAccount: 'bank account not found' },
       });
     }
     bank.status = 'disabled';
-    await Product.findByIdAndUpdate(id, bank);
+    await BankAccount.findByIdAndUpdate(id, bank);
     const success = new Success({ data: bank });
     res.status(200).send(success);
   } catch (error) {

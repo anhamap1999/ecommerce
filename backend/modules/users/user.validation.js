@@ -24,6 +24,7 @@ exports.registerValidator = async (req, res, next) => {
 exports.changePasswordValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
+      password: Joi.string().required().max(100).min(6),
       new_password: Joi.string().required().max(100).min(6),
       confirm_new_password: Joi.string().required().max(100).min(6),
     });

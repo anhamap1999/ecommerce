@@ -1,13 +1,11 @@
 const Joi = require('joi');
+const { Error } = require('../../utils/Error');
 const { validate } = require('../../commons/utils');
 
-exports.createBankAccountValidator = async (req, res, next) => {
+exports.addAdminValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
-      account_number: Joi.string().required(),
-      account_name: Joi.string().required(),
-      bank_number: Joi.number().required(),
-      branch_number: Joi.number().required(),
+      id: Joi.string().required(),
     });
     const result = await validate(req.body, schema);
     req.body = result;

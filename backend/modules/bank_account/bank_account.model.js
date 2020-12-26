@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const bankAccountSchema = new mongoose.Schema({
   account_number: { type: String, required: true },
   account_name: { type: String, required: true },
-  bank: { type: String, required: true },
-  branch: { type: String, required: true },
-  created_by: { type: String, required: false },
+  bank_number: { type: Number, required: true },
+  branch_number: { type: Number, required: true },
+  bank: { type: mongoose.SchemaTypes.ObjectId, ref: 'Bank' },
+  branch: { type: mongoose.SchemaTypes.ObjectId, ref: 'Branch' },
+  created_by: { type: mongoose.SchemaTypes.ObjectId, required: false, ref: 'User' },
   status: {
     type: String,
     required: true,
