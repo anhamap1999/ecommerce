@@ -111,7 +111,7 @@ exports.postAddress = async (req, res, next) => {
       });
     });
 
-    Promise.all([...wardPromises]);
+    await Promise.all([...wardPromises]);
 
     const success = new Success({});
     res.status(200).send(success);

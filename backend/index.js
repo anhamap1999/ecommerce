@@ -1,15 +1,82 @@
-const express = require("express");
-const mongoose = require("mongoose");
-require("dotenv").config();
+// const functions = require('firebase-functions');
+// const admin = require('firebase-admin');
+
+// admin.initializeApp();
+
+
+const express = require('express');
+const dotenv = require('dotenv');
+const config = require('./commons/config');
+const mongoose = require('mongoose');
+const userRouter = require('./modules/users/user.router');
+const productRouter = require('./modules/products/product.router');
+const bodyParser = require('body-parser');
+const authRouter = require('./modules/auth/auth.router');
+const categoryRouter = require('./modules/category/category.router');
+const addressRouter = require('./modules/address/address.router');
+const deliveryAddressRouter = require('./modules/delivery_address/delivery_address.router');
+const configRouter = require('./modules/config/config.router');
+const searchRouter = require('./modules/search/search.router');
+const bankAccountRouter = require('./modules/bank_account/bank_account.router');
+const commentRouter = require('./modules/comment/comment.router');
+const banksRouter = require('./modules/banks/banks.router');
+const adminRouter = require('./modules/admin/admin.router');
+
+// import dotenv from 'dotenv';
+// import config from './config';
+// import mongoose from 'mongoose';
+// import userRouter from './modules/users/user.router';
+// import productRouter from './modules/products/product.router';
+// import bodyParser from 'body-parser';
+
+dotenv.config();
+
+const mongodbUrl = config.MONGODB_URL;
+
+mongoose
+  .connect(mongodbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  })
+  .then(console.log('connected!'))
+  .catch((error) => console.log(error.reason));
+
+
+
 
 const app = express();
-const { PORT, DB_CONNECT } = process.env;
-mongoose
-  .connect(DB_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(console.log("CONNECTED DATABASE"));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//app.use(multer().array());
+//app.use(express.static('public'));
 
 app.use(express.json());
 
-app.listen(PORT || 5000, () => {
-  console.log("LISTEN TO PORT ", PORT);
+app.use(bodyParser.json());
+app.use('/api/auth', authRouter);
+app.use("/api/categories", categoryRouter);
+// app.use("/api/orders",orderRouter);
+app.use("/api/users", userRouter);
+app.use("/api/products",productRouter);
+app.use("/api/address", addressRouter);
+app.use("/api/delivery-address", deliveryAddressRouter);
+app.use("/api/config", configRouter);
+app.use("/api/search", searchRouter);
+app.use("/api/bank-account", bankAccountRouter);
+app.use("/api/comment", commentRouter);
+app.use("/api/banks", banksRouter);
+app.use("/api/admin", adminRouter);
+function test() {
+  console.log('testing');
+}
+app.get("/test", test);
+
+app.listen(5000, () => {
+  console.log('server is running : 5000   ');
 });
+
+// exports.api = functions.https.onRequest(app);

@@ -18,6 +18,7 @@ exports.getBranchesValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
       sort: Joi.string().optional(),
+      populate: Joi.string().optional(),
       province_number: Joi.number().required(),
       bank_number: Joi.number().required()
     });

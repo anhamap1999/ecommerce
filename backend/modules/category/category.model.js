@@ -21,8 +21,9 @@ const CategorySchema = new schema({
     required: true,
   },
   parent_id: {
-    type: String,
+    type: mongoose.SchemaTypes.ObjectId,
     required: false,
+    ref: 'Category'
   },
   image: {
     type: String,
@@ -40,5 +41,5 @@ const CategorySchema = new schema({
   updated_at: { type: String, required: false },
 });
 CategorySchema.plugin(paginate);
-const categoryModel = mongoose.model('category', CategorySchema);
+const categoryModel = mongoose.model('Category', CategorySchema);
 module.exports = categoryModel;

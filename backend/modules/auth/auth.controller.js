@@ -44,6 +44,7 @@ exports.loginByEmail = async (req, res, next) => {
 
     const data = {
       access_token: accessToken,
+<<<<<<< HEAD
       user: {
         _id: user._id,
         email: user.email,
@@ -52,6 +53,16 @@ exports.loginByEmail = async (req, res, next) => {
         full_name: user.full_name,
         isAdmin: user.isAdmin,
       },
+=======
+      // user: {
+      //   _id: user._id,
+      //   email: user.email,
+      //   phone_number: user.phone_number,
+      //   user_name: user.user_name,
+      //   full_name: user.full_name,
+      // },
+      user
+>>>>>>> 06a9794f1a8e6f1403f490deef7769eed2578b0b
     };
     const success = new Success({ data });
     res.status(200).send(success);
@@ -94,6 +105,7 @@ exports.loginByPhone = async (req, res, next) => {
 
     const data = {
       access_token: accessToken,
+<<<<<<< HEAD
       user: {
         _id: user._id,
         email: user.email,
@@ -102,6 +114,16 @@ exports.loginByPhone = async (req, res, next) => {
         isAdmin: user.isAdmin,
         full_name: user.full_name,
       },
+=======
+      // user: {
+      //   _id: user._id,
+      //   email: user.email,
+      //   phone_number: user.phone_number,
+      //   user_name: user.user_name,
+      //   full_name: user.full_name,
+      // },
+      user
+>>>>>>> 06a9794f1a8e6f1403f490deef7769eed2578b0b
     };
     const success = new Success({ data });
     res.status(200).send(success);

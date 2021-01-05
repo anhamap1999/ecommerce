@@ -7,8 +7,8 @@ exports.createBankAccountValidator = async (req, res, next) => {
     const schema = Joi.object().keys({
       account_number: Joi.string().required(),
       account_name: Joi.string().required(),
-      bank: Joi.string().required(),
-      branch: Joi.array().required().items(Joi.string()),
+      bank_number: Joi.number().required(),
+      branch_number: Joi.number().required(),
     });
     const result = await validate(req.body, schema);
     req.body = result;

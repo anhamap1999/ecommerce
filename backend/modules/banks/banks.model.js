@@ -10,6 +10,8 @@ const branchSchema = new mongoose.Schema({
   number: { type: Number, required: true },
   province_number: { type: Number, required: true },
   bank_number: { type: Number, required: true },
+  province_id: { type: mongoose.SchemaTypes.ObjectId, ref: 'Province'},
+  bank_id: { type: mongoose.SchemaTypes.ObjectId, ref: 'Bank'}
 });
 
 const bankModel = mongoose.model('Bank', bankSchema);

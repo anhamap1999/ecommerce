@@ -39,9 +39,10 @@ exports.getBranches = async (req, res, next) => {
       });
     }
 
-    const branches = await Branch.find({ province_number, bank_number }).sort(
-      sort ? sort : 'number'
-    );
+    const branches = await Branch.find({ province_number, bank_number })
+      .sort(sort ? sort : 'number');
+      // .populate(populate.includes('province_id') ? 'province_id' : '')
+      // .populate(populate.includes('bank_id') ? 'bank_id' : '');
 
     const success = new Success({ data: branches });
     res.status(200).send(success);
@@ -86,7 +87,9 @@ exports.postBanks = async (req, res, next) => {
           const { TenTinhThanh, branch } = p;
           const provinceIndex = provinces.findIndex(
             (i) =>
-              utils.removeAccents(i.name) === utils.removeAccents(TenTinhThanh) || (i.name === 'Hà Nội' && TenTinhThanh === 'Ha Noi')
+              utils.removeAccents(i.name) ===
+                utils.removeAccents(TenTinhThanh) ||
+              (i.name === 'Hà Nội' && TenTinhThanh === 'Ha Noi')
           );
           const province_number = provinces[provinceIndex]
             ? provinces[provinceIndex].number
@@ -106,7 +109,7 @@ exports.postBanks = async (req, res, next) => {
       });
     });
 
-    Promise.all([...bankPromises, ...branchPromises]);
+    await Promise.all([...bankPromises, ...branchPromises]);
 
     const success = new Success({});
     res.status(200).send(success);
