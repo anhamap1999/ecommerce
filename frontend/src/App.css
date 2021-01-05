@@ -12,6 +12,17 @@ a:hover {
   color:  #14141480 !important;
  
 }
+
+element.style {
+}
+.maine{
+  position: relative;
+}
+.ab-right {
+  top: 5px;
+    position: absolute;
+    right: 10px;
+}
 i.bx.bx-shopping-bag {
   font-size: 32px;
   padding-top: 10px;

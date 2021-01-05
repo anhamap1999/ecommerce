@@ -78,7 +78,7 @@ exports.getProducts = async (req, res, next) => {
       select: select ? select : '',
       sort: sort ? sort : '-created_at',
       page: page && page >= 1 ? page : 1,
-      limit: limit && limit >= 10 ? limit : 10,
+      limit: limit && limit >= 2 ? limit : 2,
     };
 
     const success = new Success({});

@@ -14,8 +14,8 @@ export default function BankingUserScreen(props) {
   const [account_number, setaccount_number] = useState('');
   const [account_name, setaccount_name] = useState('');
 
-  const [bank_number, setBank_number] = useState('');
-  const [branch_number, setBranch_number] = useState('');
+  const [bank, setBank] = useState('');
+  const [branch, setBranch] = useState('');
   const [province_number, setProvince_number] = useState('');
 
   const [bankData, setBankData] = useState({});
@@ -35,7 +35,7 @@ export default function BankingUserScreen(props) {
     fetchData1();
   }, []);
   const onChangeBank = async (e) =>{
-    setBank_number(e.target.value);
+    setBank(e.target.value);
     const result1= await Axios.get(`/api/banks/branch?bank_number=${e.target.value}&province_number=${province_number}`);
     setBranchData(result1.data);
      
@@ -55,11 +55,10 @@ export default function BankingUserScreen(props) {
     e.preventDefault();
     dispatch(createBankNew(
       {
-        account_name,account_number,bank_number,branch_number,province_number
+        account_name,account_number,bank,branch,province_number
       }
     ))
   };
-  console.log("asd",account_name,account_number,bank_number,branch_number,province_number)
   return <ProfileScreen >  
     <div className="" style={{marginTop : '20px'}}>
       <div className="header__title">
@@ -113,13 +112,13 @@ export default function BankingUserScreen(props) {
                         <div className="form-group">
                             <select
                                 className="custom-select" 
-                                  value = {bank_number} 
+                                  value = {bank} 
                                   onChange={onChangeBank} >
                                 <option selected >Chọn Ngân hàng</option>
                                 {
                                  bankData.data && bankData.data.map((option) => (
                                     <option   
-                                        key={option.district_id}
+                                   
                                         value={option.number} 
                                     >
                                           {option.name}
@@ -131,8 +130,8 @@ export default function BankingUserScreen(props) {
                         <div className="form-group">
                             <select
                                 className="custom-select" 
-                                  value = {branch_number} 
-                                  onChange={ e => setBranch_number(e.target.value)} >
+                                  value = {branch} 
+                                  onChange={ e => setBranch(e.target.value)} >
                                 <option selected >Chọn chi nhánh ...</option>
                                 {
                                  branchData.data && branchData.data.map((option) => (

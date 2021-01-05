@@ -33,7 +33,7 @@ exports.removeOrder = async (req, res) => {
 };
 
 exports.saveOrder = async (req, res) => {
-  console.log("co zo day");
+ 
     const newOrder = new Order({
       orderItems: req.body.orderItems,
       user: req.user._id,

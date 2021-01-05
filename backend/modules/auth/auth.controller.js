@@ -50,6 +50,7 @@ exports.loginByEmail = async (req, res, next) => {
         phone_number: user.phone_number,
         user_name: user.user_name,
         full_name: user.full_name,
+        isAdmin: user.isAdmin,
       },
     };
     const success = new Success({ data });
@@ -88,7 +89,7 @@ exports.loginByPhone = async (req, res, next) => {
     );
 
     user.access_tokens.push({ token: accessToken });
-    console.log(accessToken);
+
     await user.save();
 
     const data = {
@@ -98,6 +99,7 @@ exports.loginByPhone = async (req, res, next) => {
         email: user.email,
         phone_number: user.phone_number,
         user_name: user.user_name,
+        isAdmin: user.isAdmin,
         full_name: user.full_name,
       },
     };
@@ -186,7 +188,7 @@ exports.resetPassword = async (req, res, next) => {
       resetPasswordToken,
       config.RESET_PASSWORD_SECRET_KEY
     );
-    console.log("zoo dayay:",  decoded );
+  
     if (!decoded) {
       throw new Error({
         message: 'auth.tokenIsExpired',
@@ -198,7 +200,7 @@ exports.resetPassword = async (req, res, next) => {
       _id: decoded.data._id,
       status: 'active',
     });
-    console.log("zoo dayay:",user);
+    
     const hash = await bcrypt.hash(req.body.new_password, 10);
     const compare_result = await bcrypt.compare(
       req.body.confirm_new_password,

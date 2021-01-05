@@ -40,9 +40,9 @@ const addProduct = (product) => async (dispatch, getState) =>{
        
         if (!product._id) {
             console.log("k id" ,userInfo);
-            const { data } = await axios.post('/api/products', product, {
+            const { data } = await axios.post('/api/products/admin', product, {
                 headers:{
-                    authorization : 'Bearer ' + userInfo.token
+                    authorization : 'Bearer ' + userInfo.data.access_token
                 },
             });
             dispatch( { type : PRODUCT_ADD_SUCCESS , payload : data }  );

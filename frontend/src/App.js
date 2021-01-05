@@ -3,13 +3,10 @@ import './App.css';
 
 import {BrowserRouter,Route} from 'react-router-dom'
 
-import HomePage from './pages/homepage';
-import SigninPage from './pages/signpage';
 import AboutScreen from './components/about';
 import ProductScreen from './components/product';
 import DetailsScreen from './components/detailsproduct';
 import CartScreen from './components/cart';
-import ProfileScreen from './components/profile/profile';
 import RegisterScreen from './components/register';
 import CreateProductScreen from './components/createProduct';
 import ShippingScreen from './components/shipping';
@@ -23,7 +20,10 @@ import ProfileUserScreen from './components/profile/profileUser';
 import OrderUserScreen from './components/profile/orderUser';
 import BankingUserScreen from './components/profile/bankingUser';
 import PlaceUserScreen from './components/profile/placeUser';
-
+import DashboardScreen from './admin/dashboard';
+import CustomerAdminScreen from './admin/customer';
+import ProductAdminScreen from './admin/product';
+import OrderAdminScreen from './admin/order';
 function App() {
   
   return (
@@ -46,6 +46,9 @@ function App() {
       <Route path='/categoryadd'  component={AddCategoryScreen}></Route>
       <Route path='/orders'  component={OrdersScreen}></Route>
       <Route path="/order/:id" component={OrderScreen} />
+      <Route path="/admin/customer" component={CustomerAdminScreen} />   
+      <Route path="/admin/products" component={ProductAdminScreen} />   
+      <Route path="/admin/orders" component={OrderAdminScreen} />
     </BrowserRouter>
   );
 }

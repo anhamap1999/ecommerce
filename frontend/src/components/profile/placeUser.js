@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {  Modal  } from 'antd';
-import {Link} from 'react-router-dom';
 import ProfileScreen from './profile';
 import Axios from 'axios';
 import { creareAddressNew, getListAddressNew } from '../../actions/delivery_addressAction';
@@ -13,10 +12,6 @@ export default function PlaceUserScreen(props) {
 
   const showModal = () => {
     setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
   };
 
   const handleCancel = () => {

@@ -38,6 +38,7 @@ exports.getProductByIdValidator = async (req, res, next) => {
 
 exports.createProductValidator = async (req, res, next) => {
   try {
+    
     const schema = Joi.object().keys({
       name: Joi.string().required(),
       color: Joi.string().required(),

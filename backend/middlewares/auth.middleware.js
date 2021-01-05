@@ -6,7 +6,7 @@ const User = require('../modules/users/user.model');
 
 exports.isAuth = async (req, res, next) => {
   try {
-   
+    
     if (!req.header('Authorization')) {
       throw new Error({
         statusCode: 401,
@@ -42,6 +42,7 @@ exports.isAuth = async (req, res, next) => {
 };
 
 exports.isAdmin = (req, res, next) => {
+  
   if (req.user && req.user.isAdmin) {
     return next();
   }
