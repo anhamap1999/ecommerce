@@ -37,7 +37,6 @@ const NavbarTop = () => {
     const { userInfo ,loading,error } = userSignin;
    
     
-   
     return <>
         <NavbarHeader className="navbarheader" id="header">
             <div className="container">
@@ -72,22 +71,16 @@ const NavbarTop = () => {
                                         <ul>
                                             <li onClick={logout}>Sign Out</li>
                                             <li> <Link to="/profile/user">Profile</Link> </li>
-                                            <>
-                                                {
-                                                    userInfo.isAdmin ?
+                                            {
+                                                    userInfo.data.user.isAdmin ?
                                                 <>
                                                     
-                                                     <li><Link  to="/categoryadd">category</Link></li>
-                                                     <li>
-                                                        <Link to="/orders">
-                                                            order
-                                                        </Link>
-                                                     </li>
+                                                     <li><Link  to="/admin/customer">Quản Trị Web</Link></li>
+                                                    
                                                 </>
                                                 :
                                                 " "
-                                                }
-                                            </>                                           
+                                                }                               
                                         </ul>
                                     </i>                      
                                 </div>

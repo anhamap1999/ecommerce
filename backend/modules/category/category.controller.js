@@ -35,9 +35,9 @@ exports.getCategory = async (req, res, next) => {
 
 exports.addCategory = async (req, res) => {
   try {
-    console.log('co ');
+ 
     const category = new Category(req.body);
-    console.log('co zo day', category);
+   
     const savedCategory = await category.save();
     if (savedCategory) {
       res.status(200).send('successful');

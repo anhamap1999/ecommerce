@@ -57,7 +57,7 @@ const ProductsNike = () => {
                         </Col>         
                     </Row>
                 </ProductContainer>
-                <div className="container">
+                <div className="">
                     <ProductSaleOff>
                         <ProductSaleH2>50% OFF</ProductSaleH2>
                         <ProductSaledes>In Adidas </ProductSaledes>

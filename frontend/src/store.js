@@ -3,7 +3,7 @@ import { productListReducer, productDetailsReducer, productAddReducer, productRe
 import thunk from 'redux-thunk';
 import { cartReducer } from './reducers/cartReducers';
 import Cookie from 'js-cookie';
-import { getFullInfoReducer, userRegisterReducer, userSigninReducer } from './reducers/userReducers';
+import { getFullInfoReducer, getUserInfoAdminReducer, userRegisterReducer, userSigninReducer } from './reducers/userReducers';
 import { categorySaveReducer } from './reducers/categoryReducers';
 import { orderSaveReducer, ordersListReducer } from './reducers/orderReduces';
 import { addRessListReducer } from './reducers/delivery_addressReduce';
@@ -29,6 +29,7 @@ const reducer = combineReducers({
     orderSave : orderSaveReducer,
     odersList :ordersListReducer ,
     listAddress : addRessListReducer,
+    getUserAdmin : getUserInfoAdminReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

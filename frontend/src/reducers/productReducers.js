@@ -12,6 +12,7 @@ import {
   PRODUCT_REMOVE_SUCCESS,
   PRODUCT_REMOVE_FAIL,
 } from '../constants/productConstants';
+
 function productListReducer(state = { products: [] }, action) {
     switch (action.type) {
       case PRODUCT_LIST_REQUEST:

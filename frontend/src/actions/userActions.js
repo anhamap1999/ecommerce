@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookie from 'js-cookie';
-import {CHANGE_PWD_FAIL, CHANGE_PWD_REQUEST, CHANGE_PWD_SUCCESS, GET_FULL_INFO_FAIL, GET_FULL_INFO_REQUEST, GET_FULL_INFO_SUCCESS, UPDATE_INFO_FAIL, UPDATE_INFO_REQUEST, UPDATE_INFO_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS } from '../constants/userConstants';
+import {CHANGE_PWD_FAIL, CHANGE_PWD_REQUEST, CHANGE_PWD_SUCCESS, GET_FULL_INFO_FAIL, GET_FULL_INFO_REQUEST, GET_FULL_INFO_SUCCESS, GET_USER_INFO_ADMIN_FAIL, GET_USER_INFO_ADMIN_REQUEST, GET_USER_INFO_ADMIN_SUCCESS, UPDATE_INFO_FAIL, UPDATE_INFO_REQUEST, UPDATE_INFO_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS } from '../constants/userConstants';
 
 const signin = (userName, password) => async (dispatch) => {
     dispatch({ type: USER_SIGNIN_REQUEST, payload: { userName, password } });
@@ -40,6 +40,23 @@ const signin = (userName, password) => async (dispatch) => {
       Cookie.set('userFullInfo', JSON.stringify(data));
     } catch (error) {
       dispatch({ type: GET_FULL_INFO_FAIL, payload: error.message });
+    }
+  }
+  
+  const getUserInfoAdmin = () => async (dispatch,getState) => {
+
+    
+    try {
+      dispatch({ type: GET_USER_INFO_ADMIN_REQUEST } ); 
+      const { userSignin : { userInfo } } = getState();
+      const { data } = await axios.get("/api/users/admin",{
+        headers:{
+            authorization : 'Bearer ' + userInfo.data.access_token
+        },
+    });
+      dispatch({ type: GET_USER_INFO_ADMIN_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: GET_USER_INFO_ADMIN_FAIL, payload: error.message });
     }
   }
   const register = (phone_number, email, password,confirm_password) => async (dispatch) => {
@@ -85,4 +102,4 @@ const changePwd = (new_password,confirm_new_password) => async( dispatch, getSta
     dispatch({ type: CHANGE_PWD_FAIL, payload: error.message });
   }
 } ;
-export { signin , register, updateInfoUser, getFullInfoUser, changePwd  };
+export { signin ,getUserInfoAdmin, register, updateInfoUser, getFullInfoUser, changePwd  };

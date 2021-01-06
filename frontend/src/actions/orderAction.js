@@ -12,7 +12,7 @@ const getListOrders = () => async (dispatch, getState) =>{
                     authorization : 'Bearer ' + userInfo.token
                 },
             });
-            console.log("alo:",data);
+         
         dispatch( { type : ORDER_LIST_SUCCESS , payload : data }  );
         
         
