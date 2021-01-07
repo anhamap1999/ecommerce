@@ -54,7 +54,7 @@ function DetailsScreen(props) {
                     </select>
               </div>
               
-              <Link to={'/cart/'+product._id +'?qty='+qty}><button>Add To Cart</button></Link>
+              {product && product.data && <Link to={`/cart/${product.data._id}?qty=${qty}`}><button>Thêm vào giỏ</button></Link>}
             </div>
           </div>
       </div>}

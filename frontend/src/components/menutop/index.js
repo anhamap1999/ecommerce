@@ -1,9 +1,11 @@
 import React  from 'react';
 import { NavbarHeader, NavbarLi, NavbarLink, NavbarLogin, NavbarLogo, NavbarMenu, NavbarShop,  NavbarUl } from './navbarMenu';
 import {Col , Row } from 'antd';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { useEffect } from 'react';
+import { getCatogoryAll } from '../../actions/categoryAction';
 window.onscroll = () =>{
     const nav =document.getElementById('header')
     const pro =document.getElementById('product')
@@ -28,46 +30,75 @@ window.onscroll = () =>{
 const NavbarTop = () => {
     const logout = (e) => {
         e.preventDefault();
-        Cookies.remove('userInfo')
-        Cookies.remove('userFulInfo')
+        localStorage.clear('userInfo')
         window.location.href = '/';
     }
     
     const userSignin = useSelector((state) => state.userSignin);
     const { userInfo ,loading,error } = userSignin;
+
+    const listCategories = useSelector((state) => state.listCategories);
+    const { categories ,loadingCat,errorCat } = listCategories;
    
-    
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getCatogoryAll())
+        
+        return () => { 
+        }
+    }, [])
+   
     return <>
         <NavbarHeader className="navbarheader" id="header">
             <div className="container">
                 <Row>
                     <Col md={{span:3}}>
-                        <NavbarLogo ><NavbarLink to='/'>Home</NavbarLink></NavbarLogo>
+                        <NavbarLogo ><NavbarLink to='/'>Shoes</NavbarLink></NavbarLogo>
                     </Col>
-                    <Col md={{span:6}}>    
+                    <Col md={{span:8}}>    
                         <NavbarMenu>
                             <NavbarUl >
         
+                                
                                 <NavbarLi>
-                                    <NavbarLink  to='/'>Service</NavbarLink>
+                                    <NavbarLink className='cool-link' to='/products'>Giày nam</NavbarLink>
                                 </NavbarLi>
                                 <NavbarLi>
-                                    <NavbarLink  to='/products'>Shop</NavbarLink>
+                                    <NavbarLink className='cool-link' to='/products'>Giày nữ</NavbarLink>
+                                </NavbarLi>
+                                <NavbarLi >
+                                    <div className="other-custom">
+                                        <p className='cool-link'>khác
+                                        <ul>
+                                           
+                                            {
+                                                categories && categories.data && categories.data.map(category=>
+                                                <li>
+                                                    <Link to={category.name}>{category.name}</Link>
+                                                </li>
+                                                )
+                                            }
+                                        </ul>
+                                        </p>
+                                        
+                                    </div>
+                                   
                                 </NavbarLi>
                                 
                             </NavbarUl>
                         </NavbarMenu>
                     </Col>    
-                    <Col  md={{span:15}}>
+                    <Col  md={{span:13}}>
                         <NavbarShop >
                            <Link to="/cart" > <i className="bx bx-shopping-bag"></i></Link>
                         </NavbarShop>
                         <NavbarLogin to={ userInfo ? "/profile/user" : "/signin"}>
                             {   
                                 
-                                userInfo ?
+                                userInfo  ?
                                 <div className="userInfo">
-                                    <i>{userInfo.data.user.email}
+                                    <i>{   userInfo.data.user.email}
                                         <ul>
                                             <li onClick={logout}>Sign Out</li>
                                             <li> <Link to="/profile/user">Profile</Link> </li>

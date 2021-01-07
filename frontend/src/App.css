@@ -13,10 +13,62 @@ a:hover {
  
 }
 
-element.style {
-}
 .maine{
   position: relative;
+}
+.cool-link::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #000;
+  transition: width .3s;
+}
+
+.cool-link:hover::after {
+  width: 100%;
+}
+.other-custom p:hover ul{
+  display: block !important;
+  background:  rgba(138,138,138,.9);
+  width: 200px;
+  position: absolute;
+  top: 60px;
+  
+}
+.other-custom{
+  width: 100%;
+  height: 100%;
+}
+.other-custom p{
+  padding: 0;
+  margin: 0px;
+  padding-bottom: 20.5px;
+  transition: border 1s;
+ 
+}
+.other-custom  ul {
+ display: none;
+ transition: ease-in-out;
+}
+i.bx.bxs-home {
+  font-size: 35px;
+  padding-top: 7px;
+}
+.other-custom li {
+  padding: 10px;
+ 
+  border-bottom: 1.5px solid #ccc;
+}
+.other-custom li:hover {
+background-color: #141414;
+
+}
+.other-custom li:hover a{
+  color: #ccc !important;
+}
+.other-custom li a{
+  font-size: 16px;
 }
 .ab-right {
   top: 5px;

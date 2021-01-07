@@ -15,11 +15,17 @@ const CustomerAdminScreen = (props) => {
        }
    }, []);
     return <DashboardScreen > 
-            <div className="maine">Khách hàng</div>
-            { loading ?<div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div> :
-                           error ? <div className="">loading</div> :
+            <div className="maine">
+            <h3>
+            Khách hàng
+            </h3>
+        
+        </div>
+            { 
+            loading ?   <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only"></span>
+                         </div> :
+            error ? <div className="">{error}</div> :
             <CustomerAdminInfo usersData ={ users.data } />
             }
         </DashboardScreen>     

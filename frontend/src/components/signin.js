@@ -22,7 +22,7 @@ function SigninScreen(props) {
         return () => {
         };
     }, [userInfo]);
-    
+   
     const submitHandler = (e) => { 
         e.preventDefault();
         dispatch(signin(userName,password));

@@ -1,5 +1,16 @@
 import axios from 'axios';
-import {CATEGORY_SAVE_FAIL, CATEGORY_SAVE_REQUEST, CATEGORY_SAVE_SUCCESS} from '../constants/categoryConstants'
+import {CATEGORY_SAVE_FAIL, CATEGORY_SAVE_REQUEST, CATEGORY_SAVE_SUCCESS, GET_CATEGORY_ALL_FAIL, GET_CATEGORY_ALL_REQUEST, GET_CATEGORY_ALL_SUCCESS} from '../constants/categoryConstants'
+
+const getCatogoryAll = () => async (dispatch) =>{
+    try {
+            dispatch( { type : GET_CATEGORY_ALL_REQUEST }  );
+            const { data } = await axios.get('/api/categories');
+           
+            dispatch( { type : GET_CATEGORY_ALL_SUCCESS , payload : data }  );
+    } catch (error) {
+        dispatch( { type : GET_CATEGORY_ALL_FAIL , payload : error.message }  );
+    }
+}
 
 const saveCategory = (category) => async (dispatch, getState) =>{
     try {
@@ -18,4 +29,4 @@ const saveCategory = (category) => async (dispatch, getState) =>{
         dispatch( { type : CATEGORY_SAVE_FAIL , payload : error.message }  );
     }
 }
-export {saveCategory};
+export {saveCategory,getCatogoryAll};

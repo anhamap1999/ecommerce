@@ -54,6 +54,7 @@ exports.updateUserValidator = async (req, res, next) => {
 
 exports.getUsersValidator = async (req, res, next) => {
   try {
+    
     const schema = Joi.object().keys({
       status: Joi.string()
         .optional()
@@ -64,6 +65,7 @@ exports.getUsersValidator = async (req, res, next) => {
       page: Joi.number().optional(),
       sort: Joi.string().optional(),
     });
+  
     const result = await validate(req.query, schema);
     req.query = result;
     next();
