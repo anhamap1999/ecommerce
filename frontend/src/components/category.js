@@ -16,9 +16,7 @@ function AddCategoryScreen(props) {
     }, []);
     const submitHandler = (e) =>{
         e.preventDefault();
-        dispatch(saveCategory({
-            categoryName 
-        }))
+       
     }
   return <HomePage>
       <div className="container">

@@ -24,8 +24,7 @@ export const NavbarLogo = styled.div`
 
 `;
 export const NavbarMenu = styled.nav`
-    position: absolute;
-    right: 20px;
+  
 `;
 export const NavbarUl = styled.ul`
     display:flex;

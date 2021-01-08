@@ -38,8 +38,8 @@ const NavbarTop = () => {
     const { userInfo ,loading,error } = userSignin;
 
     const listCategories = useSelector((state) => state.listCategories);
-    const { categories ,loadingCat,errorCat } = listCategories;
-   
+    const { categories ,loadingCat , errorCat } = listCategories;
+    console.log("cate",categories);
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -56,19 +56,31 @@ const NavbarTop = () => {
                     <Col md={{span:3}}>
                         <NavbarLogo ><NavbarLink to='/'>Shoes</NavbarLink></NavbarLogo>
                     </Col>
-                    <Col md={{span:8}}>    
+                   
+                    <Col md={{span:12}}>    
                         <NavbarMenu>
                             <NavbarUl >
-        
-                                
-                                <NavbarLi>
-                                    <NavbarLink className='cool-link' to='/products'>Giày nam</NavbarLink>
+                            {
+                                categories && categories.data && categories.data.map(category   =>
+                                    category.type == 1 &&
+                                 <NavbarLi className="other-custom">
+                                     <Link to={category.name} className='cool-link'>{category.name}
+                                     
+                                     </Link>
+                                     {/* <ul>   
+                                            {
+                                                categories && categories.data && categories.data.map(categoryEle=>
+                                                    categoryEle.type = 2 && categoryEle.parent_id == category._id &&
+                                                <li>
+                                                    <Link to={categoryEle.name}>{categoryEle.name}</Link>
+                                                </li>
+                                                )
+                                            }
+                                    </ul> */}
                                 </NavbarLi>
-                                <NavbarLi>
-                                    <NavbarLink className='cool-link' to='/products'>Giày nữ</NavbarLink>
-                                </NavbarLi>
-                                <NavbarLi >
-                                    <div className="other-custom">
+                                     )
+                                }
+                                    {/* <div className="other-custom">
                                         <p className='cool-link'>khác
                                         <ul>
                                            
@@ -82,14 +94,13 @@ const NavbarTop = () => {
                                         </ul>
                                         </p>
                                         
-                                    </div>
-                                   
-                                </NavbarLi>
+                                    </div> */}
+                                  
                                 
                             </NavbarUl>
                         </NavbarMenu>
                     </Col>    
-                    <Col  md={{span:13}}>
+                    <Col  md={{span:9}}>
                         <NavbarShop >
                            <Link to="/cart" > <i className="bx bx-shopping-bag"></i></Link>
                         </NavbarShop>

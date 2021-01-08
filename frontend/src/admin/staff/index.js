@@ -6,6 +6,9 @@ import DashboardScreen from '../dashboard';
 const StaffAdminScreen= (props) => {
    const getUserAdmin = useSelector(state => state.getUserAdmin)
    const { users ,loading , error } = getUserAdmin;
+   const userSignin = useSelector((state) => state.userSignin);
+   const { userInfo} = userSignin;
+
    const dispatch = useDispatch()
    useEffect(() => {
        dispatch(getUserInfoAdmin())
@@ -27,7 +30,7 @@ const StaffAdminScreen= (props) => {
                                 <span class="sr-only"></span>
                              </div> :
                 error ? <div className="">{error}</div> :
-                <div className="list-product-add  " >
+                userInfo && userInfo.data && userInfo.data.user.role == 'admin' ? <div className="list-product-add  " >
                 <table class="table">
                     <thead>
                         <tr>
@@ -64,7 +67,8 @@ const StaffAdminScreen= (props) => {
                     </tbody>
                     </table>
       </div> 
-   
+        :
+        <div> bạn không có quyền truy cập vào trang này</div>
                
                 }
            
