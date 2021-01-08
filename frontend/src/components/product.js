@@ -4,25 +4,31 @@ import { Link } from 'react-router-dom';
 import { listProducts } from '../actions/productActions';
 import axios from 'axios';
 import HomePage from '../pages/homepage';
-
+import {  Pagination  } from 'antd';
 
 function ProductScreen(props) {
 
   const productList = useSelector( state => state.productList);
   const  { products,loading,error } = productList;
   const dispatch = useDispatch();
-
+  
+  const {page} ={}
+  const onPaginationChange =(page) =>{
+      dispatch(listProducts(page));
+  }
   useEffect(() => {
-    dispatch(listProducts());
+    dispatch(listProducts(0));
     return () => {
     };
   }, []);
   console.log("products",products)
   return <HomePage>
       {
-        loading ?  <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div> :
+        loading ?  <div class="container">
+              <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+        </div> :
         error ? <div>{error}</div>:
         <ul className="container">
           <div className="row">
@@ -44,7 +50,16 @@ function ProductScreen(props) {
                 </li>
               </div>
             )
-          }
+          }{    products && products.data &&
+           <div className="container">
+              <Pagination  current={page}
+                              total={products.total}
+                              pageSize={2}
+                              pageSizeOptions={[10,20,30]}
+                              onChange={onPaginationChange}
+                        />
+           </div>
+        }
           </div>
         </ul>
       }

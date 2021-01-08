@@ -20,7 +20,7 @@ export default function ProfileUserScreen(props) {
 
     const getFullInfo = useSelector((state )=>  state.getFullInfo)
     const { userFullInfo, loading ,error } = getFullInfo;
-    console.log("userFullInfo",userFullInfo)
+  
     useEffect(() => {
         dispatch(getFullInfoUser());
         return () => {  

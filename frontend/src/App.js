@@ -24,6 +24,8 @@ import DashboardScreen from './admin/dashboard';
 import CustomerAdminScreen from './admin/customer';
 import ProductAdminScreen from './admin/product';
 import OrderAdminScreen from './admin/order';
+import StaffAdminScreen from './admin/staff';
+import CategoryAdminScreen from './admin/category';
 function App() {
   
   return (
@@ -49,6 +51,8 @@ function App() {
       <Route path="/admin/customer" component={CustomerAdminScreen} />   
       <Route path="/admin/products" component={ProductAdminScreen} />   
       <Route path="/admin/orders" component={OrderAdminScreen} />
+      <Route path="/admin/staff" component={StaffAdminScreen} />
+      <Route path="/admin/category" component={CategoryAdminScreen} />
     </BrowserRouter>
   );
 }

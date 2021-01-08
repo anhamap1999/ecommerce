@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {Link} from 'react-router-dom';
 import { addProduct, listProducts, removeProductID } from '../../actions/productActions';
 import DashboardScreen from '../dashboard';
+import {  Pagination  } from 'antd';
 const ProductAdminScreen = (props) => {
     const [openmodalVisible, setModalVisible] = useState(false);
     const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [color, setColor] = useState('');
     const [brand, setBrand] = useState('');
-    const [images, setImages] = useState({});
+    const [images, setImages] = useState(null);
     const [thumbnail, setThumbnail] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
@@ -21,18 +22,26 @@ const ProductAdminScreen = (props) => {
     const createProduct = useSelector(state =>state.createProduct);
     const {  loading:loadingadd , success: successful , error: erroradd  } = createProduct;
     const dispatch =useDispatch();
-
+    
+    const {page,total} ={}
+    const onPaginationChange =(page) =>{
+        dispatch(listProducts(page));
+    }
+    useEffect(() => {
+        dispatch(listProducts(0));
+        return () => { 
+        }
+    }, [])
     const removeProduct = useSelector(state =>state.removeProduct);
     const {  loading:loadingdelete , success: successdelete , error: errordelete  } = removeProduct;
     useEffect(() => {
         if(successful){
             setModalVisible(false);
         }
-        dispatch(listProducts());
-      
         return () => {
         };
     }, [successful,successdelete]);
+    
     const openModal = (product) => {
         setModalVisible(true);
         setId(product._id);
@@ -57,7 +66,7 @@ const ProductAdminScreen = (props) => {
             <h3>
             Sản Phẩm
             </h3>
-        <button className="btn btn-light ab-right" onClick={ () => openModal({})}>Thêm Sản Phẩm</button>
+        <button className="btn btn-danger ab-right" onClick={ () => openModal({})}>Thêm Sản Phẩm</button>
         </div>
       
       <div className="row">
@@ -81,7 +90,14 @@ const ProductAdminScreen = (props) => {
                         <label htmlFor="images">
                             Ảnh
                         </label>
-                        <input class="form-control" type="text" name="images" value={images} id="images" onChange={(e) => setImages(e.target.value)} ></input>
+                        <input  class="form-control" 
+                                type="file" 
+                                name="images" 
+                                value={images} 
+                                id="images" 
+                                onChange={(e) => setImages(e.target.files[0])} >
+                                    {console.log("anh",images)}
+                        </input>
                     </li>
                    
                     <li>
@@ -133,7 +149,7 @@ const ProductAdminScreen = (props) => {
                     </li>
                     
                     <li>
-                    <button className="btn btn-primary" type="submit" >{ id ? "Cập nhật" : "Thêm sản phẩm"}</button>
+                    <button className="btn btn-danger" type="submit" >{ id ? "Cập nhật" : "Thêm sản phẩm"}</button>
                     </li>
                 </ul>
             </form>
@@ -159,6 +175,7 @@ const ProductAdminScreen = (props) => {
                            error ? <div className="">loading</div> :
                            products && products.data && products.data.map((product) =>
                                 (
+                                    <>
                                     <tr key = {product._id}>
                                         <td>{product.name}</td>
                                         <td>{product.brand}</td>
@@ -166,13 +183,23 @@ const ProductAdminScreen = (props) => {
                                         <td>{product.price}</td>
                                         <td>{product.status}</td>
                                         <td>
-                                            <button className="btn btn-danger" onClick={ () => openModal(product) }>Sữa</button>
+                                            <button className="btn btn-success" onClick={ () => openModal(product) }>Sửa</button>
                                             <button className="btn btn-dark"  onClick={ () => deleteproduct(product) }>Xóa</button>
                                         </td>
                                     </tr>
+                                 
+                                    </>
                                 )
                             )
                         }
+                           {    products && products.data &&
+                               <Pagination  current={page}
+                                    total={products.total}
+                                    pageSize={2}
+                                    pageSizeOptions={[10,20,30]}
+                                    onChange={onPaginationChange}
+                              />
+                           }
                     </tbody>
                     </table>
       </div> 

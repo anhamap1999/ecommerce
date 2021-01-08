@@ -57,7 +57,7 @@ function CreateProductScreen(props) {
           openmodalVisible &&
           (<div className="create-form col-md-5">
             <form className="rounded border" onSubmit={submitHandler}>
-                <h1>{id ? "Update" : "Add"}</h1><span onClick={()=>setModalVisible(false)}> close</span>
+                <h1>{ id ? "Update" : "Add"}</h1><span onClick={()=>setModalVisible(false)}> close</span>
                 <ul className="form-container">
                     <li>
                         {loadingadd && <div>Loading...</div>}
@@ -130,7 +130,7 @@ function CreateProductScreen(props) {
                                         <td>{product.stock}</td>
                                         <td>
                                             <button className="btn btn-danger" onClick={ () => openModal(product) }>Edit</button>
-                                            <button className="btn btn-dark"  onClick={ () => deleteproduct(product) }>Delete</button>
+                                            <button className="btn btn-dark"  onClick={      deleteproduct(product) }>Delete</button>
                                         </td>
                                     </tr>
                                 )

@@ -61,7 +61,6 @@ const { addressList ,loading ,error} = listAddress;
     }))
     setIsModalVisible(false);
   }
-  console.log(full_name,phone_number,province_number,district_number,ward_number,text)
   return <ProfileScreen >  
     <div className="" style={{marginTop : '20px'}}>
       <div className="header__title">

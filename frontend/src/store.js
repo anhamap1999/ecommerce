@@ -3,18 +3,17 @@ import { productListReducer, productDetailsReducer, productAddReducer, productRe
 import thunk from 'redux-thunk';
 import { cartReducer } from './reducers/cartReducers';
 import Cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 import { getFullInfoReducer, getUserInfoAdminReducer, userRegisterReducer, userSigninReducer } from './reducers/userReducers';
-import { categorySaveReducer } from './reducers/categoryReducers';
+import { categorySaveReducer, getListCategoriesReducer } from './reducers/categoryReducers';
 import { orderSaveReducer, ordersListReducer } from './reducers/orderReduces';
 import { addRessListReducer } from './reducers/delivery_addressReduce';
 
-const cartItems = Cookie.getJSON("cartItems") || [];
-const userInfo = Cookie.getJSON('userInfo') || null;
-const userFullInfo = Cookie.getJSON('userFullInfo') || null;
+const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [] ;
+const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
 const initialState = {  cart : { cartItems },
                         shipping: {}, payment: {},
                         userSignin : { userInfo },
-                        getFullInfo : { userFullInfo },
                       } ;
 const reducer = combineReducers({
     productList : productListReducer,
@@ -30,6 +29,7 @@ const reducer = combineReducers({
     odersList :ordersListReducer ,
     listAddress : addRessListReducer,
     getUserAdmin : getUserInfoAdminReducer,
+    listCategories : getListCategoriesReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

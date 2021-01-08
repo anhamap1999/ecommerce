@@ -18,18 +18,18 @@ const CustomerAdminInfo = ( {usersData})  => {
                        {
                            usersData &&  usersData.map(
                                user => <tr>
-                                <td>{user.full_name ? user.full_name : 
+                                <th scope="col">{user.full_name ? user.full_name : 
                                     <p className="text-primary">
                                     chưa cập nhật   
                                     </p>}
-                                </td>
-                                <td>{user.role}</td>
-                                <td>{user.phone_number}</td>
-                                <td>{user.email}</td>
-                                <td>{user.status}</td>
-                                <td>
+                                </th>
+                                <th scope="col">{user.role}</th>
+                                <th scope="col">{user.phone_number}</th>
+                                <th scope="col">{user.email}</th>
+                                <th scope="col">{user.status}</th>
+                                <th scope="col">
                                     <button className="btn btn-danger" >Sửa</button>
-                                </td>
+                                </th>
                                </tr>
                             )
                        }

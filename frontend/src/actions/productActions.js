@@ -8,12 +8,12 @@ import {
     PRODUCT_DETAILS_SUCCESS,PRODUCT_DETAILS_FAIL, PRODUCT_ADD_REQUEST, PRODUCT_ADD_SUCCESS, PRODUCT_ADD_FAIL, PRODUCT_REMOVE_SUCCESS, PRODUCT_REMOVE_FAIL
   } from '../constants/productConstants';
 import axios from 'axios';
-const listProducts = ( ) => async ( dispatch  ) =>{
+const listProducts = ( numberPage ) => async ( dispatch  ) =>{
 
     try {
       
         dispatch( { type : PRODUCT_LIST_REQUEST } );
-        const {data } = await axios.get("http://localhost:5000/api/products")
+        const {data } = await axios.get(`/api/products?page=${numberPage}`)
         dispatch( { type : PRODUCT_LIST_SUCCESS , payload : data} );
 
     } catch (error) {

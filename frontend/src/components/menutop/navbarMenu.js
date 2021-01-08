@@ -24,20 +24,22 @@ export const NavbarLogo = styled.div`
 
 `;
 export const NavbarMenu = styled.nav`
-    position: absolute;
-    right: 20px;
+  
 `;
 export const NavbarUl = styled.ul`
     display:flex;
  
  `;
 export const NavbarLi = styled.li`
-    padding: 0 25px;
-    font-size: 26px;
-    line-height: 55px;
+    padding: 10px 20px 0 20px;
+    font-size: 18px;
 `;
 export const NavbarLink = styled(Link)``;
 
-export const NavbarShop= styled(Link)`
+export const NavbarShop= styled.div`
+ 
 `;
-export const NavbarLogin = styled(Link)``;
+export const NavbarLogin = styled(Link)`
+    position: absolute;
+    right: 75px;
+`;

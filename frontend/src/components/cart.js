@@ -29,7 +29,9 @@ function CartScreen(props) {
         <div className="row">
                 <div className="col-md-8 col-12">
                    {cartItems.length == 0 ?
-                   <div>your cart empty</div> :
+                   <div>
+                     <h3>giỏ hàng của bạn đang rỗng ...</h3>
+                   </div> :
                    cartItems.map( item =>
                     <div className="row yourcart">
                         <div className="col-md-4">
