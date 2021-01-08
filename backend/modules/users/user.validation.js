@@ -71,3 +71,16 @@ exports.getUsersValidator = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.updateStatusUserValidator = async (req, res, next) => {
+  try {
+    const schema = Joi.object().keys({
+      status: Joi.string().required().valid('active', 'disabled'),
+    });
+    const result = await validate(req.body, schema);
+    req.body = result;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};

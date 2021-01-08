@@ -89,7 +89,8 @@ exports.getProducts = async (req, res, next) => {
             .addField('data', result.docs)
             .addField('total_page', result.totalPages)
             .addField('page', result.page)
-            .addField('total', result.totalDocs);
+            .addField('total', result.docs);
+            // res.io.emit('get products', result);
         } else {
           success.addField('dataaa',  result.docs);
         }
@@ -97,6 +98,8 @@ exports.getProducts = async (req, res, next) => {
       .catch((error) => {
         next(error);
       });
+//       res.setHeader("Access-Control-Allow-Origin", "*");
+// res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.status(200).send(success);
   } catch (error) {
     next(error);

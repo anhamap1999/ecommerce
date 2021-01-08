@@ -38,7 +38,7 @@ const CategorySchema = new schema({
   created_at: { type: Date, default: Date.now(), required: true },
   updated_at: { type: Date, required: false },
   created_by: { type: String, required: false },
-  updated_at: { type: String, required: false },
+  updated_by: { type: String, required: false },
 });
 CategorySchema.plugin(paginate);
 const categoryModel = mongoose.model('Category', CategorySchema);

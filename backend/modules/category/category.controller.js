@@ -106,6 +106,7 @@ exports.createCategory = async (req, res, next) => {
           messages: { category: 'category type is less than parent category type' },
         });
       }
+      category.parent_id = parent_id;
     }
     category.created_by = req.user._id;
     const result = await category.save();
@@ -300,9 +301,10 @@ exports.getCategories = async (req, res, next) => {
     const categories = await Category.find({ status: 'active' })
       .select(select ? select : '')
       .sort(sort ? sort : 'name');
-    for (const [index, item] of categories.entries()) {
-
-    }
+    const result = await Category.populate(categories, [{ path: 'parent_id' }]);
+    // for (const [index, item] of categories.entries()) {
+    
+    // }
     // for (const [index, item] of categories.entries()) {
     //   if (item.parent_id) {
     //     const parent_category = await Category.findById(item.parent_id).select(
@@ -320,7 +322,7 @@ exports.getCategories = async (req, res, next) => {
     // }
     
     // console.log('CATEGORY', categories)
-    const success = new Success({ data: categories });
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -329,29 +331,13 @@ exports.getCategories = async (req, res, next) => {
 
 exports.getCategoriesByAdmin = async (req, res, next) => {
   try {
-    const { select, sort, page, limit, ...query } = req.query;
-    const options = {
-      select: select ? select : '',
-      sort: sort ? sort : '-created_at',
-      page: page && page >= 1 ? page : 1,
-      limit: limit && limit >= 10 ? limit : 10,
-    };
-    const success = new Success({});
-    await Category.paginate(query, options)
-      .then((result) => {
-        if (result.totalDocs && result.totalDocs > 0) {
-          success
-            .addField('data', result.docs)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
-        } else {
-          success.addField('data', []);
-        }
-      })
-      .catch((error) => {
-        next(error);
-      });
+    const { select, sort } = req.query;
+
+    const categories = await Category.find()
+      .select(select ? select : '')
+      .sort(sort ? sort : 'name');
+    const result = await Category.populate(categories, [{ path: 'parent_id' }]);
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);

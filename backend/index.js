@@ -3,7 +3,6 @@
 
 // admin.initializeApp();
 
-
 const express = require('express');
 const dotenv = require('dotenv');
 const config = require('./commons/config');
@@ -21,6 +20,7 @@ const bankAccountRouter = require('./modules/bank_account/bank_account.router');
 const commentRouter = require('./modules/comment/comment.router');
 const banksRouter = require('./modules/banks/banks.router');
 const adminRouter = require('./modules/admin/admin.router');
+const cors = require('cors');
 
 // import dotenv from 'dotenv';
 // import config from './config';
@@ -38,16 +38,13 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   })
   .then(console.log('connected!'))
   .catch((error) => console.log(error.reason));
 
-
-
-
 const app = express();
-
+app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -57,25 +54,40 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(bodyParser.json());
-app.use('/api/auth', authRouter);
-app.use("/api/categories", categoryRouter);
-// app.use("/api/orders",orderRouter);
-app.use("/api/users", userRouter);
-app.use("/api/products",productRouter);
-app.use("/api/address", addressRouter);
-app.use("/api/delivery-address", deliveryAddressRouter);
-app.use("/api/config", configRouter);
-app.use("/api/search", searchRouter);
-app.use("/api/bank-account", bankAccountRouter);
-app.use("/api/comment", commentRouter);
-app.use("/api/banks", banksRouter);
-app.use("/api/admin", adminRouter);
-function test() {
-  console.log('testing');
-}
-app.get("/test", test);
 
-app.listen(5000, () => {
+const http = require('http').Server(app);
+
+// const io = require('socket.io')(http, {
+//   log: false,
+//   agent: false,
+//   origins: '*:*',
+//   transports: ['websocket', 'polling'],
+// });
+
+// io.on('connection', (socket) => {
+//   // socket.on('chat message', msg => {
+//   //   io.emit('chat message', msg);
+//   // });
+// });
+
+// app.use((req, res, next) => {
+//   res.io = io;
+//   next();
+// });
+app.use('/api/auth', authRouter);
+app.use('/api/categories', categoryRouter);
+// app.use("/api/orders",orderRouter);
+app.use('/api/users', userRouter);
+app.use('/api/products', productRouter);
+app.use('/api/address', addressRouter);
+app.use('/api/delivery-address', deliveryAddressRouter);
+app.use('/api/config', configRouter);
+app.use('/api/search', searchRouter);
+app.use('/api/bank-account', bankAccountRouter);
+app.use('/api/comment', commentRouter);
+app.use('/api/banks', banksRouter);
+app.use('/api/admin', adminRouter);
+http.listen(5000, () => {
   console.log('server is running : 5000   ');
 });
 

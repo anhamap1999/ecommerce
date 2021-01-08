@@ -165,3 +165,22 @@ exports.getUsers = async (req, res, next) => {
     next(error);
   }
 }
+
+exports.updateStatusUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      throw new Error({
+        statusCode: 400,
+        message: 'user.notFound',        
+        messages: { user: 'user not found' },
+      });
+    }
+    user.status = req.body.status;
+    await User.findByIdAndUpdate(req.params.id, user);
+    const success = new Success({ data: user });
+    res.status(200).send(success);
+  } catch (error) {
+    next(error);
+  }
+}
