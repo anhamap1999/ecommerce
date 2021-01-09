@@ -3,6 +3,7 @@ const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
 const utils = require('../../commons/utils');
 const Product = require('../products/product.model');
+const Notification = require('../notification/notification.model');
 
 exports.getComments = async (req, res, next) => {
   try {
@@ -102,7 +103,7 @@ exports.createComment = async (req, res, next) => {
       for: 'staff',
     });
     const createdNotification = await notification.save();
-    req.io.emit('staff_notification', createdNotification);
+    res.io.emit('staff_notification', createdNotification);
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {

@@ -161,7 +161,7 @@ exports.saveOrder = async (req, res) => {
       onModel: 'Order',
     });
     const created_notification_for_customer = await notification_for_customer.save();
-    req.io.emit(req.user._id, created_notification_for_customer);
+    res.io.emit(req.user._id, created_notification_for_customer);
 
     const notification_for_staff = new Notification({
       user_id: req.user._id,
@@ -173,7 +173,7 @@ exports.saveOrder = async (req, res) => {
       for: 'staff',
     });
     const created_notification_for_staff = await notification_for_staff.save();
-    req.io.emit('staff_notification', created_notification_for_staff);
+    res.io.emit('staff_notification', created_notification_for_staff);
 
     const success = new Success({ data: newOrderCreated });
     res.status(200).send(success);
@@ -220,7 +220,7 @@ exports.updateOrderByAdmin = async (req, res) => {
           onModel: 'Order',
         });
         const created_notification = await notification.save();
-        req.io.emit(order.created_by._id, created_notification);
+        res.io.emit(order.created_by._id, created_notification);
         break;
       }
       case 'delivering': {
@@ -282,7 +282,7 @@ exports.updateOrderByAdmin = async (req, res) => {
           onModel: 'Order',
         });
         const created_notification = await notification.save();
-        req.io.emit(order.created_by._id, created_notification);
+        res.io.emit(order.created_by._id, created_notification);
         order.status = 'delivering';
         order.progress.push({
           status: 'delivering',
@@ -319,7 +319,7 @@ exports.updateOrderByAdmin = async (req, res) => {
           onModel: 'Order',
         });
         const created_notification = await notification.save();
-        req.io.emit(order.created_by._id, created_notification);
+        res.io.emit(order.created_by._id, created_notification);
         break;
       }
       case 'shop_cancel': {
@@ -345,7 +345,7 @@ exports.updateOrderByAdmin = async (req, res) => {
           onModel: 'Order',
         });
         const created_notification = await notification.save();
-        req.io.emit(order.created_by._id, created_notification);
+        res.io.emit(order.created_by._id, created_notification);
         break;
       }
       case 'lost_damage': {
@@ -371,7 +371,7 @@ exports.updateOrderByAdmin = async (req, res) => {
           onModel: 'Order',
         });
         const created_notification = await notification.save();
-        req.io.emit(order.created_by._id, created_notification);
+        res.io.emit(order.created_by._id, created_notification);
         break;
       }
       default:
@@ -426,7 +426,7 @@ exports.updateOrder = async (req, res) => {
           onModel: 'Order',
         });
         const created_notification = await notification.save();
-        req.io.emit(order.created_by._id, created_notification);
+        res.io.emit(order.created_by._id, created_notification);
         break;
       }
       case 'user_cancel': {
@@ -452,7 +452,7 @@ exports.updateOrder = async (req, res) => {
           onModel: 'Order',
         });
         const created_notification = await notification.save();
-        req.io.emit(order.created_by._id, created_notification);
+        res.io.emit(order.created_by._id, created_notification);
         break;
       }
       default:
