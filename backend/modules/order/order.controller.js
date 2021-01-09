@@ -204,6 +204,9 @@ exports.updateOrderByAdmin = async (req, res) => {
           });
         }
         order.status = 'picking';
+        order.progress.push({
+          status: 'picking',
+        });
         const notification = new Notification({
           user_id: order.created_by._id,
           type: 'order_update_picking',
@@ -270,6 +273,9 @@ exports.updateOrderByAdmin = async (req, res) => {
         const created_notification = await notification.save();
         req.io.emit(order.created_by._id, created_notification);
         order.status = 'delivering';
+        order.progress.push({
+          status: 'delivering',
+        });
         break;
       }
       case 'delivered': {
@@ -290,59 +296,14 @@ exports.updateOrderByAdmin = async (req, res) => {
         order.is_delivered = true;
         order.delivered_at = Date.now();
         order.status = 'delivered';
+        order.progress.push({
+          status: 'delivered',
+        });
         const notification = new Notification({
           user_id: order.created_by._id,
           type: 'order_update_delivered',
           title: 'Đơn hàng',
           message: `Đơn hàng đã được giao thành công. Vui lòng xác nhận hoàn tất đơn hàng.`,
-          object_id: order._id,
-          onModel: 'Order',
-        });
-        const created_notification = await notification.save();
-        req.io.emit(order.created_by._id, created_notification);
-        break;
-      }
-      case 'completed': {
-        //user
-        if (order.status !== 'delivered') {
-          throw new Error({
-            statusCode: 404,
-            message: 'order.canBeCompleted',
-            messages: {
-              order: 'only delivered order can be changed into completed',
-            },
-          });
-        }
-        order.status = 'completed';
-        const notification = new Notification({
-          user_id: order.created_by._id,
-          type: 'order_update_completed',
-          title: 'Đơn hàng',
-          message: `Đơn hàng đã được hoàn tất.`,
-          object_id: order._id,
-          onModel: 'Order',
-        });
-        const created_notification = await notification.save();
-        req.io.emit(order.created_by._id, created_notification);
-        break;
-      }
-      case 'user_cancel': {
-        //user
-        if (order.status !== 'handling') {
-          throw new Error({
-            statusCode: 404,
-            message: 'order.canBeCancel',
-            messages: {
-              order: 'only handling order can be changed into user_cancel',
-            },
-          });
-        }
-        order.status = 'user_cancel';
-        const notification = new Notification({
-          user_id: order.created_by._id,
-          type: 'order_update_user_cancel',
-          title: 'Đơn hàng',
-          message: `Bạn đã hủy đơn hàng.`,
           object_id: order._id,
           onModel: 'Order',
         });
@@ -361,6 +322,9 @@ exports.updateOrderByAdmin = async (req, res) => {
           });
         }
         order.status = 'shop_cancel';
+        order.progress.push({
+          status: 'shop_cancel',
+        });
         const notification = new Notification({
           user_id: order.created_by._id,
           type: 'order_update_shop_cancel',
@@ -384,6 +348,9 @@ exports.updateOrderByAdmin = async (req, res) => {
           });
         }
         order.status = 'lost_damage';
+        order.progress.push({
+          status: 'lost_damage',
+        });
         const notification = new Notification({
           user_id: order.created_by._id,
           type: 'order_update_lost_damage',
@@ -400,7 +367,6 @@ exports.updateOrderByAdmin = async (req, res) => {
         break;
     }
 
-    
     order.updated_at = Date.now();
     order.updated_by = req.user._id;
     await Order.findByIdAndUpdate(req.params.id, order);
@@ -437,6 +403,9 @@ exports.updateOrder = async (req, res) => {
           });
         }
         order.status = 'completed';
+        order.progress.push({
+          status: 'completed',
+        });
         const notification = new Notification({
           user_id: order.created_by._id,
           type: 'order_update_completed',
@@ -460,6 +429,9 @@ exports.updateOrder = async (req, res) => {
           });
         }
         order.status = 'user_cancel';
+        order.progress.push({
+          status: 'user_cancel',
+        });
         const notification = new Notification({
           user_id: order.created_by._id,
           type: 'order_update_user_cancel',
@@ -476,7 +448,6 @@ exports.updateOrder = async (req, res) => {
         break;
     }
 
-    
     order.updated_at = Date.now();
     order.updated_by = req.user._id;
     await Order.findByIdAndUpdate(req.params.id, order);

@@ -30,9 +30,8 @@ const progressSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    default: 'handling',
+    default: 'picking',
     enum: [
-      'handling',
       'picking',
       'delivering',
       'delivered',

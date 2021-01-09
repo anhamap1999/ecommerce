@@ -40,7 +40,7 @@ exports.loginByEmail = async (req, res, next) => {
       config.JWT_TOKEN_LIFE
     );
 
-    user.access_tokens.push({ token: accessToken });
+    // user.access_tokens.push({ token: accessToken });
     await user.save();
 
     const data = {
@@ -89,7 +89,7 @@ exports.loginByPhone = async (req, res, next) => {
       config.JWT_TOKEN_LIFE
     );
 
-    user.access_tokens.push({ token: accessToken });
+    // user.access_tokens.push({ token: accessToken });
 
     await user.save();
 
