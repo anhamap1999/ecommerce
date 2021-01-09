@@ -3,6 +3,7 @@ const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
 const utils = require('../../commons/utils');
 const Product = require('../products/product.model');
+const StockHistory = require('../stock_history/stock_history.model');
 
 exports.getStocks = async (req, res, next) => {
   try {
@@ -16,9 +17,11 @@ exports.getStocks = async (req, res, next) => {
 
     const success = new Success({});
     await Stock.paginate(query, options)
-      .then(async(result) => {
+      .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const stocks = await Stock.populate(result.docs, [{ path: 'product_id' }]);
+          const stocks = await Stock.populate(result.docs, [
+            { path: 'product_id' },
+          ]);
           success
             .addField('data', stocks)
             .addField('total_page', result.totalPages)
@@ -39,7 +42,9 @@ exports.getStocks = async (req, res, next) => {
 
 exports.getStockById = async (req, res, next) => {
   try {
-    const stock = await Stock.findById(req.params.id);
+    const stock = await Stock.findById(req.params.id).populate({
+      path: 'product_id',
+    });
 
     if (!stock) {
       throw new Error({
@@ -49,24 +54,6 @@ exports.getStockById = async (req, res, next) => {
       });
     }
     const success = new Success({ data: stock });
-    res.status(200).send(success);
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.getStocksByProductId = async (req, res, next) => {
-  try {
-    const product = await Product.findById(req.body.product_id);
-    if (!product) {
-      throw new Error({
-        statusCode: 404,
-        message: 'product.notFound',
-        messages: { product: 'product not found' },
-      });
-    }
-    const stocks = await Stock.find({ product_id: req.body.product_id });
-    const success = new Success({ data: stocks });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -83,7 +70,10 @@ exports.getStockByProductIdAndSize = async (req, res, next) => {
         messages: { product: 'product not found' },
       });
     }
-    const stock = await Stock.findOne({ product_id: req.body.product_id, size: req.body.size });
+    const stock = await Stock.findOne({
+      product_id: req.body.product_id,
+      size: req.body.size,
+    }).populate({ path: 'product_id' });
     const success = new Success({ data: stock });
     res.status(200).send(success);
   } catch (error) {
@@ -93,7 +83,9 @@ exports.getStockByProductIdAndSize = async (req, res, next) => {
 
 exports.importStock = async (req, res, next) => {
   try {
-    let stock = await Stock.findById(req.params.id);
+    let stock = await Stock.findById(req.params.id).populate({
+      path: 'product_id',
+    });
 
     if (!stock) {
       throw new Error({
@@ -110,8 +102,16 @@ exports.importStock = async (req, res, next) => {
       });
     }
     stock.updated_at = Date.now();
+    stock.updated_by = req.user._id;
     stock = { ...stock._doc, stock: stock.stock + req.body.stock };
     await Stock.findByIdAndUpdate(req.params.id, stock);
+    const stock_history = new StockHistory({
+      ...stock._doc,
+      stock: req.body.stock,
+      price: req.body.price,
+      type: 'import',
+    });
+    await stock_history.save();
     const success = new Success({ data: stock });
     res.status(200).send(success);
   } catch (error) {

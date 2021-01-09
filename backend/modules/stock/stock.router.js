@@ -7,11 +7,6 @@ const validator = require('./stock.validation');
 
 router.get('/', validator.getStocksValidator, controller.getStocks);
 router.get(
-  '/product',
-  validator.getStocksByProductIdValidator,
-  controller.getStocksByProductId
-);
-router.get(
   '/product-size',
   validator.getStockByProductIdAndSizeValidator,
   controller.getStockByProductIdAndSize

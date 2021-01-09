@@ -8,21 +8,11 @@ exports.getStocksValidator = async (req, res, next) => {
       limit: Joi.number().optional(),
       page: Joi.number().optional(),
       sort: Joi.string().optional(),
+      product_id: Joi.string().optional(),
+      size: Joi.number().required(),
     });
     const result = await validate(req.query, schema);
     req.query = result;
-    next();
-  } catch (error) {
-    next(error);
-  }
-};
-exports.getStocksByProductIdValidator = async (req, res, next) => {
-  try {
-    const schema = Joi.object().keys({
-      product_id: Joi.string().required(),
-    });
-    const result = await validate(req.body, schema);
-    req.body = result;
     next();
   } catch (error) {
     next(error);
@@ -45,6 +35,7 @@ exports.importStockValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
       stock: Joi.string().required(),
+      price: Joi.number().required()
     });
     const result = await validate(req.body, schema);
     req.body = result;

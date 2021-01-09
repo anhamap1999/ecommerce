@@ -4,7 +4,6 @@ const { validate } = require('../../commons/utils');
 exports.createCategoryValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
-      _id : Joi.string().required(),
       name: Joi.string().required(),
       type: Joi.number().valid(1, 2, 3).required(),
       parent_id: Joi.when('type', {

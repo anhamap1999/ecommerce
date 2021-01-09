@@ -2,6 +2,7 @@ const Order = require('./order.model');
 const Product = require('../products/product.model');
 const Stock = require('../stock/stock.model');
 const Notification = require('../notification/notification.model');
+const StockHistory = require('../stock_history/stock_history.model');
 
 exports.getOrders = async (req, res, next) => {
   try {
@@ -113,7 +114,7 @@ exports.saveOrder = async (req, res) => {
           messages: { product: 'product not found' },
         });
       }
-      const stock = await Stock.findOne({ product_id: item.product_id });
+      const stock = await Stock.findOne({ product_id: item.product_id, size: item.size });
       if (stock.stock < item.quantity) {
         throw new Error({
           statusCode: 404,
@@ -145,6 +146,9 @@ exports.saveOrder = async (req, res) => {
       items_price: req.body.items_price,
       shipping_price: req.body.shipping_price,
       total_price: req.body.total_price,
+    });
+    newOrder.progress.push({
+      status: 'handling',
     });
     const newOrderCreated = await newOrder.save();
 
@@ -238,7 +242,7 @@ exports.updateOrderByAdmin = async (req, res) => {
               messages: { product: 'product not found' },
             });
           }
-          const stock = await Stock.findOne({ product_id: item.product_id });
+          const stock = await Stock.findOne({ product_id: item.product_id, size: item.size });
           if (stock.stock < item.quantity) {
             throw new Error({
               statusCode: 404,
@@ -258,9 +262,16 @@ exports.updateOrderByAdmin = async (req, res) => {
           }
           product.sold_count += item.quantity;
           await Product.findByIdAndUpdate(item.product_id, product);
-          const stock = await Stock.findOne({ product_id: item.product_id });
+          const stock = await Stock.findOne({ product_id: item.product_id, size: item.size });
           stock.stock -= item.quantity;
-          await Stock.findOneAndUpdate({ product_id: item.product_id }, stock);
+          await Stock.findOneAndUpdate({ product_id: item.product_id, size: item.size }, stock);
+          const stock_history = new StockHistory({
+            ...stock._doc,
+            stock: item.quantity,
+            price: product.price,
+            type: 'import'
+          });
+          await stock_history.save();
         });
         const notification = new Notification({
           user_id: order.created_by._id,
