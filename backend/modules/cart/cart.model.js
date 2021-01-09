@@ -13,7 +13,6 @@ const cartSchema = new mongoose.Schema({
   },
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
-  in_stock: { type: Boolean, required: true },
 });
 
 // const cartDetailSchema = new mongoose.Schema({

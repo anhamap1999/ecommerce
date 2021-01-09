@@ -32,7 +32,8 @@ const productSchema = new mongoose.Schema({
   created_at: { type: Date, default: Date.now(), required: true },
   updated_at: { type: Date, required: false },
   created_by: { type: String, required: false },
-  updated_by: { type: String, required: false }
+  updated_by: { type: String, required: false },
+  size: { type: [Number], required: true },
 });
 // productSchema.indexes()
 productSchema.index({ name: 'text'});

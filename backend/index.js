@@ -20,6 +20,12 @@ const bankAccountRouter = require('./modules/bank_account/bank_account.router');
 const commentRouter = require('./modules/comment/comment.router');
 const banksRouter = require('./modules/banks/banks.router');
 const adminRouter = require('./modules/admin/admin.router');
+const cartRouter = require('./modules/cart/cart.router');
+const orderRouter = require('./modules/order/order.router');
+const stockRouter = require('./modules/stock/stock.router');
+const staffRouter = require('./modules/staff/staff.router');
+const notificationRouter = require('./modules/notification/notification.router');
+
 const cors = require('cors');
 
 // import dotenv from 'dotenv';
@@ -55,25 +61,29 @@ app.use(express.json());
 
 app.use(bodyParser.json());
 
-const http = require('http').Server(app);
+const http = require('http').createServer(app);
 
-// const io = require('socket.io')(http, {
-//   log: false,
-//   agent: false,
-//   origins: '*:*',
-//   transports: ['websocket', 'polling'],
-// });
+const io = require('socket.io')(http, {
+  log: false,
+  agent: false,
+  origins: '*:*',
+  transports: ['websocket', 'polling'],
+});
 
-// io.on('connection', (socket) => {
-//   // socket.on('chat message', msg => {
-//   //   io.emit('chat message', msg);
-//   // });
-// });
+io.on('connection', (socket) => {
+  console.log('SOCKET CONNECTION');
+  // socket.on('chat message', msg => {
+    // io.emit('chat message', 'msg');
+  // });
+  socket.on('DISCONNECTION', (socket) => {
+    console.log('SOCKET DISCONNECTION')
+  })
+});
 
-// app.use((req, res, next) => {
-//   res.io = io;
-//   next();
-// });
+app.use((req, res, next) => {
+  res.io = io;
+  next();
+});
 app.use('/api/auth', authRouter);
 app.use('/api/categories', categoryRouter);
 // app.use("/api/orders",orderRouter);
@@ -87,6 +97,13 @@ app.use('/api/bank-account', bankAccountRouter);
 app.use('/api/comment', commentRouter);
 app.use('/api/banks', banksRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/order', orderRouter);
+app.use('/api/stock', stockRouter);
+app.use('/api/staff', staffRouter);
+app.use('/api/notification', notificationRouter);
+
+
 http.listen(5000, () => {
   console.log('server is running : 5000   ');
 });

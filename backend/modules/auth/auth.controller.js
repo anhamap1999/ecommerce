@@ -6,6 +6,7 @@ const config = require('../../commons/config');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const tinyUrl = require('tinyurl');
+const Notification = require('../notification/notification.model');
 
 const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
@@ -231,7 +232,13 @@ exports.resetPassword = async (req, res, next) => {
       html: `<div>Reset password successfully.</div>`,
     };
     await transporter.sendMail(mailOptions);
-
+    const notification = new Notification({
+      user_id: user._id,
+      type: 'auth_reset_password',
+      title: 'Bảo mật',
+      message: 'Tài khoản vừa được reset mật khẩu. Vui lòng kiểm tra nếu không phải bạn.'
+    });
+    await notification.save();
     const success = new Success({});
     res.status(200).send(success);
   } catch (error) {

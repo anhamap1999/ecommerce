@@ -2,7 +2,7 @@ const Joi = require('joi');
 const { Error } = require('../../utils/Error');
 const { validate } = require('../../commons/utils');
 
-exports.addAdminValidator = async (req, res, next) => {
+exports.addStaffValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
       id: Joi.string().required(),

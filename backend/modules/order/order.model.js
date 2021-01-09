@@ -1,44 +1,46 @@
-import mongoose from 'mongoose';
-
-const shippingSchema = {
-  address: { type: String, required: true },
-  city: { type: String, required: true },
-  country: { type: String, required: true },
-};
+const mongoose = require('mongoose');
+const paginate = require('mongoose-paginate-v2');
+// const shippingSchema = {
+//   address: { type: String, required: true },
+//   city: { type: String, required: true },
+//   country: { type: String, required: true },
+// };
 
 const paymentSchema = {
   paymentMethod: { type: String, required: true }
 };
 
 const orderItemSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  qty: { type: Number, required: true },
+  quantity: { type: Number, required: true },
   image: { type: String, required: true },
   price: { type: String, required: true },
-  product: {
-    type: mongoose.Schema.Types.ObjectId,
+  product_id: {
+    type: mongoose.SchemaTypes.ObjectId,
     ref: 'Product',
     required: true
   },
 });
 
 const orderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  orderItems: [orderItemSchema],
-  shipping: shippingSchema,
+  order_items: [orderItemSchema],
+  shipping: { type: mongoose.SchemaTypes.ObjectId, ref: 'DeliveryAddress', required: true },
   payment: paymentSchema,
-  itemsPrice: { type: Number },
-  taxPrice: { type: Number },
-  shippingPrice: { type: Number },
-  totalPrice: { type: Number },
-  isPaid: { type: Boolean, default: false },
-  paidAt: { type: Date },
-  isDelivered: { type: Boolean, default: false },
-  deliveredAt: { type: Date },
+  items_price: { type: Number },
+  tax_price: { type: Number },
+  shipping_price: { type: Number },
+  total_price: { type: Number },
+  is_paid: { type: Boolean, default: false },
+  paid_at: { type: Date },
+  is_delivered: { type: Boolean, default: false },
+  delivered_at: { type: Date },
+  created_at: { type: Date, default: Date.now(), required: true },
+  updated_at: { type: Date, required: false },
+  created_by: { type: mongoose.SchemaTypes.ObjectId, required: false, ref: 'User' },
+  updated_by: { type: String, required: false },
+  status: { type: String, required: true, default: 'pending', enum: ['pending', 'approved', 'completed']}
 }, {
   timestamps: true
 });
-
+orderSchema.plugin(paginate);
 const orderModel = mongoose.model("Order", orderSchema);
-
-export default orderModel;
+module.exports = orderModel;

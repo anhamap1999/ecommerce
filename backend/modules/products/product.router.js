@@ -1,7 +1,11 @@
 const express = require('express');
 const controller = require('./product.controller');
 // import { isAdmin,isAuth } from '../../utils/ultil';
-const { isAuth, isAdmin } = require('../../middlewares/auth.middleware');
+const {
+  isAuth,
+  isAdmin,
+  isStaff,
+} = require('../../middlewares/auth.middleware');
 const router = express.Router();
 const { handleError } = require('../../middlewares/error.middleware');
 const validator = require('./product.validation');
@@ -10,14 +14,16 @@ router.get('/', validator.getProductsValidator, controller.getProducts);
 router.get(
   '/admin',
   isAuth,
-  isAdmin,
+  isStaff,
   validator.getProductsValidator,
   controller.getProductsByAdmin
 );
-router.get(
-  '/:id',
-  validator.getProductByIdValidator,
-  controller.getProductById
+router.put(
+  '/admin/update-status/:id',
+  isAuth,
+  isAdmin,
+  validator.updateStatusProductValidator,
+  controller.updateStatusProduct
 );
 router.get(
   '/admin/:id',
@@ -27,23 +33,21 @@ router.get(
 router.post(
   '/admin',
   isAuth,
-  isAdmin,
+  isStaff,
   validator.createProductValidator,
   controller.createProduct
 );
 router.put(
   '/admin/:id',
   isAuth,
-  isAdmin,
+  isStaff,
   validator.updateProductValidator,
   controller.updateProduct
 );
-router.put(
-  '/admin/update-status/:id',
-  isAuth,
-  isAdmin,
-  validator.updateStatusProductValidator,
-  controller.updateStatusProduct
+router.get(
+  '/:id',
+  validator.getProductByIdValidator,
+  controller.getProductById
 );
 
 
