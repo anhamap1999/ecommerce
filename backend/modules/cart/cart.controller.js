@@ -1,6 +1,7 @@
 const Cart = require('./cart.model');
 const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
+const Product = require('../products/product.model');
 
 exports.getCarts = async (req, res, next) => {
   try {
@@ -33,6 +34,14 @@ exports.getCartById = async (req, res, next) => {
 
 exports.addCart = async (req, res, next) => {
   try {
+    const product = await Product.findById(req.body.product_id);
+    if (!product) {
+      throw new Error({
+        statusCode: 404,
+        message: 'product.notFound',
+        messages: { product: 'product not found' },
+      });
+    }
     const cart = new Cart(req.body);
     cart.created_by = req.user._id;
     const result = await cart.save();

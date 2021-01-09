@@ -10,6 +10,7 @@ const commentSchema = new mongoose.Schema({
   likes_count: { type: Number, required: true, default: 0 },
   created_at: { type: Date, default: Date.now(), required: true },
   updated_at: { type: Date, required: false },
+  reply_to: { type: mongoose.SchemaTypes.ObjectId, ref: 'Comment' },
 });
 commentSchema.plugin(paginate);
 const commentModel = mongoose.model('Comment', commentSchema);

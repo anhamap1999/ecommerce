@@ -15,15 +15,16 @@ exports.getComments = async (req, res, next) => {
     };
 
     const success = new Success({});
-    await Comment.paginate(query, options)
+    await Comment.paginate({ ...query, reply_to: null }, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
           const comments = await Comment.populate(result.docs, [
             { path: 'created_by' },
             { path: 'product_id' },
+            { path: 'reply_to' }
           ]);
           success
-            .addField('data', result.docs)
+            .addField('data', comments)
             .addField('total_page', result.totalPages)
             .addField('page', result.page)
             .addField('total', result.totalDocs);
@@ -45,6 +46,7 @@ exports.getCommentById = async (req, res, next) => {
     const comment = await Comment.findById(req.params.id).populate([
       { path: 'created_by' },
       { path: 'product_id' },
+      { path: 'reply_to' }
     ]);
 
     if (!comment) {
@@ -63,6 +65,14 @@ exports.getCommentById = async (req, res, next) => {
 
 exports.createComment = async (req, res, next) => {
   try {
+    const parent_comment = await Comment.findById(req.body.reply_to);
+    if (!parent_comment) {
+      throw new Error({
+        statusCode: 404,
+        message: 'comment.notFound',
+        messages: { comment: 'comment not found' },
+      });
+    }
     const product = await Product.findById(req.body.product_id);
     if (!product) {
       throw new Error({

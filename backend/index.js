@@ -1,7 +1,7 @@
-// const functions = require('firebase-functions');
-// const admin = require('firebase-admin');
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
 
-// admin.initializeApp();
+admin.initializeApp();
 
 const express = require('express');
 const dotenv = require('dotenv');
@@ -104,8 +104,8 @@ app.use('/api/staff', staffRouter);
 app.use('/api/notification', notificationRouter);
 
 
-http.listen(5000, () => {
-  console.log('server is running : 5000   ');
-});
+// http.listen(5000, () => {
+//   console.log('server is running : 5000   ');
+// });
 
-// exports.api = functions.https.onRequest(app);
+exports.api = functions.https.onRequest(app);

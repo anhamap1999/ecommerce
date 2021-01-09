@@ -284,10 +284,10 @@ exports.likeProduct = async (req, res, next) => {
     }
     if (state === 'like') {
       product.likes_count++;
-      user.like_product.push(id);
+      user.like_products.push(id);
     } else if (state === 'unlike' && product.likes_count > 0) {
       product.likes_count--;
-      user.like_product = user.like_product.filter((item) => item !== id);
+      user.like_products = user.like_products.filter((item) => item !== id);
     }
     await Product.findByIdAndUpdate(id, product);
     await User.findByIdAndUpdate(id, user);

@@ -18,7 +18,7 @@ exports.loginByEmail = async (req, res, next) => {
     const user = await User.findOne({
       email,
       status: 'active',
-    });
+    }).populate({ path: 'like_products' });
     if (!user) {
       throw new Error({
         statusCode: 404,
@@ -67,7 +67,7 @@ exports.loginByPhone = async (req, res, next) => {
     const user = await User.findOne({
       phone_number: phone_number,
       status: 'active',
-    });
+    }).populate({ path: 'like_products' });
     if (!user) {
       throw new Error({
         statusCode: 404,

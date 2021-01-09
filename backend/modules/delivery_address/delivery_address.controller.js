@@ -113,23 +113,18 @@ exports.setDefaultAddress = async (req, res, next) => {
     const address = await DeliveryAddress.findOne({
       _id: req.params.id,
       status: 'active',
+      created_by: req.user._id
     });
-    const default_address = await DeliveryAddress.find({
+    const default_address = await DeliveryAddress.findOne({
       status: 'active',
       is_default: true,
+      created_by: req.user._id
     });
     if (!address) {
       throw new Error({
         statusCode: 404,
         message: 'address.notFound',
         messages: { address: 'address not found' },
-      });
-    }
-    if (address.created_by !== req.user._id) {
-      throw new Error({
-        statusCode: 404,
-        message: 'address.doNotHavePermission',
-        messages: { address: 'do not have permission' },
       });
     }
     address.is_default = true;

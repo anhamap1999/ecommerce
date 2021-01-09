@@ -77,12 +77,17 @@ const userSchema = new mongoose.Schema({
   created_at: {
     type: Date,
     default: Date.now(),
-    required: true
+    required: true,
   },
   updated_at: {
     type: String,
-    required: false
-  }
+    required: false,
+  },
+  like_products: {
+    type: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Product' }],
+    default: [],
+    required: true,
+  },
 });
 userSchema.plugin(paginate);
 const userModel = mongoose.model('user', userSchema);

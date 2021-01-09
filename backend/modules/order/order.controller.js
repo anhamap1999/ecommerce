@@ -17,7 +17,47 @@ exports.getOrders = async (req, res, next) => {
     await Order.paginate({ created_by: req.user._id, ...query }, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const orders = await Order.populate(result.docs, [{ path: 'shipping' }, { path: 'order_items', populate: 'product_id' }, { path: 'created_by' }]);
+          const orders = await Order.populate(result.docs, [
+            { path: 'shipping' },
+            { path: 'order_items', populate: 'product_id' },
+            { path: 'created_by' },
+          ]);
+          success
+            .addField('data', orders)
+            .addField('total_page', result.totalPages)
+            .addField('page', result.page)
+            .addField('total', result.totalDocs);
+        } else {
+          success.addField('data', []);
+        }
+      })
+      .catch((error) => {
+        next(error);
+      });
+    res.status(200).send(success);
+  } catch (error) {
+    next(error);
+  }
+};
+exports.getOrdersByAdmin = async (req, res, next) => {
+  try {
+    const { select, sort, page, limit, ...query } = req.query;
+    const options = {
+      select: select ? select : '',
+      sort: sort ? sort : '-created_at',
+      page: page && page >= 1 ? page : 1,
+      limit: limit && limit >= 10 ? limit : 10,
+    };
+
+    const success = new Success({});
+    await Order.paginate(query, options)
+      .then(async (result) => {
+        if (result.totalDocs && result.totalDocs > 0) {
+          const orders = await Order.populate(result.docs, [
+            { path: 'shipping' },
+            { path: 'order_items', populate: 'product_id' },
+            { path: 'created_by' },
+          ]);
           success
             .addField('data', orders)
             .addField('total_page', result.totalPages)
@@ -41,7 +81,11 @@ exports.getOrderById = async (req, res) => {
     const order = await Order.findOne({
       _id: req.params.id,
       created_by: req.user._id,
-    }).populate([{ path: 'shipping' }, { path: 'order_items', populate: 'product_id' }, { path: 'created_by' }]);
+    }).populate([
+      { path: 'shipping' },
+      { path: 'order_items', populate: 'product_id' },
+      { path: 'created_by' },
+    ]);
 
     if (!order) {
       throw new Error({
@@ -78,21 +122,21 @@ exports.saveOrder = async (req, res) => {
         });
       }
     });
-    order_items.forEach(async (item) => {
-      const product = await Product.findById(item.product_id);
-      if (!product) {
-        throw new Error({
-          statusCode: 404,
-          message: 'product.notFound',
-          messages: { product: 'product not found' },
-        });
-      }
-      product.sold_count+= item.quantity;
-      await Product.findByIdAndUpdate(item.product_id, product);
-      const stock = await Stock.findOne({ product_id: item.product_id });
-      stock.stock -= item.quantity;
-      await Stock.findOneAndUpdate({ product_id: item.product_id }, stock);
-    });
+    // order_items.forEach(async (item) => {
+    //   const product = await Product.findById(item.product_id);
+    //   if (!product) {
+    //     throw new Error({
+    //       statusCode: 404,
+    //       message: 'product.notFound',
+    //       messages: { product: 'product not found' },
+    //     });
+    //   }
+    //   product.sold_count+= item.quantity;
+    //   await Product.findByIdAndUpdate(item.product_id, product);
+    //   const stock = await Stock.findOne({ product_id: item.product_id });
+    //   stock.stock -= item.quantity;
+    //   await Stock.findOneAndUpdate({ product_id: item.product_id }, stock);
+    // });
     const newOrder = new Order({
       order_items: req.body.order_items,
       created_by: req.user._id,
@@ -103,7 +147,7 @@ exports.saveOrder = async (req, res) => {
       total_price: req.body.total_price,
     });
     const newOrderCreated = await newOrder.save();
-    
+
     const notification_for_customer = new Notification({
       user_id: req.user._id,
       type: 'order_add',
@@ -122,7 +166,7 @@ exports.saveOrder = async (req, res) => {
       message: `Khách hàng ${req.user.full_name} vừa đặt đơn hàng mới.`,
       object_id: newOrderCreated._id,
       onModel: 'Order',
-      for: 'staff'
+      for: 'staff',
     });
     const created_notification_for_staff = await notification_for_staff.save();
     req.io.emit('staff_notification', created_notification_for_staff);
@@ -134,9 +178,13 @@ exports.saveOrder = async (req, res) => {
   }
 };
 
-exports.updateOrder = async (req, res) => {
+exports.updateOrderByAdmin = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).populate([{ path: 'shipping' }, { path: 'order_items', populate: 'product_id' }, { path: 'created_by' }]);
+    const order = await Order.findById(req.params.id).populate([
+      { path: 'shipping' },
+      { path: 'order_items', populate: 'product_id' },
+      { path: 'created_by' },
+    ]);
     if (!order) {
       throw new Error({
         statusCode: 404,
@@ -144,44 +192,293 @@ exports.updateOrder = async (req, res) => {
         messages: { order: 'order not found' },
       });
     }
-    if (req.body.status === 'paid') {
-      order.is_paid = true;
-      order.paid_at = Date.now();
-      order.status = 'completed';
-      // order.payment = {
-      //   paymentMethod: 'paypal',
-      //   paymentResult: {
-      //     payerID: req.body.payerID,
-      //     orderID: req.body.orderID,
-      //     paymentID: req.body.paymentID,
-      //   },
-      // };
-      const notification = new Notification({
-        user_id: order.created_by._id,
-        type: 'order_update_paid',
-        title: 'Đơn hàng',
-        message: `Khách hàng ${order.created_by.full_name} vừa được thanh toán.`,
-        object_id: order._id,
-        onModel: 'Order',
-        for: 'staff'
-      });
-      const created_notification = await notification.save();
-      req.io.emit('staff_notification', created_notification);
-    } else if (req.body.status === 'delivered') {
-      order.is_delivered = true;
-      order.delivered_at = Date.now();
-      const notification = new Notification({
-        user_id: order.created_by._id,
-        type: 'order_update_delivered',
-        title: 'Đơn hàng',
-        message: `Đơn hàng đã được giao thành công.`,
-        object_id: order._id,
-        onModel: 'Order',
-      });
-      const created_notification = await notification.save();
-      req.io.emit(order.created_by._id, created_notification);
+    switch (req.body.status) {
+      case 'picking': {
+        if (order.status !== 'handling') {
+          throw new Error({
+            statusCode: 404,
+            message: 'order.canBePicking',
+            messages: {
+              order: 'only handling order can be changed into picking',
+            },
+          });
+        }
+        order.status = 'picking';
+        const notification = new Notification({
+          user_id: order.created_by._id,
+          type: 'order_update_picking',
+          title: 'Đơn hàng',
+          message: `Đơn hàng đã được xác nhận, shop đang chuẩn bị hàng.`,
+          object_id: order._id,
+          onModel: 'Order',
+        });
+        const created_notification = await notification.save();
+        req.io.emit(order.created_by._id, created_notification);
+        break;
+      }
+      case 'delivering': {
+        if (order.status !== 'picking') {
+          throw new Error({
+            statusCode: 404,
+            message: 'order.canBeDelivering',
+            messages: {
+              order: 'only picking order can be changed into delivering',
+            },
+          });
+        }
+        order_items.forEach(async (item) => {
+          const product = await Product.findById(item.product_id);
+          if (!product) {
+            throw new Error({
+              statusCode: 404,
+              message: 'product.notFound',
+              messages: { product: 'product not found' },
+            });
+          }
+          const stock = await Stock.findOne({ product_id: item.product_id });
+          if (stock.stock < item.quantity) {
+            throw new Error({
+              statusCode: 404,
+              message: 'stock.notFound',
+              messages: { stock: 'stock is not enough' },
+            });
+          }
+        });
+        order_items.forEach(async (item) => {
+          const product = await Product.findById(item.product_id);
+          if (!product) {
+            throw new Error({
+              statusCode: 404,
+              message: 'product.notFound',
+              messages: { product: 'product not found' },
+            });
+          }
+          product.sold_count += item.quantity;
+          await Product.findByIdAndUpdate(item.product_id, product);
+          const stock = await Stock.findOne({ product_id: item.product_id });
+          stock.stock -= item.quantity;
+          await Stock.findOneAndUpdate({ product_id: item.product_id }, stock);
+        });
+        const notification = new Notification({
+          user_id: order.created_by._id,
+          type: 'order_update_delivering',
+          title: 'Đơn hàng',
+          message: `Đơn hàng đã được giao cho đơn vị vận chuẩn.`,
+          object_id: order._id,
+          onModel: 'Order',
+        });
+        const created_notification = await notification.save();
+        req.io.emit(order.created_by._id, created_notification);
+        order.status = 'delivering';
+        break;
+      }
+      case 'delivered': {
+        if (order.status !== 'delivering') {
+          throw new Error({
+            statusCode: 404,
+            message: 'order.canBeDelivered',
+            messages: {
+              order: 'only delivering order can be changed into delivered',
+            },
+          });
+        }
+
+        if (order.payment.paymentMethod === 'cash') {
+          order.is_paid = true;
+          order.paid_at = Date.now();
+        }
+        order.is_delivered = true;
+        order.delivered_at = Date.now();
+        order.status = 'delivered';
+        const notification = new Notification({
+          user_id: order.created_by._id,
+          type: 'order_update_delivered',
+          title: 'Đơn hàng',
+          message: `Đơn hàng đã được giao thành công. Vui lòng xác nhận hoàn tất đơn hàng.`,
+          object_id: order._id,
+          onModel: 'Order',
+        });
+        const created_notification = await notification.save();
+        req.io.emit(order.created_by._id, created_notification);
+        break;
+      }
+      case 'completed': {
+        //user
+        if (order.status !== 'delivered') {
+          throw new Error({
+            statusCode: 404,
+            message: 'order.canBeCompleted',
+            messages: {
+              order: 'only delivered order can be changed into completed',
+            },
+          });
+        }
+        order.status = 'completed';
+        const notification = new Notification({
+          user_id: order.created_by._id,
+          type: 'order_update_completed',
+          title: 'Đơn hàng',
+          message: `Đơn hàng đã được hoàn tất.`,
+          object_id: order._id,
+          onModel: 'Order',
+        });
+        const created_notification = await notification.save();
+        req.io.emit(order.created_by._id, created_notification);
+        break;
+      }
+      case 'user_cancel': {
+        //user
+        if (order.status !== 'handling') {
+          throw new Error({
+            statusCode: 404,
+            message: 'order.canBeCancel',
+            messages: {
+              order: 'only handling order can be changed into user_cancel',
+            },
+          });
+        }
+        order.status = 'user_cancel';
+        const notification = new Notification({
+          user_id: order.created_by._id,
+          type: 'order_update_user_cancel',
+          title: 'Đơn hàng',
+          message: `Bạn đã hủy đơn hàng.`,
+          object_id: order._id,
+          onModel: 'Order',
+        });
+        const created_notification = await notification.save();
+        req.io.emit(order.created_by._id, created_notification);
+        break;
+      }
+      case 'shop_cancel': {
+        if (order.status !== 'handling') {
+          throw new Error({
+            statusCode: 404,
+            message: 'order.canBeCancel',
+            messages: {
+              order: 'only handling order can be changed into shop_cancel',
+            },
+          });
+        }
+        order.status = 'shop_cancel';
+        const notification = new Notification({
+          user_id: order.created_by._id,
+          type: 'order_update_shop_cancel',
+          title: 'Đơn hàng',
+          message: `Đơn hàng đã bị hủy bởi shop.`,
+          object_id: order._id,
+          onModel: 'Order',
+        });
+        const created_notification = await notification.save();
+        req.io.emit(order.created_by._id, created_notification);
+        break;
+      }
+      case 'lost_damage': {
+        if (order.status !== 'delivering') {
+          throw new Error({
+            statusCode: 404,
+            message: 'order.canBeLostDamage',
+            messages: {
+              order: 'only delivering order can be changed into lost_damage',
+            },
+          });
+        }
+        order.status = 'lost_damage';
+        const notification = new Notification({
+          user_id: order.created_by._id,
+          type: 'order_update_lost_damage',
+          title: 'Đơn hàng',
+          message: `Đơn hàng đã bị thất lạc hoặc hư hỏng trong quá trình vận chuyển. Vui lòng đặt hàng lại.`,
+          object_id: order._id,
+          onModel: 'Order',
+        });
+        const created_notification = await notification.save();
+        req.io.emit(order.created_by._id, created_notification);
+        break;
+      }
+      default:
+        break;
     }
+
+    
     order.updated_at = Date.now();
+    order.updated_by = req.user._id;
+    await Order.findByIdAndUpdate(req.params.id, order);
+    const success = new Success({ data: order });
+    res.status(200).send(success);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id).populate([
+      { path: 'shipping' },
+      { path: 'order_items', populate: 'product_id' },
+      { path: 'created_by' },
+    ]);
+    if (!order) {
+      throw new Error({
+        statusCode: 404,
+        message: 'order.notFound',
+        messages: { order: 'order not found' },
+      });
+    }
+    switch (req.body.status) {
+      case 'completed': {
+        if (order.status !== 'delivered') {
+          throw new Error({
+            statusCode: 404,
+            message: 'order.canBeCompleted',
+            messages: {
+              order: 'only delivered order can be changed into completed',
+            },
+          });
+        }
+        order.status = 'completed';
+        const notification = new Notification({
+          user_id: order.created_by._id,
+          type: 'order_update_completed',
+          title: 'Đơn hàng',
+          message: `Đơn hàng đã được hoàn tất.`,
+          object_id: order._id,
+          onModel: 'Order',
+        });
+        const created_notification = await notification.save();
+        req.io.emit(order.created_by._id, created_notification);
+        break;
+      }
+      case 'user_cancel': {
+        if (order.status !== 'handling') {
+          throw new Error({
+            statusCode: 404,
+            message: 'order.canBeCancel',
+            messages: {
+              order: 'only handling order can be changed into user_cancel',
+            },
+          });
+        }
+        order.status = 'user_cancel';
+        const notification = new Notification({
+          user_id: order.created_by._id,
+          type: 'order_update_user_cancel',
+          title: 'Đơn hàng',
+          message: `Bạn đã hủy đơn hàng.`,
+          object_id: order._id,
+          onModel: 'Order',
+        });
+        const created_notification = await notification.save();
+        req.io.emit(order.created_by._id, created_notification);
+        break;
+      }
+      default:
+        break;
+    }
+
+    
+    order.updated_at = Date.now();
+    order.updated_by = req.user._id;
     await Order.findByIdAndUpdate(req.params.id, order);
     const success = new Success({ data: order });
     res.status(200).send(success);
