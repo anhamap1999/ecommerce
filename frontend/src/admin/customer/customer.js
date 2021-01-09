@@ -17,7 +17,7 @@ const CustomerAdminInfo = ( {usersData})  => {
                     <tbody>
                        {
                            usersData &&  usersData.map(
-                               user => <tr>
+                               user =>user.role=='customer' && <tr>
                                 <td>{user.full_name ? user.full_name : 
                                     <p className="text-primary">
                                     chưa cập nhật   

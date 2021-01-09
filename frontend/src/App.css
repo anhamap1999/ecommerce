@@ -36,27 +36,35 @@ a:hover {
   top: 60px;
   
 }
-.other-custom{
-  
+.hover_show:hover ul {
+  display: block;
 }
-.other-custom p{
-  padding: 0;
-  margin: 0px;
-  padding-bottom: 20.5px;
-  transition: border 1s;
- 
-}
-.other-custom  ul {
- display: none;
- transition: ease-in-out;
+
+.other-custom ul {
+  display: none;
+  position: absolute;
+  transition: ease-in-out;
+  background: rgb(187, 187, 183);
 }
 i.bx.bxs-home {
   font-size: 35px;
   padding-top: 7px;
 }
-.other-custom li {
+.details-img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.details-product {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #f2f2f2;
+}
+.other-custom ul li {
   padding: 10px;
- 
   border-bottom: 1.5px solid #ccc;
 }
 .other-custom li:hover {
@@ -133,7 +141,7 @@ body{
   display: none;
   position: absolute;
   padding: 0;
-  top:34px;
+  top: 52px;
   margin: 0;
   width: 200px;
   height: auto;
@@ -333,11 +341,12 @@ li{
   color: white;
   font-size: 22px;
 }
- select {
-  padding: 1rem;
-  border-radius: 0.5rem;
+select {
+  margin-left: 7px;
+  padding: 0px;
   border: 0.1rem #c0c0c0 solid;
-  font-size: 1.6rem;
+  margin-bottom: 10px;
+  font-size: 16px;
 }
 .yourcart img{
   width: 150px;

@@ -21,6 +21,7 @@ function CartScreen(props) {
         dispatch(addToCart(productId,qty));
       }
     }, []);
+    console.log("cart",cartItems)
   return <HomePage>
     <div className="cart-details">
       
