@@ -71,7 +71,7 @@ exports.createComment = async (req, res, next) => {
         throw new Error({
           statusCode: 404,
           message: 'comment.notFound',
-          messages: { comment: 'comment not found' },
+          messages: { comment: 'parent comment not found' },
         });
       }
     }
