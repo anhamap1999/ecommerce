@@ -3,6 +3,8 @@ const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
 const utils = require('../../commons/utils');
 const User = require('../users/user.model');
+const Stock = require('../stock/stock.model');
+const _ = require('lodash');
 
 exports.getProduct = async (req, res) => {
   const products = await Product.find({});
@@ -73,7 +75,7 @@ exports.deteleProduct = async (req, res) => {
 
 exports.getProducts = async (req, res, next) => {
   try {
-    const { select, sort, page, limit, ...query } = req.query;
+    const { select, sort, page, limit, size, ...query } = req.query;
     const options = {
       select: select ? select : '',
       sort: sort ? sort : '-created_at',
@@ -82,24 +84,24 @@ exports.getProducts = async (req, res, next) => {
     };
 
     const success = new Success({});
-    await Product.paginate({ ...query, status: 'approved' }, options)
+    await Product.paginate({ ...query, status: 'approved', size: { $all: [size] } }, options)
       .then((result) => {
         if (result.totalDocs && result.totalDocs > 0) {
           success
             .addField('data', result.docs)
             .addField('total_page', result.totalPages)
             .addField('page', result.page)
-            .addField('total', result.docs);
-            // res.io.emit('get products', result);
+            .addField('total', result.totalDocs);
+            // res.setHeader("Access-Control-Allow-Origin", "localhost:5000");
+      // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            // res.io.emit('chat message', result);
         } else {
-          success.addField('dataaa',  result.docs);
+          success.addField('data',  result.docs);
         }
       })
       .catch((error) => {
         next(error);
       });
-//       res.setHeader("Access-Control-Allow-Origin", "*");
-// res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -108,7 +110,7 @@ exports.getProducts = async (req, res, next) => {
 
 exports.getProductsByAdmin = async (req, res, next) => {
   try {
-    const { select, sort, page, limit, ...query } = req.query;
+    const { select, sort, page, limit, size, ...query } = req.query;
     const options = {
       select: select ? select : '',
       sort: sort ? sort : '-created_at',
@@ -116,7 +118,7 @@ exports.getProductsByAdmin = async (req, res, next) => {
       limit: limit && limit >= 10 ? limit : 10,
     };
     const success = new Success({});
-    await Product.paginate(query, options)
+    await Product.paginate({...query, size: { $all: [size] } }, options)
       .then((result) => {
         if (result.totalDocs && result.totalDocs > 0) {
           success
@@ -188,6 +190,21 @@ exports.createProduct = async (req, res, next) => {
     product.pure_name = utils.removeAccents(product.name);
     product.created_by = req.user._id;
     const result = await product.save();
+    // const stock = new Stock({
+    //   product_id: result._id,
+    //   stock: 0,
+    //   created_by: req.user._id
+    // });
+    // await stock.save();
+    product.size.forEach(async (item) => {
+      const stock = new Stock({
+        product_id: result._id,
+        stock: 0,
+        size: item,
+        created_by: req.user._id
+      });
+      await stock.save();
+    });
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
@@ -206,11 +223,24 @@ exports.updateProduct = async (req, res, next) => {
         messages: { product: 'product not found' },
       });
     }
+    if (req.body.size && req.body.size !== product.size) {
+      const new_size = _.difference(req.body.size, product.size);
+      new_size.forEach(async (item) => {
+        const stock = new Stock({
+          product_id: result._id,
+          stock: 0,
+          size: item,
+          created_by: req.user._id
+        });
+        await stock.save();
+      })
+    }
     product = { ...product._doc, ...req.body };
     product.pure_name = utils.removeAccents(product.name);
     product.updated_by = req.user._id;
     product.updated_at = Date.now();
     await Product.findByIdAndUpdate(req.params.id, product);
+    
     const success = new Success({ data: product });
     res.status(200).send(success);
   } catch (error) {
@@ -254,10 +284,10 @@ exports.likeProduct = async (req, res, next) => {
     }
     if (state === 'like') {
       product.likes_count++;
-      user.like_product.push(id);
+      user.like_products.push(id);
     } else if (state === 'unlike' && product.likes_count > 0) {
       product.likes_count--;
-      user.like_product = user.like_product.filter((item) => item !== id);
+      user.like_products = user.like_products.filter((item) => item !== id);
     }
     await Product.findByIdAndUpdate(id, product);
     await User.findByIdAndUpdate(id, user);

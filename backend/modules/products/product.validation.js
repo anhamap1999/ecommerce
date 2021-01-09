@@ -14,6 +14,7 @@ exports.getProductsValidator = async (req, res, next) => {
       limit: Joi.number().optional(),
       page: Joi.number().optional(),
       sort: Joi.string().optional(),
+      size: Joi.number().optional()
     });
     const result = await validate(req.query, schema);
     req.query = result;
@@ -50,6 +51,7 @@ exports.createProductValidator = async (req, res, next) => {
       category_id: Joi.string().required(),
       SKU: Joi.string().required(),
       attributes: Joi.array().optional(),
+      size: Joi.array().items(Joi.number()),
     });
     const result = await validate(req.body, schema);
     req.body = result;
@@ -62,16 +64,17 @@ exports.createProductValidator = async (req, res, next) => {
 exports.updateProductValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
-      name: Joi.string().required(),
-      color: Joi.string().required(),
-      brand: Joi.string().required(),
-      images: Joi.array().required().items(Joi.string()),
-      thumbnail: Joi.string().required(),
-      price: Joi.number().required(),
-      description: Joi.string().required(),
-      category_id: Joi.string().required(),
-      SKU: Joi.string().required(),
+      name: Joi.string().optional(),
+      color: Joi.string().optional(),
+      brand: Joi.string().optional(),
+      images: Joi.array().optional().items(Joi.string()),
+      thumbnail: Joi.string().optional(),
+      price: Joi.number().optional(),
+      description: Joi.string().optional(),
+      category_id: Joi.string().optional(),
+      SKU: Joi.string().optional(),
       attributes: Joi.array().optional(),
+      size: Joi.array().items(Joi.number()),
     });
     const result = await validate(req.body, schema);
     req.body = result;

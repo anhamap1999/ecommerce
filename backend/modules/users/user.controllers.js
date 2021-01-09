@@ -120,7 +120,7 @@ exports.getUserInfo = async (req, res, next) => {
     const user = await User.findOne({
       _id: req.user._id,
       status: 'active',
-    });
+    }).populate({ path: 'like_products' });
     if (!user) {
       throw new Error({
         statusCode: 400,
@@ -146,10 +146,11 @@ exports.getUsers = async (req, res, next) => {
     };
     const success = new Success({});
     await User.paginate(query, options)
-      .then((result) => {
+      .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
+          const users = await User.populate(result.docs, [{ path: 'like_products' }]);
           success
-            .addField('data', result.docs)
+            .addField('data', users)
             .addField('total_page', result.totalPages)
             .addField('page', result.page)
             .addField('total', result.totalDocs);

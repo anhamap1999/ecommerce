@@ -1,7 +1,11 @@
 const express = require('express');
 const { required } = require('joi');
 const { getAdmin, getUser, demo, userRegister } = require('./user.controllers');
-const { isAuth, isAdmin } = require('../../middlewares/auth.middleware');
+const {
+  isAuth,
+  isAdmin,
+  isStaff,
+} = require('../../middlewares/auth.middleware');
 const router = express.Router();
 const controller = require('./user.controllers');
 const validator = require('./user.validation');
@@ -27,7 +31,7 @@ router.put(
 router.get(
   '/admin',
   isAuth,
-  isAdmin,
+  isStaff,
   validator.getUsersValidator,
   controller.getUsers
 );

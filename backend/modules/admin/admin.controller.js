@@ -42,8 +42,9 @@ exports.addAdmin = async (req, res, next) => {
     }
 
     user.isAdmin = true;
-    user.role.push('admin');
-
+    user.role = admin;
+    user.updated_at = Date.now();
+    
     await User.findByIdAndUpdate(req.params.id, user);
     const success = new Success({ data: user });
     res.status(200).send(success);
@@ -64,8 +65,8 @@ exports.deleteAdmin = async (req, res, next) => {
     }
 
     user.isAdmin = false;
-    user.role = user.role.filter(item => item !== 'admin');
-    
+    user.role = 'staff';
+    user.updated_at = Date.now();
     await User.findByIdAndUpdate(req.params.id, user);
     const success = new Success({ data: user });
     res.status(200).send(success);

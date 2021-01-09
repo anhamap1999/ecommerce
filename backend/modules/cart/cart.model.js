@@ -11,9 +11,7 @@ const cartSchema = new mongoose.Schema({
     required: true,
     ref: 'Product',
   },
-  price: { type: Number, required: true },
   quantity: { type: Number, required: true },
-  in_stock: { type: Boolean, required: true },
 });
 
 // const cartDetailSchema = new mongoose.Schema({

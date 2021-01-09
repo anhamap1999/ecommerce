@@ -2,6 +2,7 @@ const Comment = require('./comment.model');
 const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
 const utils = require('../../commons/utils');
+const Product = require('../products/product.model');
 
 exports.getComments = async (req, res, next) => {
   try {
@@ -14,11 +15,16 @@ exports.getComments = async (req, res, next) => {
     };
 
     const success = new Success({});
-    await Comment.paginate(query, options)
-      .then((result) => {
+    await Comment.paginate({ ...query, reply_to: null }, options)
+      .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
+          const comments = await Comment.populate(result.docs, [
+            { path: 'created_by' },
+            { path: 'product_id' },
+            { path: 'reply_to' }
+          ]);
           success
-            .addField('data', result.docs)
+            .addField('data', comments)
             .addField('total_page', result.totalPages)
             .addField('page', result.page)
             .addField('total', result.totalDocs);
@@ -37,7 +43,11 @@ exports.getComments = async (req, res, next) => {
 
 exports.getCommentById = async (req, res, next) => {
   try {
-    const comment = await Comment.findById(req.params.id);
+    const comment = await Comment.findById(req.params.id).populate([
+      { path: 'created_by' },
+      { path: 'product_id' },
+      { path: 'reply_to' }
+    ]);
 
     if (!comment) {
       throw new Error({
@@ -55,9 +65,40 @@ exports.getCommentById = async (req, res, next) => {
 
 exports.createComment = async (req, res, next) => {
   try {
+    const parent_comment = await Comment.findById(req.body.reply_to);
+    if (!parent_comment) {
+      throw new Error({
+        statusCode: 404,
+        message: 'comment.notFound',
+        messages: { comment: 'comment not found' },
+      });
+    }
+    const product = await Product.findById(req.body.product_id);
+    if (!product) {
+      throw new Error({
+        statusCode: 404,
+        message: 'product.notFound',
+        messages: { product: 'product not found' },
+      });
+    }
+    product.comments_count++;
+    const comments = await Comment.find({ product_id: req.body.product_id });
+    product.rating = (comments.map(item => item.rating) + req.body.rating) / (comments.length + 1);
+    await Product.findByIdAndUpdate(req.body.product_id, product);
     const comment = new Comment(req.body);
     comment.created_by = req.user._id;
     const result = await comment.save();
+    const notification = new Notification({
+      user_id: req.user._id,
+      type: 'comment_add',
+      title: 'Bình luận mới',
+      message: `Khách hàng ${req.user.full_name} vừa viết bình luận cho sản phẩm ${product.name}.`,
+      object_id: comment._id,
+      onModel: 'Comment',
+      for: 'staff'
+    });
+    const createdNotification = await notification.save();
+    req.io.emit('staff_notification', createdNotification);
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
@@ -84,7 +125,8 @@ exports.updateComment = async (req, res, next) => {
       });
     }
     comment = { ...comment._doc, ...req.body };
-    await Product.findByIdAndUpdate(req.params.id, comment);
+    comment.updated_at = Date.now();
+    await Comment.findByIdAndUpdate(req.params.id, comment);
     const success = new Success({ data: comment });
     res.status(200).send(success);
   } catch (error) {

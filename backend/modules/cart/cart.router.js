@@ -1,44 +1,34 @@
 const express = require('express');
-const controller = require('./product.controller');
+const controller = require('./cart.controller');
 // import { isAdmin,isAuth } from '../../utils/ultil';
 const { isAuth, isAdmin } = require('../../middlewares/auth.middleware');
 const router = express.Router();
 const { handleError } = require('../../middlewares/error.middleware');
-const validator = require('./product.validation');
+const validator = require('./cart.validation');
 
-router.get('/', validator.getProductsValidator, controller.getProducts);
-router.get(
-  '/admin',
-  isAuth,
-  isAdmin,
-  validator.getProductsValidator,
-  controller.getProductsByAdmin
-);
+router.get('/', isAuth, controller.getCarts);
+
 router.get(
   '/:id',
-  validator.getProductByIdValidator,
-  controller.getProductById
+  isAuth,
+  controller.getCartById
 );
 router.post(
-  '/admin',
+  '/',
   isAuth,
-  isAdmin,
-  validator.createProductValidator,
-  controller.createProduct
+  validator.addCartValidator,
+  controller.addCart
 );
 router.put(
-  '/admin/:id',
+  '/:id',
   isAuth,
-  isAdmin,
-  validator.updateProductValidator,
-  controller.updateProduct
+  validator.updateCartValidator,
+  controller.updateCart
 );
-router.put(
-  '/admin/update-status/:id',
+router.delete(
+  '/:id',
   isAuth,
-  isAdmin,
-  validator.updateStatusProductValidator,
-  controller.updateStatusProduct
+  controller.deleteCart
 );
 
 
