@@ -4,6 +4,8 @@ const { Success } = require('../../utils/Success');
 const utils = require('../../commons/utils');
 const Product = require('../products/product.model');
 const StockHistory = require('../stock_history/stock_history.model');
+const Revenue = require('../revenue/revenue.model');
+const moment = require('moment');
 
 exports.getStocks = async (req, res, next) => {
   try {
@@ -112,6 +114,21 @@ exports.importStock = async (req, res, next) => {
       type: 'import',
     });
     await stock_history.save();
+    const existedRevenue = await Revenue.findOne({
+      date: moment().startOf('date').toISOString,
+    });
+    if (!existedRevenue) {
+      const revenue = new Revenue({
+        total_expenditure: req.body.price * req.body.stock,
+        total: -req.body.price * req.body.stock,
+        date: moment().startOf('date').toISOString,
+      });
+      await revenue.save();
+    } else {
+      existedRevenue.total_expenditure += req.body.price * req.body.stock;
+      existedRevenue.total -= req.body.price * req.body.stock;
+      await existedRevenue.save();
+    }
     const success = new Success({ data: stock });
     res.status(200).send(success);
   } catch (error) {

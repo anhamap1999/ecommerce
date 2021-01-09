@@ -9,7 +9,7 @@ exports.getStocksValidator = async (req, res, next) => {
       page: Joi.number().optional(),
       sort: Joi.string().optional(),
       product_id: Joi.string().optional(),
-      size: Joi.number().required(),
+      size: Joi.number().optional(),
     });
     const result = await validate(req.query, schema);
     req.query = result;

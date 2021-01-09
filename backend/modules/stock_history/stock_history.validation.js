@@ -9,7 +9,7 @@ exports.getStockHistoriesValidator = async (req, res, next) => {
       page: Joi.number().optional(),
       sort: Joi.string().optional(),
       product_id: Joi.string().optional(),
-      size: Joi.number().required(),
+      size: Joi.number().optional(),
       type: Joi.string().optional().valid('import', 'export'),
     });
     const result = await validate(req.query, schema);

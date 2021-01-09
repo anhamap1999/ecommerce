@@ -82,9 +82,12 @@ exports.getProducts = async (req, res, next) => {
       page: page && page >= 1 ? page : 1,
       limit: limit && limit >= 3 ? limit : 3,
     };
+    if (size) {
+      query.size = { $all: [size] };
+    }
 
     const success = new Success({});
-    await Product.paginate({ ...query, status: 'approved', size: { $all: [size] } }, options)
+    await Product.paginate({ ...query, status: 'approved' }, options)
       .then((result) => {
         if (result.totalDocs && result.totalDocs > 0) {
           success
@@ -117,8 +120,12 @@ exports.getProductsByAdmin = async (req, res, next) => {
       page: page && page >= 1 ? page : 1,
       limit: limit && limit >= 10 ? limit : 10,
     };
+
+    if (size) {
+      query.size = { $all: [size] };
+    }
     const success = new Success({});
-    await Product.paginate({...query, size: { $all: [size] } }, options)
+    await Product.paginate(query, options)
       .then((result) => {
         if (result.totalDocs && result.totalDocs > 0) {
           success
