@@ -3,7 +3,6 @@ import { NavbarHeader, NavbarLi, NavbarLink, NavbarLogin, NavbarLogo, NavbarMenu
 import {Col , Row } from 'antd';
 import {useDispatch, useSelector} from 'react-redux';
 import { Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 import { getCatogoryAll } from '../../actions/categoryAction';
 window.onscroll = () =>{
@@ -39,7 +38,7 @@ const NavbarTop = () => {
 
     const listCategories = useSelector((state) => state.listCategories);
     const { categories ,loadingCat , errorCat } = listCategories;
-    console.log("cate",categories);
+    
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -48,7 +47,7 @@ const NavbarTop = () => {
         return () => { 
         }
     }, [])
-   
+ 
     return <>
         <NavbarHeader className="navbarheader" id="header">
             <div className="container">
@@ -64,39 +63,28 @@ const NavbarTop = () => {
                                 categories && categories.data && categories.data.map(category   =>
                                     category.type == 1 &&
                                  <NavbarLi className="other-custom">
+                                     <div className="hover_show">
                                      <Link to={category.name} className='cool-link'>{category.name}
                                      
                                      </Link>
-                                     {/* <ul>   
-                                            {
-                                                categories && categories.data && categories.data.map(categoryEle=>
-                                                    categoryEle.type = 2 && categoryEle.parent_id == category._id &&
-                                                <li>
-                                                    <Link to={categoryEle.name}>{categoryEle.name}</Link>
-                                                </li>
-                                                )
-                                            }
-                                    </ul> */}
+                                    {
+                                         <ul>   
+                                                {
+                                                    categories && categories.data && categories.data.map(categoryEle=>
+                                                         categoryEle.type == 2 && categoryEle.parent_id._id == category._id &&
+                                                     <li>
+                                                         <Link to={categoryEle.name} >{categoryEle.name}
+                                                        
+                                                         </Link>
+                                                     </li>
+                                                     )
+                                                 }
+                                         </ul> 
+                                    }
+                                     </div>
                                 </NavbarLi>
-                                     )
-                                }
-                                    {/* <div className="other-custom">
-                                        <p className='cool-link'>khác
-                                        <ul>
-                                           
-                                            {
-                                                categories && categories.data && categories.data.map(category=>
-                                                <li>
-                                                    <Link to={category.name}>{category.name}</Link>
-                                                </li>
-                                                )
-                                            }
-                                        </ul>
-                                        </p>
-                                        
-                                    </div> */}
-                                  
-                                
+                            )
+                            }  
                             </NavbarUl>
                         </NavbarMenu>
                     </Col>    
@@ -109,10 +97,10 @@ const NavbarTop = () => {
                                 
                                 userInfo  ?
                                 <div className="userInfo">
-                                    <i>{   userInfo.data.user.email}
-                                        <ul>
-                                            <li onClick={logout}>Sign Out</li>
-                                            <li> <Link to="/profile/user">Profile</Link> </li>
+                                    <i className="cool-link">{   userInfo.data.user.email}
+                                        <ul className="hover_show" className="other-custom">
+                                           
+                                            <li> <Link to="/profile/user">Tài khoản của bạn</Link> </li>
                                             {
                                                     userInfo.data.user.isAdmin ?
                                                 <>
@@ -122,7 +110,8 @@ const NavbarTop = () => {
                                                 </>
                                                 :
                                                 " "
-                                                }                               
+                                                }   
+                                                 <li onClick={logout}><Link >Đăng xuất</Link></li>                            
                                         </ul>
                                     </i>                      
                                 </div>

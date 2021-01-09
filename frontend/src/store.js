@@ -8,6 +8,7 @@ import { getFullInfoReducer, getUserInfoAdminReducer, userRegisterReducer, userS
 import { categorySaveReducer, getListCategoriesReducer } from './reducers/categoryReducers';
 import { orderSaveReducer, ordersListReducer } from './reducers/orderReduces';
 import { addRessListReducer } from './reducers/delivery_addressReduce';
+import { getCommentProductReducer } from './reducers/commentReducer';
 
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [] ;
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
@@ -30,6 +31,7 @@ const reducer = combineReducers({
     listAddress : addRessListReducer,
     getUserAdmin : getUserInfoAdminReducer,
     listCategories : getListCategoriesReducer,
+    listCommentProduct : getCommentProductReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
