@@ -64,10 +64,11 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
                     :
             error ? <div> {error} </div>
                     :
-            comment && comment.data && comment.data.length > 0 &&
-            comment.data.map(con => con.product_id === productID && 
+            comment && comment.data  && comment.data.length > 0 &&
+            comment.data.map(con => con.product_id._id == productID && 
                                         <CommentedProduct  
                                             content={con}
+                                            
                                         />)
             }
         

@@ -8,12 +8,13 @@ import {
     PRODUCT_DETAILS_SUCCESS,PRODUCT_DETAILS_FAIL, PRODUCT_ADD_REQUEST, PRODUCT_ADD_SUCCESS, PRODUCT_ADD_FAIL, PRODUCT_REMOVE_SUCCESS, PRODUCT_REMOVE_FAIL
   } from '../constants/productConstants';
 import axios from 'axios';
+import axiosClient from '../modules/axios';
 const listProducts = ( numberPage ) => async ( dispatch  ) =>{
 
     try {
       
         dispatch( { type : PRODUCT_LIST_REQUEST } );
-        const {data } = await axios.get(`/api/products?page=${numberPage}`)
+        const {data } = await axiosClient.get(`/api/products?page=${numberPage}`)
         dispatch( { type : PRODUCT_LIST_SUCCESS , payload : data} );
 
     } catch (error) {
@@ -25,7 +26,7 @@ const detailsProduct =  ( productId )  => async ( dispatch ) =>{
 
     try {
         dispatch( { type : PRODUCT_DETAILS_REQUEST , payload : productId }  );
-        const { data } = await axios.get('/api/products/' + productId);
+        const { data } = await axiosClient.get('/api/products/' + productId);
         dispatch( { type : PRODUCT_DETAILS_SUCCESS , payload : data } );
 
     } catch (error) {
@@ -40,7 +41,7 @@ const addProduct = (product) => async (dispatch, getState) =>{
        
         if (!product._id) {
             console.log("k id" ,userInfo);
-            const { data } = await axios.post('/api/products/admin', product, {
+            const { data } = await axiosClient.post('/api/products/admin', product, {
                 headers:{
                     authorization : 'Bearer ' + userInfo.data.access_token
                 },
@@ -50,7 +51,7 @@ const addProduct = (product) => async (dispatch, getState) =>{
         else
         {
             console.log("co id:",product._id);
-            const { data }  = await axios.put('/api/products/' + product._id, product, {
+            const { data }  = await axiosClient.put('/api/products/' + product._id, product, {
                 headers:{
                     authorization : 'Bearer ' + userInfo.token
                 },
@@ -67,7 +68,7 @@ const removeProductID =  ( productId )  => async ( dispatch ,getState ) =>{
     try {
         const { userSignin : {userInfo} } = getState();
         dispatch( { type : PRODUCT_REMOVE_REQUEST , payload : productId }  );
-        const { data } = await axios.delete('/api/products/' + productId, {
+        const { data } = await axiosClient.delete('/api/products/' + productId, {
             headers:{
                 authorization : 'Bearer ' + userInfo.token
             },

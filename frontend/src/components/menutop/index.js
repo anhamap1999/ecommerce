@@ -38,8 +38,7 @@ const NavbarTop = () => {
 
     const listCategories = useSelector((state) => state.listCategories);
     const { categories ,loadingCat , errorCat } = listCategories;
-    
-
+  
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getCatogoryAll())

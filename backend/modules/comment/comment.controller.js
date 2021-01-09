@@ -65,14 +65,14 @@ exports.getCommentById = async (req, res, next) => {
 
 exports.createComment = async (req, res, next) => {
   try {
-    const parent_comment = await Comment.findById(req.body.reply_to);
-    if (!parent_comment) {
-      throw new Error({
-        statusCode: 404,
-        message: 'comment.notFound',
-        messages: { comment: 'comment not found' },
-      });
-    }
+    // const parent_comment = await Comment.findById(req.body.reply_to);
+    // if (!parent_comment) {
+    //   throw new Error({
+    //     statusCode: 404,
+    //     message: 'comment.notFound',
+    //     messages: { comment: 'comment not found' },
+    //   });
+    // }
     const product = await Product.findById(req.body.product_id);
     if (!product) {
       throw new Error({

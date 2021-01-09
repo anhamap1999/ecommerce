@@ -34,11 +34,11 @@ const CommentedProduct = ({content}) => {
     </Tooltip>,
     <span key="comment-basic-reply-to">Reply to</span>,
   ];
-
+console.log(content)
   return (
     <Comment
       actions={actions}
-      author={<a>content</a>}
+      author={<a>{content.created_by.full_name}</a>}
       avatar={
         <Avatar
           src="https://1.bp.blogspot.com/-A7UYXuVWb_Q/XncdHaYbcOI/AAAAAAAAZhM/hYOevjRkrJEZhcXPnfP42nL3ZMu4PvIhgCLcBGAsYHQ/s1600/Trend-Avatar-Facebook%2B%25281%2529.jpg"
