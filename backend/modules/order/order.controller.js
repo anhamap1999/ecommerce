@@ -3,6 +3,8 @@ const Product = require('../products/product.model');
 const Stock = require('../stock/stock.model');
 const Notification = require('../notification/notification.model');
 const StockHistory = require('../stock_history/stock_history.model');
+const Revenue = require('../revenue/revenue.model');
+const moment = require('moment');
 
 exports.getOrders = async (req, res, next) => {
   try {
@@ -114,7 +116,10 @@ exports.saveOrder = async (req, res) => {
           messages: { product: 'product not found' },
         });
       }
-      const stock = await Stock.findOne({ product_id: item.product_id, size: item.size });
+      const stock = await Stock.findOne({
+        product_id: item.product_id,
+        size: item.size,
+      });
       if (stock.stock < item.quantity) {
         throw new Error({
           statusCode: 404,
@@ -242,7 +247,10 @@ exports.updateOrderByAdmin = async (req, res) => {
               messages: { product: 'product not found' },
             });
           }
-          const stock = await Stock.findOne({ product_id: item.product_id, size: item.size });
+          const stock = await Stock.findOne({
+            product_id: item.product_id,
+            size: item.size,
+          });
           if (stock.stock < item.quantity) {
             throw new Error({
               statusCode: 404,
@@ -251,6 +259,14 @@ exports.updateOrderByAdmin = async (req, res) => {
             });
           }
         });
+        let revenue = await Revenue.findOne({
+          date: moment().startOf('date').toISOString,
+        });
+        if (!revenue) {
+          revenue = new Revenue({
+            date: moment().startOf('date').toISOString,
+          });
+        }
         order_items.forEach(async (item) => {
           const product = await Product.findById(item.product_id);
           if (!product) {
@@ -262,17 +278,31 @@ exports.updateOrderByAdmin = async (req, res) => {
           }
           product.sold_count += item.quantity;
           await Product.findByIdAndUpdate(item.product_id, product);
-          const stock = await Stock.findOne({ product_id: item.product_id, size: item.size });
+          const stock = await Stock.findOne({
+            product_id: item.product_id,
+            size: item.size,
+          });
           stock.stock -= item.quantity;
-          await Stock.findOneAndUpdate({ product_id: item.product_id, size: item.size }, stock);
+          await Stock.findOneAndUpdate(
+            { product_id: item.product_id, size: item.size },
+            stock
+          );
           const stock_history = new StockHistory({
             ...stock._doc,
             stock: item.quantity,
-            price: product.price,
-            type: 'import'
+            price: item.price,
           });
           await stock_history.save();
+          revenue.total_revenue += item.quantity * item.price;
         });
+        revenue.total_revenue += order.tax_price + order.shipping_price;
+        revenue.total_additional_fee += order.tax_price + order.shipping_price;
+        revenue.total =
+          revenue.total_revenue -
+          revenue.total_additional_fee -
+          revenue.total_expenditure;
+        await revenue.save();
+
         const notification = new Notification({
           user_id: order.created_by._id,
           type: 'order_update_delivering',
@@ -372,6 +402,23 @@ exports.updateOrderByAdmin = async (req, res) => {
         });
         const created_notification = await notification.save();
         res.io.emit(order.created_by._id, created_notification);
+
+        let revenue = await Revenue.findOne({
+          date: moment().startOf('date').toISOString,
+        });
+        if (!revenue) {
+          revenue = new Revenue({
+            date: moment().startOf('date').toISOString,
+          });
+        }
+        revenue.total_revenue -=
+          order.tax_price + order.shipping_price + order.items_price;
+        revenue.total_additional_fee += order.tax_price + order.shipping_price;
+        revenue.total =
+          revenue.total_revenue -
+          revenue.total_additional_fee -
+          revenue.total_expenditure;
+        await revenue.save();
         break;
       }
       default:

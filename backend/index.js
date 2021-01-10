@@ -26,6 +26,7 @@ const stockRouter = require('./modules/stock/stock.router');
 const staffRouter = require('./modules/staff/staff.router');
 const notificationRouter = require('./modules/notification/notification.router');
 const stockHistoryRouter = require('./modules/stock_history/stock_history.router');
+const revenueRouter = require('./modules/revenue/revenue.router');
 
 const cors = require('cors');
 
@@ -104,6 +105,7 @@ app.use('/api/stock', stockRouter);
 app.use('/api/staff', staffRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/stock-history', stockHistoryRouter);
+app.use('/api/revenue', revenueRouter);
 
 // http.listen(5000, () => {
 //   console.log('server is running : 5000   ');
