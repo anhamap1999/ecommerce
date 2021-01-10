@@ -86,6 +86,7 @@ exports.getProducts = async (req, res, next) => {
     const success = new Success({});
     await Product.paginate({ ...query, status: 'approved', size: { $all: [size] } }, options)
       .then((result) => {
+        console.log("tol:",result.totalDocs)
         if (result.totalDocs && result.totalDocs > 0) {
           success
             .addField('data', result.docs)

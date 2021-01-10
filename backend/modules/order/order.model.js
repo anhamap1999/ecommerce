@@ -7,7 +7,7 @@ const paginate = require('mongoose-paginate-v2');
 // };
 
 const paymentSchema = {
-  paymentMethod: { type: String, required: true, enum: ['cash', ''] },
+  paymentMethod: { type: String, required: true, enum: ['cash', 'online'] },
   bank_account: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: 'BankAccount',
@@ -30,8 +30,9 @@ const progressSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    default: 'picking',
+    default: 'handling',
     enum: [
+      'handling',
       'picking',
       'delivering',
       'delivered',
@@ -84,7 +85,10 @@ const orderSchema = new mongoose.Schema(
         'lost_damage',
       ],
     },
-    progress: [progressSchema]
+    progress: {
+      type: [progressSchema],
+      default: [],
+    }
   },
   {
     timestamps: true,

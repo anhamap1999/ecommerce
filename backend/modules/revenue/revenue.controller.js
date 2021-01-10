@@ -1,4 +1,4 @@
-const Stock = require('./stock.model');
+const Stock = require('./revenue.model');
 const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
 const utils = require('../../commons/utils');

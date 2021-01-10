@@ -3,6 +3,7 @@ const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
 const utils = require('../../commons/utils');
 const Product = require('../products/product.model');
+const Notification = require('../notification/notification.model');
 
 exports.getComments = async (req, res, next) => {
   try {
@@ -21,7 +22,7 @@ exports.getComments = async (req, res, next) => {
           const comments = await Comment.populate(result.docs, [
             { path: 'created_by' },
             { path: 'product_id' },
-            { path: 'reply_to' }
+            { path: 'reply_to' },
           ]);
           success
             .addField('data', comments)
@@ -46,7 +47,7 @@ exports.getCommentById = async (req, res, next) => {
     const comment = await Comment.findById(req.params.id).populate([
       { path: 'created_by' },
       { path: 'product_id' },
-      { path: 'reply_to' }
+      { path: 'reply_to' },
     ]);
 
     if (!comment) {
@@ -65,14 +66,18 @@ exports.getCommentById = async (req, res, next) => {
 
 exports.createComment = async (req, res, next) => {
   try {
-    // const parent_comment = await Comment.findById(req.body.reply_to);
-    // if (!parent_comment) {
-    //   throw new Error({
-    //     statusCode: 404,
-    //     message: 'comment.notFound',
-    //     messages: { comment: 'comment not found' },
-    //   });
-    // }
+
+    if (req.body.reply_to) {
+      const parent_comment = await Comment.findById(req.body.reply_to);
+      if (!parent_comment) {
+        throw new Error({
+          statusCode: 404,
+          message: 'comment.notFound',
+          messages: { comment: 'parent comment not found' },
+        });
+      }
+    }
+
     const product = await Product.findById(req.body.product_id);
     if (!product) {
       throw new Error({
@@ -83,7 +88,9 @@ exports.createComment = async (req, res, next) => {
     }
     product.comments_count++;
     const comments = await Comment.find({ product_id: req.body.product_id });
-    product.rating = (comments.map(item => item.rating) + req.body.rating) / (comments.length + 1);
+    product.rating =
+      (comments.map((item) => item.rating) + req.body.rating) /
+      (comments.length + 1);
     await Product.findByIdAndUpdate(req.body.product_id, product);
     const comment = new Comment(req.body);
     comment.created_by = req.user._id;
@@ -95,10 +102,10 @@ exports.createComment = async (req, res, next) => {
       message: `Khách hàng ${req.user.full_name} vừa viết bình luận cho sản phẩm ${product.name}.`,
       object_id: comment._id,
       onModel: 'Comment',
-      for: 'staff'
+      for: 'staff',
     });
     const createdNotification = await notification.save();
-    req.io.emit('staff_notification', createdNotification);
+    res.io.emit('staff_notification', createdNotification);
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {

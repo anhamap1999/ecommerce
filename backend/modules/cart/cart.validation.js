@@ -7,6 +7,7 @@ exports.addCartValidator = async (req, res, next) => {
       price: Joi.string().required(),
       quantity: Joi.number().required(),
       product_id: Joi.string().required(),
+      size: Joi.number().required(),
     });
     const result = await validate(req.body, schema);
     req.body = result;
@@ -21,6 +22,7 @@ exports.updateCartValidator = async (req, res, next) => {
     const schema = Joi.object().keys({
       price: Joi.string().required(),
       quantity: Joi.number().required(),
+      size: Joi.number().required(),
     });
     const result = await validate(req.body, schema);
     req.body = result;

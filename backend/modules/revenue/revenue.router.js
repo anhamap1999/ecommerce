@@ -1,9 +1,9 @@
 const express = require('express');
-const controller = require('./stock.controller');
+const controller = require('./revenue.controller');
 const { isAuth, isAdmin, isStaff } = require('../../middlewares/auth.middleware');
 const router = express.Router();
 const { handleError } = require('../../middlewares/error.middleware');
-const validator = require('./stock.validation');
+const validator = require('./revenue.validation');
 
 router.get('/', validator.getStocksValidator, controller.getStocks);
 router.get(
