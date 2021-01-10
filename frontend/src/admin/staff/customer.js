@@ -3,7 +3,7 @@ const CustomerAdminInfo = ( {usersData})  => {
     
     return  <div className="">
              <div className="list-product-add  " >
-                <table class="table">
+                <table className="table">
                     <thead>
                         <tr>
                         <th scope="col">Tên Khách hàng</th>

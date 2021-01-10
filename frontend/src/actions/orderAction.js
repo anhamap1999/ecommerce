@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../modules/axios';
 import { ORDER_LIST_FAIL, ORDER_LIST_REQUEST, ORDER_LIST_SUCCESS, ORDER_SAVE_FAIL, ORDER_SAVE_REQUEST, ORDER_SAVE_SUCCESS } from '../constants/orderConstants';
 
 

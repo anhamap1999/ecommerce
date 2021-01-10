@@ -5,7 +5,7 @@ import socketIOClient from 'socket.io-client';
 
 
 function HomePage(props) {
-      const socket = socketIOClient('localhost:5000', {transports: ['websocket']});
+      // const socket = socketIOClient('localhost:5000', {transports: ['websocket']});
 
       // var socket = io('localhost:5000', {transports: ['websocket']});
       // socket.on('connection', () => {

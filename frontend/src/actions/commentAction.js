@@ -1,4 +1,4 @@
-import Axios from "axios";
+import Axios from "../modules/axios";
 import { GET_COMMENT_PRODUCT_FAIL, GET_COMMENT_PRODUCT_REQUEST, GET_COMMENT_PRODUCT_SUCCESS, POST_COMMENT_PRODUCT_FAIL, POST_COMMENT_PRODUCT_REQUEST, POST_COMMENT_PRODUCT_SUCCESS } from "../constants/commentConstant";
 
   const getCommentProduct = (productID) => async (dispatch) => {
@@ -19,11 +19,7 @@ import { GET_COMMENT_PRODUCT_FAIL, GET_COMMENT_PRODUCT_REQUEST, GET_COMMENT_PROD
     try {
       dispatch({ type: POST_COMMENT_PRODUCT_REQUEST } ); 
       const { userSignin : { userInfo } } = getState();
-      const { data } = await Axios.post("/api/comment",product,{
-        headers:{
-            authorization : 'Bearer ' + userInfo.data.access_token
-            }
-        }
+      const { data } = await Axios.post("/api/comment",product
         );
       dispatch({ type: POST_COMMENT_PRODUCT_SUCCESS, payload: data });
     } catch (error) {

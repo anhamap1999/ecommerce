@@ -57,8 +57,8 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     return (
       <>
         {   loading ? 
-                            <div class="spinner-border text-primary" role="status">
-                                        <span class="sr-only"></span>
+                            <div className="spinner-border text-primary" role="status">
+                                        <span className="sr-only"></span>
                             </div>
                         
                     :
@@ -72,12 +72,12 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
             }
         
         { 
-            userInfo && userInfo.data &&
+            userInfo && userInfo.user &&
             <Comment
                 avatar={
                     <Avatar
                         src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        alt={userInfo.data.user.email}
+                        alt={userInfo.user.email}
                     />
                 }
                 content={

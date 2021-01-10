@@ -26,12 +26,12 @@ const StaffAdminScreen= (props) => {
              
                 </div>
                 { 
-                loading ?   <div class="spinner-border text-primary" role="status">
-                                <span class="sr-only"></span>
+                loading ?   <div className="spinner-border text-primary" role="status">
+                                <span className="sr-only"></span>
                              </div> :
                 error ? <div className="">{error}</div> :
-                userInfo && userInfo.data && userInfo.data.user.role == 'admin' ? <div className="list-product-add  " >
-                <table class="table">
+                userInfo && userInfo.user && userInfo.user.role == 'admin' ? <div className="list-product-add  " >
+                <table className="table">
                     <thead>
                         <tr>
                         <th scope="col">Tên Nhân Viên</th>

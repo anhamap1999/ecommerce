@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {  Modal  } from 'antd';
 import ProfileScreen from './profile';
-import Axios from 'axios';
+import Axios from '../../modules/axios';
 import { creareAddressNew, getListAddressNew } from '../../actions/delivery_addressAction';
 
 export default function PlaceUserScreen(props) {
@@ -69,7 +69,7 @@ const { addressList ,loading ,error} = listAddress;
             <h4>Địa chỉ của tôi</h4>
           </div>
           <div className="col-sm-4">
-           <button type="button" class="btn btn-danger" onClick={showModal} style={{position:'absolute',right:'15px'}}>Thêm địa chỉ mới</button>
+           <button type="button" className="btn btn-danger" onClick={showModal} style={{position:'absolute',right:'15px'}}>Thêm địa chỉ mới</button>
           </div>
           <Modal 
               title="Thêm địa chỉ mới" 
@@ -167,8 +167,8 @@ const { addressList ,loading ,error} = listAddress;
     </div>
                                 
     {/* List  address */}
-    { loading ?  <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
+    { loading ?  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
                   </div> :
         error ? <div>{error}</div>:
     addressList.data && addressList.data.map(address => 

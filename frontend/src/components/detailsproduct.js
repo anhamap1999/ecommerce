@@ -23,9 +23,9 @@ function DetailsScreen(props) {
   }, []);
   
   return <HomePage>{
-    loading ? <div class="container">
-    <div class="spinner-border text-primary" role="status">
-    <span class="sr-only"></span>
+    loading ? <div className="container">
+    <div className="spinner-border text-primary" role="status">
+    <span className="sr-only"></span>
  </div>
     </div> :
       error ? <div> {error} </div>:  
@@ -57,9 +57,9 @@ function DetailsScreen(props) {
                               ))}
                             </select>
                       </div>
-                      {product && product.data && <Link to={`/cart/${product.data._id}?qty=${qty}`}><button type="button" style={{padding:'15px'}} className="btn btn-danger"><span><i class='bx bxs-cart'></i></span> THÊM VÀO GIỎ HÀNG</button></Link>}
+                      {product && product.data && <Link to={`/cart/${product.data._id}?qty=${qty}`}><button type="button" style={{padding:'15px'}} className="btn btn-danger"><span><i className='bx bxs-cart'></i></span> THÊM VÀO GIỎ HÀNG</button></Link>}
                       {/* comment */}
-                      <button type="button" style={{padding:'15px'}} class="btn btn-primary"><i className='bx bxs-heart' style={{fontSize:'20px'}}></i></button>         
+                      <button type="button" style={{padding:'15px'}} className="btn btn-primary"><i className='bx bxs-heart' style={{fontSize:'20px'}}></i></button>         
                     </div>
                 </div>
               </div>
@@ -73,13 +73,13 @@ function DetailsScreen(props) {
            </div>
           
             <div className="container" style={{marginTop:'20px'}}>
-              <h3 className="text-primary"><i class='bx bx-comment-detail' style={{marginRight:'5px'}} ></i> Bình luận </h3>                     
+              <h3 className="text-primary"><i className='bx bx-comment-detail' style={{marginRight:'5px'}} ></i> Bình luận </h3>                     
             </div>
            
           
       </div>}
                                 
-       <div class="details-product container">
+       <div className="details-product container">
                                 
        {product && product.data && <CommentEle productID={product.data._id} />}
        </div>

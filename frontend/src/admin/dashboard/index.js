@@ -7,10 +7,10 @@ const DashboardScreen = (props) => {
     
     return <div>
         <MenuTopAdmin/>
-        <div class="d-flex" id="wrapper">
+        <div className="d-flex" id="wrapper">
                 <SlideBarAdmin />
                 <div id="page-content-wrapper">
-                    <div class="container-fluid">
+                    <div className="container-fluid">
                       
                             {props.children}  
                         

@@ -41,9 +41,22 @@ function formatQuery(query) {
   }
   return queryString;
 }
+function formatData(data) {
+  for (const key in data) {
+    if ((!data[key] && data[key] !== 0) || data[key] === '') delete data[key];
+  }
+  return data;
+}
 
+
+function vndFormat(x) {
+  if (typeof x !== 'number') return;
+  return x.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+}
 export default {
   getMessage,
   getMessageError,
-  formatQuery
+  formatQuery,
+  formatData,
+  vndFormat
 };

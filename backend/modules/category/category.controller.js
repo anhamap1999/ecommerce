@@ -230,7 +230,7 @@ exports.getCategoryById = async (req, res, next) => {
     const category = await Category.findOne({
       _id: id,
       status: 'active',
-    }).select(select);
+    }).populate({ path: 'parent_id' }).select(select);
 
     if (!category) {
       throw new Error({
@@ -264,7 +264,7 @@ exports.adminGetCategoryById = async (req, res, next) => {
     const { select } = req.query;
     const { id } = req.params;
 
-    const category = await Category.findById(id).select(select);
+    const category = await Category.findById(id).populate({ path: 'parent_id' }).select(select);
 
     if (!category) {
       throw new Error({

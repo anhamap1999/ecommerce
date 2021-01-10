@@ -1,40 +1,43 @@
-import { CART_ADD_ITEM,CART_REMOVE_ITEM,CART_SAVE_SHIPPING,CART_SAVE_PAYMENT} from "../constants/cartConstants";
-import axios from 'axios';
+import {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_SAVE_SHIPPING,
+  CART_SAVE_PAYMENT,
+} from '../constants/cartConstants';
+import axios from '../modules/axios';
 import Cookie from 'js-cookie';
-const addToCart =  ( productId, qty )  => async ( dispatch,getState ) =>{
+const addToCart = (product, qty, size) => async (dispatch, getState) => {
+  try {
+    // const { data } = await axios.get('/api/products/' + productId);
+    dispatch({
+      type: CART_ADD_ITEM,
+      payload: {
+        product_id: product._id,
+        price: product.price,
+        size,
+        quantity: qty,
+      },
+    });
 
-    try {
-        const { data } = await axios.get('/api/products/' + productId );
-        dispatch( { type : CART_ADD_ITEM , payload : {
-            product: data._id,
-            name :data.name,
-            image : data.image,
-            price : data.price,
-            stock :data.stock,
-            qty
-        }});
-       
-        const { cart : { cartItems } } = getState();
-        console.log("cartItems",cartItems)
-        localStorage.setItem("cartItems",JSON.stringify(cartItems));
-    } catch (error) {
-    
-    }
-}
-const removeToCart = (productId) => (dispatch, getState) =>{
-    dispatch( { type : CART_REMOVE_ITEM , payload : productId } )
-    const { cart : { cartItems } } = getState();
-    Cookie.set("cartItems",JSON.stringify(cartItems));
-}
+    const {
+      cart: { cartItems },
+    } = getState();
+    console.log('cartItems', cartItems);
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  } catch (error) {}
+};
+const removeToCart = (productId) => (dispatch, getState) => {
+  dispatch({ type: CART_REMOVE_ITEM, payload: productId });
+  const {
+    cart: { cartItems },
+  } = getState();
+  Cookie.set('cartItems', JSON.stringify(cartItems));
+};
 const saveShipping = (data) => (dispatch) => {
-   
-        dispatch({type : CART_SAVE_SHIPPING, payload :data});
-        
-  }
+  dispatch({ type: CART_SAVE_SHIPPING, payload: data });
+};
 
 const savePayment = (data) => (dispatch) => {
-   
-    dispatch({type : CART_SAVE_PAYMENT, payload :data});
-    
-}
-export { addToCart, removeToCart, saveShipping, savePayment}
+  dispatch({ type: CART_SAVE_PAYMENT, payload: data });
+};
+export { addToCart, removeToCart, saveShipping, savePayment };

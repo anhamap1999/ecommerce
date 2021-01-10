@@ -14,7 +14,7 @@ const MenuTopAdmin = () => {
                 </div>         
                 <div className="col-md-2">
                     <Link to='/' className="" >
-                        <i class='bx bxs-home'></i>
+                        <i className='bx bxs-home'></i>
                     </Link>    
                 </div>
             </div>

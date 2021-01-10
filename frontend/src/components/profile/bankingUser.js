@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {  Modal  } from 'antd';
 import {Link} from 'react-router-dom';
 import ProfileScreen from './profile';
-import Axios from 'axios';
+import Axios from '../../modules/axios';
 import { createBankNew } from '../../actions/bankAction';
 
 export default function BankingUserScreen(props) {
@@ -67,7 +67,7 @@ export default function BankingUserScreen(props) {
             <h4>Tài khoản Ngân Hàng của tôi</h4>
           </div>
           <div className="col-sm-4">
-           <button type="button" class="btn btn-danger" onClick={showModal} style={{position:'absolute',right:'15px'}}>Thêm Tài khoản mới</button>
+           <button type="button" className="btn btn-danger" onClick={showModal} style={{position:'absolute',right:'15px'}}>Thêm Tài khoản mới</button>
           </div>
           <Modal 
               title="Thêm Tài khoản mới" 

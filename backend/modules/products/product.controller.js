@@ -88,15 +88,16 @@ exports.getProducts = async (req, res, next) => {
 
     const success = new Success({});
     await Product.paginate({ ...query, status: 'approved' }, options)
-      .then((result) => {
+      .then(async(result) => {
         if (result.totalDocs && result.totalDocs > 0) {
+          const products = await Product.populate(result.docs, [{ path: 'category_id' }]);
           success
-            .addField('data', result.docs)
+            .addField('data', products)
             .addField('total_page', result.totalPages)
             .addField('page', result.page)
             .addField('total', result.totalDocs);
-            // res.setHeader("Access-Control-Allow-Origin", "localhost:5000");
-      // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            // res.setHeader("Access-Control-Allow-Origin", "*");
+            // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             // res.io.emit('chat message', result);
         } else {
           success.addField('data',  result.docs);
@@ -126,10 +127,11 @@ exports.getProductsByAdmin = async (req, res, next) => {
     }
     const success = new Success({});
     await Product.paginate(query, options)
-      .then((result) => {
+      .then(async(result) => {
         if (result.totalDocs && result.totalDocs > 0) {
+          const products = await Product.populate(result.docs, [{ path: 'category_id' }]);
           success
-            .addField('data', result.docs)
+            .addField('data', products)
             .addField('total_page', result.totalPages)
             .addField('page', result.page)
             .addField('total', result.totalDocs);
@@ -154,7 +156,7 @@ exports.getProductById = async (req, res, next) => {
     const product = await Product.findOne({
       _id: id,
       status: 'approved',
-    }).select(select);
+    }).populate({ path: 'category_id' }).select(select);
 
     if (!product) {
       throw new Error({
@@ -174,7 +176,7 @@ exports.adminGetProductById = async (req, res, next) => {
   try {
     const { select } = req.query;
 
-    const product = await Product.findById(req.params.id).select(select);
+    const product = await Product.findById(req.params.id).populate({ path: 'category_id' }).select(select);
 
     if (!product) {
       throw new Error({

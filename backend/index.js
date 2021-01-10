@@ -70,6 +70,11 @@ const io = require('socket.io')(http, {
   agent: false,
   origins: '*:*',
   transports: ['websocket', 'polling'],
+  cors: {
+    origin: '*',
+    methods: 'GET,PUT,POST,DELETE,OPTIONS'.split(','),
+    credentials: true
+  }
 });
 
 io.on('connection', (socket) => {

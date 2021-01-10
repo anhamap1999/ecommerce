@@ -70,14 +70,14 @@ const CategoryAdminScreen = (props) => {
                             <label htmlFor="name">
                                 Tên danh mục
                             </label>
-                            <input class="form-control" type="text" 
+                            <input className="form-control" type="text" 
                                     name="name" value={name} id="name" onChange={(e) => setName(e.target.value)} ></input>
                         </li>
                         <li className="form-group">
                             <label htmlFor="name">
                                 Cấp
                             </label>
-                            <input class="form-control" type="number" 
+                            <input className="form-control" type="number" 
                                     name="name" value={type}
                                     min="1" max="3"
                                     id="type" onChange={(e) => setType(e.target.value)} >
@@ -92,7 +92,7 @@ const CategoryAdminScreen = (props) => {
                                     Thuộc Danh mục  
                                 </label>
                                 
-                                <select class="form-control" 
+                                <select className="form-control" 
                                         name="name" value={parent_id} 
                                         id="parent_id" onChange={(e) => setParent_id(e.target.value)}
                                         >
@@ -113,7 +113,7 @@ const CategoryAdminScreen = (props) => {
                             <label htmlFor="image">
                                 Ảnh
                             </label>
-                            <textarea class="form-control" type="text" name="image" value={image} id="image" onChange={(e) => setImage(e.target.value)} ></textarea>
+                            <textarea className="form-control" type="text" name="image" value={image} id="image" onChange={(e) => setImage(e.target.value)} ></textarea>
                         </li>
                         
                         <li>
@@ -124,14 +124,14 @@ const CategoryAdminScreen = (props) => {
                 </Modal>
             </div>
             { 
-            loadingCat ?   <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only"></span>
+            loadingCat ?   <div className="spinner-border text-primary" role="status">
+                            <span className="sr-only"></span>
                          </div> :
             errorCat ? <div className="">{errorCat}</div> :
             <div>
                
                 <div className="list-product-add  " >
-                <table class="table">
+                <table className="table">
                     <thead>
                         <tr>
                         <th scope="col">STT</th>

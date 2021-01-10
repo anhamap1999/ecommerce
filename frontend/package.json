@@ -11,6 +11,7 @@
     "axios": "^0.21.0",
     "firebase": "^8.2.2",
     "icons": "^1.0.0",
+    "immutable": "^4.0.0-rc.12",
     "js-cookie": "^2.2.1",
     "rc-scroll-anim": "^2.7.5",
     "react": "^17.0.1",

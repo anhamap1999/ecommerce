@@ -22,8 +22,8 @@ const CustomerAdminScreen = (props) => {
         
         </div>
             { 
-            loading ?   <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only"></span>
+            loading ?   <div className="spinner-border text-primary" role="status">
+                            <span className="sr-only"></span>
                          </div> :
             error ? <div className="">{error}</div> :
             <CustomerAdminInfo usersData ={ users.data } />

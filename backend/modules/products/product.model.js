@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema({
   rating: { type: Number, default: 0, required: true },
   numReviews: { type: Number, default: 0, required: true },
   user_id: { type: String, require: true },
-  category_id: { type: String, required: true },
+  category_id: { type: mongoose.SchemaTypes.ObjectId, ref: 'Category', required: true },
   thumbnail: { type: String, required: true },
   likes_count: { type: Number, required: true, default: 0 },
   comments_count: { type: Number, required: true, default: 0 },

@@ -30,15 +30,15 @@ function ShippingScreen(props) {
             <label htmlFor="address">
                             address
             </label>
-            <input class="form-control" type="text" name="address" id="address" value={address} onChange={(e) => setAddress(e.target.value)} ></input>
+            <input className="form-control" type="text" name="address" id="address" value={address} onChange={(e) => setAddress(e.target.value)} ></input>
             <label htmlFor="city">
                             city
             </label>
-            <input class="form-control" type="text" name="city" id="city" value={city} onChange={(e) => setCity(e.target.value)} ></input>
+            <input className="form-control" type="text" name="city" id="city" value={city} onChange={(e) => setCity(e.target.value)} ></input>
             <label htmlFor="country">
                             country
             </label>
-            <input class="form-control" type="text" name="country" id="country" value={country} onChange={(e) => setCountry (e.target.value)} ></input>
+            <input className="form-control" type="text" name="country" id="country" value={country} onChange={(e) => setCountry (e.target.value)} ></input>
             <button className="btn btn-outline-dark">
                 Continue
             </button>

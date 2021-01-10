@@ -38,8 +38,8 @@ export default function ProfileUserScreen(props) {
         dispatch(changePwd(new_password, confirm_new_password));
     }
   return <ProfileScreen>
-      {     loading ?   <div class="spinner-border text-primary" role="status">
-                          <span class="sr-only">Loading...</span>
+      {     loading ?   <div className="spinner-border text-primary" role="status">
+                          <span className="sr-only">Loading...</span>
                         </div>
             :
             error ? <div>{error}</div>

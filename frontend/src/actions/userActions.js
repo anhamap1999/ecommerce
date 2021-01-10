@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../modules/axios';
 import Cookies from 'js-cookie';
 import Cookie from 'js-cookie';
 import {CHANGE_PWD_FAIL, CHANGE_PWD_REQUEST, CHANGE_PWD_SUCCESS, GET_FULL_INFO_FAIL, GET_FULL_INFO_REQUEST, GET_FULL_INFO_SUCCESS, GET_USER_INFO_ADMIN_FAIL, GET_USER_INFO_ADMIN_REQUEST, GET_USER_INFO_ADMIN_SUCCESS, UPDATE_INFO_FAIL, UPDATE_INFO_REQUEST, UPDATE_INFO_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS } from '../constants/userConstants';
@@ -35,11 +35,7 @@ const signin = (userName, password) => async (dispatch) => {
     dispatch({ type: GET_FULL_INFO_REQUEST } ); 
     try {
       const { userSignin : { userInfo } } = getState();
-      const { data } = await axios.get("/api/users",{
-        headers:{
-            authorization : 'Bearer ' + userInfo.data.access_token
-        },
-    });
+      const { data } = await axios.get("/api/users");
       dispatch({ type: GET_FULL_INFO_SUCCESS, payload: data });
       Cookie.set('userFullInfo', JSON.stringify(data));
     } catch (error) {
@@ -53,11 +49,7 @@ const signin = (userName, password) => async (dispatch) => {
     try {
       dispatch({ type: GET_USER_INFO_ADMIN_REQUEST } ); 
       const { userSignin : { userInfo } } = getState();
-      const { data } = await axios.get("/api/users/admin",{
-        headers:{
-            authorization : 'Bearer ' + userInfo.data.access_token
-        },
-    });
+      const { data } = await axios.get("/api/users/admin");
       dispatch({ type: GET_USER_INFO_ADMIN_SUCCESS, payload: data });
     } catch (error) {
       dispatch({ type: GET_USER_INFO_ADMIN_FAIL, payload: error.message });
@@ -68,7 +60,7 @@ const signin = (userName, password) => async (dispatch) => {
     try {
       const { data } = await axios.post("/api/users/register", { phone_number ,email, password ,confirm_password});
       dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
-      Cookie.set('userInfo', JSON.stringify(data));
+      // Cookie.set('userInfo', JSON.stringify(data));
     } catch (error) {
       dispatch({ type: USER_REGISTER_FAIL, payload: error.message });
     }
@@ -78,11 +70,7 @@ const signin = (userName, password) => async (dispatch) => {
     try {
       const { userSignin : { userInfo } } = getState();
  
-      const { data } = await axios.put("/api/users/update", { full_name, gender, birthday },{
-        headers:{
-            authorization : 'Bearer ' + userInfo.data.access_token
-        },
-    });
+      const { data } = await axios.put("/api/users/update", { full_name, gender, birthday });
       dispatch({ type: UPDATE_INFO_SUCCESS, payload: data });
       Cookie.set('userInfo', JSON.stringify(data));
     } catch (error) {
@@ -95,11 +83,7 @@ const changePwd = (new_password,confirm_new_password) => async( dispatch, getSta
   try {
     const { userSignin : { userInfo } } = getState();
 
-    const { data } = await axios.post("/api/users/change-password"  , { new_password, confirm_new_password },{
-      headers:{
-          authorization : 'Bearer ' + userInfo.data.access_token
-      },
-  });
+    const { data } = await axios.post("/api/users/change-password"  , { new_password, confirm_new_password });
     dispatch({ type: CHANGE_PWD_SUCCESS, payload: data });
     Cookie.set('userInfo', JSON.stringify(data));
   } catch (error) {

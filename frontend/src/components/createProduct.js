@@ -25,7 +25,7 @@ function CreateProductScreen(props) {
         if(successful){
             setModalVisible(false);
         }
-        dispatch(listProducts());
+        dispatch(listProducts({}));
         return () => {
         };
     }, [successful,successdelete]);
@@ -67,37 +67,37 @@ function CreateProductScreen(props) {
                         <label htmlFor="name">
                             Name
                         </label>
-                        <input class="form-control" type="text" name="name" value={name} id="name" onChange={(e) => setName(e.target.value)} ></input>
+                        <input className="form-control" type="text" name="name" value={name} id="name" onChange={(e) => setName(e.target.value)} ></input>
                     </li>
                     <li>
                         <label htmlFor="image">
                             Image
                         </label>
-                        <input class="form-control" type="text" name="image" value={image} id="image" onChange={(e) => setImage(e.target.value)} ></input>
+                        <input className="form-control" type="text" name="image" value={image} id="image" onChange={(e) => setImage(e.target.value)} ></input>
                     </li>
                     <li>
                         <label htmlFor="brand">
                             Brand
                         </label>
-                        <input class="form-control" type="text" name="brand" id="brand" value={brand} onChange={(e) => setBrand(e.target.value)} ></input>
+                        <input className="form-control" type="text" name="brand" id="brand" value={brand} onChange={(e) => setBrand(e.target.value)} ></input>
                     </li>
                     <li>
                         <label htmlFor="price">
                             Price
                         </label>
-                        <input class="form-control" type="text" name="price" id="price" value={price} onChange={(e) => setPrice(e.target.value)} ></input>
+                        <input className="form-control" type="text" name="price" id="price" value={price} onChange={(e) => setPrice(e.target.value)} ></input>
                     </li>
                     <li>
                         <label htmlFor="stock">
                             Stock
                         </label>
-                        <input class="form-control" type="text" name="stock" id="stock" value={stock} onChange={(e) => setStock(e.target.value)} ></input>
+                        <input className="form-control" type="text" name="stock" id="stock" value={stock} onChange={(e) => setStock(e.target.value)} ></input>
                     </li>
                     <li>
                         <label htmlFor="description">
                             description
                         </label>
-                        <textarea class="form-control" type="text" name="description" value={description} id="description" onChange={(e) => setDescription(e.target.value)} ></textarea>
+                        <textarea className="form-control" type="text" name="description" value={description} id="description" onChange={(e) => setDescription(e.target.value)} ></textarea>
                     </li>
                     
                     <li>
@@ -109,7 +109,7 @@ function CreateProductScreen(props) {
     </div>)
       }
       <div className="list-product-add  " className={ !openmodalVisible  ? "col-md-12" : "col-md-7"}>
-                <table class="table">
+                <table className="table">
                     <thead>
                         <tr>
                         <th scope="col">id</th>

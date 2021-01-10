@@ -27,7 +27,7 @@ export const ProductNewText = styled.div`
   
 `;
 export const ProductNewTitle = styled.h3`
-    font-size:32px;
+    font-size:26px;
     font-weight:700;
   
 `;
@@ -82,7 +82,7 @@ export const ProductBoxText =styled.div`
         transition:0.2s ease-in-out;
     }
     & h3{
-        font-size:32px;
+        font-size:20px;
         font-weight:800;
     }
     & p{

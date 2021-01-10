@@ -27,7 +27,7 @@ function AddCategoryScreen(props) {
                         <label htmlFor="categoryName">
                           CategoryName
                         </label>
-                        <input class="form-control" type="text" name="categoryName" value={categoryName} id="categoryName" onChange={(e) => setCategoryName(e.target.value)} ></input>
+                        <input className="form-control" type="text" name="categoryName" value={categoryName} id="categoryName" onChange={(e) => setCategoryName(e.target.value)} ></input>
                     </li>
                     <li>
                     <button className="btn btn-primary" type="submit" >Save Category</button>
