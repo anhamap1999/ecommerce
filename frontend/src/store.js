@@ -8,8 +8,6 @@ import {
 } from './reducers/productReducers';
 import thunk from 'redux-thunk';
 import { cartReducer } from './reducers/cartReducers';
-import Cookie from 'js-cookie';
-import Cookies from 'js-cookie';
 import {
   getFullInfoReducer,
   getUserInfoAdminReducer,
@@ -28,7 +26,6 @@ import { configReducer } from './reducers/configReducers';
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
 const initialState = {
-  cart: { cartItems },
   shipping: {},
   payment: {},
   userSignin: { userInfo },
