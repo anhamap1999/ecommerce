@@ -1,25 +1,24 @@
 import {createStore, combineReducers,applyMiddleware, compose} from 'redux';
 import { productListReducer, productDetailsReducer, productAddReducer, productRemoveReducer } from './reducers/productReducers';
 import thunk from 'redux-thunk';
-import { cartReducer } from './reducers/cartReducers';
-import Cookie from 'js-cookie';
-import Cookies from 'js-cookie';
+
 import { getFullInfoReducer, getUserInfoAdminReducer, userRegisterReducer, userSigninReducer } from './reducers/userReducers';
 import { categorySaveReducer, getListCategoriesReducer } from './reducers/categoryReducers';
 import { orderSaveReducer, ordersListReducer } from './reducers/orderReduces';
 import { addRessListReducer } from './reducers/delivery_addressReduce';
 import { getCommentProductReducer } from './reducers/commentReducer';
+import { getProductCartReducer } from './reducers/cartReducers';
 
-const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [] ;
+
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
-const initialState = {  cart : { cartItems },
+const initialState = {  
                         shipping: {}, payment: {},
                         userSignin : { userInfo },
                       } ;
 const reducer = combineReducers({
     productList : productListReducer,
     productDetails : productDetailsReducer,
-    cart : cartReducer,
+    cartUser : getProductCartReducer,
     getFullInfo :getFullInfoReducer,
     userSignin : userSigninReducer,
     userRegister :userRegisterReducer,

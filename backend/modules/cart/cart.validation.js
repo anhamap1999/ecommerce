@@ -4,7 +4,7 @@ const { validate } = require('../../commons/utils');
 exports.addCartValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
-      price: Joi.string().required(),
+      price: Joi.number().required(),
       quantity: Joi.number().required(),
       product_id: Joi.string().required(),
       size: Joi.number().required(),

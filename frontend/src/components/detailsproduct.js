@@ -4,10 +4,9 @@ import {detailsProduct} from '../actions/productActions';
 import {Link} from 'react-router-dom'
 import HomePage from '../pages/homepage';
 import Img from './giay.png';
-import Demo from './comment';
 import CommentEle from './comment/commentEle';
-import CommentedProduct from './comment';
 import {  InputNumber  } from  'antd';
+import { saveProductCart } from '../actions/cartActions';
 function DetailsScreen(props) {
   const [qty,setQty] =useState(1);
   const [size,setSize] =useState('');
@@ -25,7 +24,9 @@ function DetailsScreen(props) {
   const sizeOnchange= (e) =>{
     setSize(e.target.value)
   }
- 
+  const addProductTocart = async() =>{
+    await dispatch(saveProductCart({quantity :qty,size,product_id :product.data._id, price :product.data.price}))
+  }
   return <HomePage>{
     loading ? <div class="container">
     <div class="spinner-border text-primary" role="status">
@@ -70,7 +71,15 @@ function DetailsScreen(props) {
                                     ) }
                       </div></>
                       }
-                      {product && product.data &&  <Link to={ `/cart/${product.data._id}?qty=${qty}&&size=${size}` } ><button type="button" style={{padding:'15px'}}  className="btn btn-danger"><span><i class='bx bxs-cart'></i></span> THÊM VÀO GIỎ HÀNG</button></Link>}
+                      
+                        <Link to={ `/cart/${product.data._id}?qty=${qty}&&size=${size}` } >
+                          <button type="button" style={{padding:'15px'}}  
+                                  className="btn btn-danger"
+                                  onClick={addProductTocart}
+                                  >
+                                    <span><i class='bx bxs-cart'></i></span> THÊM VÀO GIỎ HÀNG
+                          </button>
+                        </Link>
                       {/* comment */}
                       <button type="button" style={{padding:'15px'}} class="btn btn-primary"><i className='bx bxs-heart' style={{fontSize:'20px'}}></i></button>         
                     </div>
