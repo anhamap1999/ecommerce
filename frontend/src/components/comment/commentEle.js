@@ -10,7 +10,7 @@ const { TextArea } = Input;
 
 
 
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
+export const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <>
     <Form.Item>
       <TextArea rows={4} onChange={onChange} value={value} />
@@ -28,9 +28,9 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     const [comments, setComments] = useState([])
     const [submitting, setSubmitting] = useState(false)
     const [content, setContent] = useState([])
-   
     const [rating, setRating] = useState(4)
     const [images, setimages] = useState([]);
+    
     const dispatch = useDispatch();
     const listCommentProduct = useSelector(state => state.listCommentProduct)
     const {comment,loading,error} =listCommentProduct;
@@ -64,10 +64,11 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
                     :
             error ? <div> {error} </div>
                     :
-            comment && comment.data && comment.data.length > 0 &&
-            comment.data.map(con => con.product_id === productID && 
+            comment && comment.data  && comment.data.length > 0 &&
+            comment.data.map(con => con.product_id._id == productID && 
                                         <CommentedProduct  
                                             content={con}
+                                            
                                         />)
             }
         

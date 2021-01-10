@@ -38,16 +38,18 @@ const CategoryAdminScreen = (props) => {
         setImage(category.image);
         setParent_id(category.parent_id)
     }
-    const submitHandler = (e) =>{
+    const submitHandler = async(e) =>{
         e.preventDefault();
-        if(type == 1){
-            dispatch(saveCategoryNew({_id:id,name,type,image}))
+         if(type == 1){
+           dispatch(saveCategoryNew({name,type,image}))
         }else{
-            dispatch(saveCategoryNew({_id:id,name,type,parent_id,image}))
+           dispatch(saveCategoryNew({name,type,parent_id,image}))
         };   
+
     }
-    const deleteHandler= (category) =>{
-         dispatch(deleteCategoryAdmin(category._id))
+    const deleteHandler= async(category) =>{
+        await dispatch(deleteCategoryAdmin(category._id))
+         dispatch(getCatogoryAll());
     }
     useEffect(() => {
         if(ok){

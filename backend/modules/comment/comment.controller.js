@@ -66,6 +66,7 @@ exports.getCommentById = async (req, res, next) => {
 
 exports.createComment = async (req, res, next) => {
   try {
+
     if (req.body.reply_to) {
       const parent_comment = await Comment.findById(req.body.reply_to);
       if (!parent_comment) {
@@ -76,6 +77,7 @@ exports.createComment = async (req, res, next) => {
         });
       }
     }
+
     const product = await Product.findById(req.body.product_id);
     if (!product) {
       throw new Error({

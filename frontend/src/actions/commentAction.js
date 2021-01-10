@@ -1,5 +1,6 @@
 import Axios from "../modules/axios";
 import { GET_COMMENT_PRODUCT_FAIL, GET_COMMENT_PRODUCT_REQUEST, GET_COMMENT_PRODUCT_SUCCESS, POST_COMMENT_PRODUCT_FAIL, POST_COMMENT_PRODUCT_REQUEST, POST_COMMENT_PRODUCT_SUCCESS } from "../constants/commentConstant";
+import axiosClient from "../modules/axios";
 
   const getCommentProduct = (productID) => async (dispatch) => {
 
@@ -7,7 +8,7 @@ import { GET_COMMENT_PRODUCT_FAIL, GET_COMMENT_PRODUCT_REQUEST, GET_COMMENT_PROD
     try {
       dispatch({ type: GET_COMMENT_PRODUCT_REQUEST } ); 
       
-      const { data } = await Axios.get("/api/comment");
+      const { data } = await axiosClient.get("/api/comment");
       dispatch({ type: GET_COMMENT_PRODUCT_SUCCESS, payload: data });
     } catch (error) {
       dispatch({ type: GET_COMMENT_PRODUCT_FAIL, payload: error.message });

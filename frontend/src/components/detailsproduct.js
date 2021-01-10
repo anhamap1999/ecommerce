@@ -7,9 +7,10 @@ import Img from './giay.png';
 import Demo from './comment';
 import CommentEle from './comment/commentEle';
 import CommentedProduct from './comment';
-
+import {  InputNumber  } from  'antd';
 function DetailsScreen(props) {
   const [qty,setQty] =useState(1);
+  const [size,setSize] =useState('');
   const productDetails = useSelector(state => state.productDetails);
   const { product, loading , error} = productDetails;
   const dispatch = useDispatch();
@@ -21,7 +22,10 @@ function DetailsScreen(props) {
      
     };
   }, []);
-  
+  const sizeOnchange= (e) =>{
+    setSize(e.target.value)
+  }
+ 
   return <HomePage>{
     loading ? <div className="container">
     <div className="spinner-border text-primary" role="status">
@@ -42,22 +46,31 @@ function DetailsScreen(props) {
                       <h3 className="text-secondary" style={{textTransform:'uppercase'}}>{ product.data.name }</h3>
                       <p className="text-secondary">{ product.data.numReviews } Reviews</p>
                       <h4>GIÁ: <span className="text-warning">{ product.data.price } VNĐ</span></h4>
+                      {product.data.stock == 0 ? <h1>HẾT HÀNG</h1> : <>
                       <div>
                       Số lượng: 
-                            <select
-                              value={qty}
-                              onChange={(e) => {
-                                setQty(e.target.value);
-                              }}
-                            >
-                              {[...Array(product.data.stock).keys()].map((x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
-                                </option>
-                              ))}
-                            </select>
+                      <InputNumber min={1} max={product.data.stock} 
+                              value={qty} 
+                              onChange={value =>setQty(value)} />
+                            {console.log(qty)}
                       </div>
-                      {product && product.data && <Link to={`/cart/${product.data._id}?qty=${qty}`}><button type="button" style={{padding:'15px'}} className="btn btn-danger"><span><i className='bx bxs-cart'></i></span> THÊM VÀO GIỎ HÀNG</button></Link>}
+                      <div style={{marginBottom:'5px'}} > 
+                        <h5>Size :</h5>
+                        {product.data.size.map((item,index) =>     
+                                    <button 
+                                          type="button" key={index} 
+                                          style={{padding:'8px',width:'80px',margin:'5px'}} 
+                                          className={item == 37 ? 'btn btn-outline-danger' :'btn btn-outline-secondary'}
+                                          value={item}
+                                          onClick={sizeOnchange}
+                                          >
+                                      {item}
+                                    {console.log("bds",size)}
+                                    </button>
+                                    ) }
+                      </div></>
+                      }
+                      {product && product.data &&  <Link to={ `/cart/${product.data._id}?qty=${qty}&&size=${size}` } ><button type="button" style={{padding:'15px'}}  className="btn btn-danger"><span><i class='bx bxs-cart'></i></span> THÊM VÀO GIỎ HÀNG</button></Link>}
                       {/* comment */}
                       <button type="button" style={{padding:'15px'}} className="btn btn-primary"><i className='bx bxs-heart' style={{fontSize:'20px'}}></i></button>         
                     </div>
