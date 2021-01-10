@@ -10,7 +10,7 @@ const { TextArea } = Input;
 
 
 
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
+export const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <>
     <Form.Item>
       <TextArea rows={4} onChange={onChange} value={value} />
@@ -28,9 +28,9 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     const [comments, setComments] = useState([])
     const [submitting, setSubmitting] = useState(false)
     const [content, setContent] = useState([])
-   
     const [rating, setRating] = useState(4)
     const [images, setimages] = useState([]);
+    
     const dispatch = useDispatch();
     const listCommentProduct = useSelector(state => state.listCommentProduct)
     const {comment,loading,error} =listCommentProduct;
