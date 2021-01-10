@@ -18,7 +18,7 @@ import {
 } from './productele';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProducts, changeFields } from '../../actions/productActions';
-import { addToCart } from '../../actions/cartActions';
+import { saveProductCart } from '../../actions/cartActions';
 import { useEffect } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import utils from '../../modules/utils';
@@ -41,7 +41,14 @@ const ProductsNike = (props) => {
   }, []);
 
   const addItemToCart = (product) => {
-    addToCart(product, 1, product.size[0]);
+    dispatch(
+      saveProductCart({
+        product_id: product._id,
+        price: product.price,
+        quantity: 1,
+        size: product.size[0],
+      })
+    );
   };
 
   const onClickCategory = (item) => {

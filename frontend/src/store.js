@@ -7,7 +7,7 @@ import {
   productNewListReducer
 } from './reducers/productReducers';
 import thunk from 'redux-thunk';
-import { cartReducer } from './reducers/cartReducers';
+import { getProductCartReducer } from './reducers/cartReducers';
 import {
   getFullInfoReducer,
   getUserInfoAdminReducer,
@@ -33,7 +33,7 @@ const initialState = {
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
-  cart: cartReducer,
+  cart: getProductCartReducer,
   getFullInfo: getFullInfoReducer,
   userSignin: userSigninReducer,
   userRegister: userRegisterReducer,
