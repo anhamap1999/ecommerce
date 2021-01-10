@@ -17,25 +17,42 @@ import {
   ProductSaledes,
 } from './productele';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts } from '../../actions/productActions';
+import { listProducts, changeFields } from '../../actions/productActions';
 import { addToCart } from '../../actions/cartActions';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import utils from '../../modules/utils';
 
-const ProductsNike = () => {
+const ProductsNike = (props) => {
   const productList = useSelector((state) => state.productList);
   const { products, loading, error } = productList;
   const dispatch = useDispatch();
   const listCategories = useSelector((state) => state.listCategories);
   const { categories, loading: loadingCat, error: errorCat } = listCategories;
+
+  const history = useHistory();
+  const location = useLocation();
+  const redirect = location.search
+    ? location.search.split('=')[1]
+    : '/products/';
   useEffect(() => {
-    dispatch(listProducts({ page: 1, limit: 30 }));
+    dispatch(listProducts({ page: 1, limit: 50 }));
     return () => {};
   }, []);
 
   const addItemToCart = (product) => {
     addToCart(product, 1, product.size[0]);
+  };
+
+  const onClickCategory = (item) => {
+    history.push(redirect + item.pure_name);
+    dispatch(
+      changeFields({
+        query: {
+          category_id: item._id,
+        },
+      })
+    );
   };
   return (
     <>
@@ -43,81 +60,95 @@ const ProductsNike = () => {
         {categories && categories.length
           ? categories
               .filter((i) => i.type === 1)
-              .map((category) => (
-                <>
-                  <h1 className='text-center' style={{ marginTop: '50px' }}>
-                    {category.name}
-                  </h1>
-                  <div className=''>
-                    <ProductSaleOff>
-                      <ProductSaleH2>{category.name}</ProductSaleH2>
-                      {/* <ProductSaledes>In Adidas </ProductSaledes> */}
-                      <Link to={`/products/${category.pure_name}`}>
-                        <ProductSaleButton>
+              .map((category) => {
+                let count = 0;
+                return (
+                  <>
+                    <h1 className='text-center' style={{ marginTop: '50px' }}>
+                      {category.name}
+                    </h1>
+                    <div className=''>
+                      <ProductSaleOff>
+                        <ProductSaleH2>{category.name}</ProductSaleH2>
+                        {/* <ProductSaledes>In Adidas </ProductSaledes> */}
+                        {/* <Link to={`/products/${category.pure_name}`}> */}
+                        <ProductSaleButton
+                          onClick={() => onClickCategory(category)}
+                        >
                           <ProductSaleSpan>Xem tất cả</ProductSaleSpan>
                         </ProductSaleButton>
-                      </Link>
-                    </ProductSaleOff>
-                  </div>
-                  <ProductContainer id='product'>
-                    <Row>
-                      {loading ? (
-                        <div
-                          className='spinner-border text-primary'
-                          role='status'
-                        >
-                          <span className='sr-only'>Loading...</span>
-                        </div>
-                      ) : error ? (
-                        <div className=''>loading</div>
-                      ) : (
-                        products &&
-                        products.length &&
-                        products.map(
-                          (product) =>
-                            product.category_id &&
-                            product.category_id._id === category._id && (
-                              <Col md={{ span: 8 }}>
-                                <Link to={`/product/${product._id}`}>
-                                  <ProductWrapper>
-                                    <ProductImg>
-                                      <img
-                                        src={product.thumbnail}
-                                        alt={product.name}
-                                      ></img>
-                                    </ProductImg>
-                                    <ProductText>
-                                      <ProductTitle>
-                                        {product.name}
-                                      </ProductTitle>
-                                      <ProductPrice>
-                                        {utils.vndFormat(product.price)}
-                                      </ProductPrice>
-                                      <Productbutton>
-                                        <Link
-                                          to={'/cart'}
-                                          onClick={() => addItemToCart(product)}
-                                        >
-                                          Thêm vào giỏ hàng
-                                        </Link>{' '}
-                                        <i className='bx bx-right-arrow-alt'></i>
-                                      </Productbutton>
-                                    </ProductText>
-                                    {product.discount_rate > 0 && (
-                                      <ProductSale>
-                                        {product.discount_rate}
-                                      </ProductSale>
-                                    )}
-                                  </ProductWrapper>
-                                </Link>
-                              </Col>
-                            )
-                        )
-                      )}
-                    </Row>
-                  </ProductContainer>
-                </>
-              ))
+                        {/* </Link> */}
+                      </ProductSaleOff>
+                    </div>
+                    <ProductContainer id='product'>
+                      <Row>
+                        {loading ? (
+                          <div
+                            className='spinner-border text-primary'
+                            role='status'
+                          >
+                            <span className='sr-only'>Loading...</span>
+                          </div>
+                        ) : error ? (
+                          <div className=''>loading</div>
+                        ) : (
+                          products &&
+                          products.length &&
+                          products.map((product) => {
+                            if (
+                              product.category_id &&
+                              (product.category_id._id === category._id ||
+                                (category.parent_id &&
+                                  category.parent_id._id ===
+                                    product.category_id._id))
+                            ) {
+                              count++;
+                              return count > 6 ? null : (
+                                <Col md={{ span: 8 }}>
+                                  <Link to={`/product/${product._id}`}>
+                                    <ProductWrapper>
+                                      <ProductImg>
+                                        <img
+                                          src={product.thumbnail}
+                                          alt={product.name}
+                                        ></img>
+                                      </ProductImg>
+                                      <ProductText>
+                                        <ProductTitle>
+                                          {product.name}
+                                        </ProductTitle>
+                                        <ProductPrice>
+                                          {utils.vndFormat(product.price)}
+                                        </ProductPrice>
+                                        <Productbutton>
+                                          <Link
+                                            to={'/cart'}
+                                            onClick={() =>
+                                              addItemToCart(product)
+                                            }
+                                          >
+                                            Thêm vào giỏ hàng
+                                          </Link>{' '}
+                                          <i className='bx bx-right-arrow-alt'></i>
+                                        </Productbutton>
+                                      </ProductText>
+                                      {product.discount_rate > 0 && (
+                                        <ProductSale>
+                                          {product.discount_rate}
+                                        </ProductSale>
+                                      )}
+                                    </ProductWrapper>
+                                  </Link>
+                                </Col>
+                              );
+                            }
+                          })
+                        )}
+                      </Row>
+                    </ProductContainer>
+                  </>
+                );
+              })
           : loadingCat && (
               <div className='spinner-border text-primary' role='status'>
                 <span className='sr-only'>Loading...</span>

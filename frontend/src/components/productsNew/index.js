@@ -16,7 +16,7 @@ import {
 } from './productNewele';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts } from '../../actions/productActions';
+import { listNewProducts } from '../../actions/productActions';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import utils from '../../modules/utils';
@@ -27,7 +27,7 @@ const ProductsNew = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(listProducts({ page: 1, limit: 10 }));
+    dispatch(listNewProducts({ page: 1, limit: 5 }));
     return () => {};
   }, []);
   return (

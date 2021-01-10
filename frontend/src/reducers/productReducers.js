@@ -14,21 +14,30 @@ import {
   PRODUCT_NEW_LIST_FAIL,
   PRODUCT_NEW_LIST_REQUEST,
   PRODUCT_NEW_LIST_SUCCESS,
+  CHANGE_FIELDS,
 } from '../constants/productConstants';
+import _ from 'lodash';
 
-function productListReducer(state = { products: [] }, action) {
+function productListReducer(state = { products: [], query: {} }, action) {
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
-      return { loading: true, products: [], error: null };
+      return { ...state, loading: true, products: [], error: null };
     case PRODUCT_LIST_SUCCESS:
       return {
+        ...state,
         loading: false,
         products: action.payload.data,
         totalPage: action.payload.total_page,
         total: action.payload.total,
       };
     case PRODUCT_LIST_FAIL:
-      return { loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
+    case CHANGE_FIELDS: {
+      for (const key in action.payload) {
+        _.set(state, key, action.payload[key]);
+      }
+      return state;
+    }
     default:
       return state;
   }

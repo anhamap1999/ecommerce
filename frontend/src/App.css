@@ -529,3 +529,11 @@ ul{
   font-weight: 700;
   margin-bottom: 40px;
 }
+
+.color-circle {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 5px;
+}

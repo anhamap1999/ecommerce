@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getCatogoryAll } from '../../actions/categoryAction';
+import { changeFields } from '../../actions/productActions';
+
 window.onscroll = () => {
   const nav = document.getElementById('header');
   const pro = document.getElementById('product');
@@ -42,12 +44,28 @@ const NavbarTop = () => {
   const listCategories = useSelector((state) => state.listCategories);
   const { categories, loading: loadingCat, error: errorCat } = listCategories;
 
+  const config = useSelector((state) => state.config);
+  const { configs, loading: loadingConfig, error: errorConfig } = config;
+  const index = configs && configs.findIndex((item) => item.key === 'brand');
+  const brands = configs[index] ? configs[index].value : [];
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getCatogoryAll());
+    // dispatch(getCatogoryAll());
+    // dispatch(getConfig());
 
     return () => {};
   }, []);
+
+  const onClickItem = (key, value) => {
+    dispatch(
+      changeFields({
+        query: {
+          [key]: value,
+        },
+      })
+    );
+  };
 
   return (
     <>
@@ -62,7 +80,7 @@ const NavbarTop = () => {
 
             <Col md={{ span: 12 }}>
               <NavbarMenu>
-                {loadingCat && (
+                {(loadingCat || loadingConfig) && (
                   <div className='spinner-border text-primary' role='status'>
                     <span className='sr-only'>Loading...</span>
                   </div>
@@ -72,12 +90,15 @@ const NavbarTop = () => {
                     categories.length &&
                     categories.map(
                       (category) =>
-                        category.type == 1 && (
+                        category.type === 1 && (
                           <NavbarLi className='other-custom' key={category._id}>
                             <div className='hover_show'>
                               <Link
-                                to={category.pure_name}
+                                to={`/products/${category.pure_name}`}
                                 className='cool-link'
+                                onClick={() =>
+                                  onClickItem('category_id', category._id)
+                                }
                               >
                                 {category.name}
                               </Link>
@@ -87,11 +108,19 @@ const NavbarTop = () => {
                                     categories.length &&
                                     categories.map(
                                       (categoryEle) =>
-                                        categoryEle.type == 2 &&
-                                        categoryEle.parent_id._id ==
+                                        categoryEle.type === 2 &&
+                                        categoryEle.parent_id._id ===
                                           category._id && (
                                           <li>
-                                            <Link to={categoryEle.pure_name}>
+                                            <Link
+                                              to={`/products/${category.pure_name}/${categoryEle.pure_name}`}
+                                              onClick={() =>
+                                                onClickItem(
+                                                  'category_id',
+                                                  categoryEle._id
+                                                )
+                                              }
+                                            >
                                               {categoryEle.name}
                                             </Link>
                                           </li>
@@ -103,6 +132,29 @@ const NavbarTop = () => {
                           </NavbarLi>
                         )
                     )}
+                  {brands && brands.length && (
+                    <NavbarLi className='other-custom' key={'brand'}>
+                      <div className='hover_show'>
+                        {/* <Link to={`/products`} className='cool-link'> */}
+                        {'Thương hiệu'}
+                        {/* </Link> */}
+                        {
+                          <ul>
+                            {brands.map((brand) => (
+                              <li>
+                                <Link
+                                  to={`/products`}
+                                  onClick={() => onClickItem('brand', brand)}
+                                >
+                                  {brand}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        }
+                      </div>
+                    </NavbarLi>
+                  )}
                 </NavbarUl>
               </NavbarMenu>
             </Col>

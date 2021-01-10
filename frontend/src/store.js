@@ -23,6 +23,7 @@ import {
 import { orderSaveReducer, ordersListReducer } from './reducers/orderReduces';
 import { addRessListReducer } from './reducers/delivery_addressReduce';
 import { getCommentProductReducer } from './reducers/commentReducer';
+import { configReducer } from './reducers/configReducers';
 
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
@@ -49,6 +50,7 @@ const reducer = combineReducers({
   listCategories: getListCategoriesReducer,
   listCommentProduct: getCommentProductReducer,
   listNewProduct: productNewListReducer,
+  config: configReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

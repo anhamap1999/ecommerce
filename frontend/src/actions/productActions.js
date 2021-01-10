@@ -14,10 +14,17 @@ import {
   PRODUCT_NEW_LIST_REQUEST,
   PRODUCT_NEW_LIST_SUCCESS,
   PRODUCT_NEW_LIST_FAIL,
+  CHANGE_FIELDS,
 } from '../constants/productConstants';
 import axios from '../modules/axios';
 import utils from '../modules/utils';
 
+const changeFields = (object) => async (dispatch) => {
+    dispatch({
+        type: CHANGE_FIELDS,
+        payload: object
+    });
+}
 const listProducts = ({page, limit, ...query}) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
@@ -109,4 +116,4 @@ const removeProductID = (productId) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_REMOVE_FAIL, payload: error.message });
   }
 };
-export { listProducts, detailsProduct, addProduct, removeProductID, listNewProducts };
+export { listProducts, detailsProduct, addProduct, removeProductID, listNewProducts, changeFields };
