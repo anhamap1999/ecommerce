@@ -4,7 +4,8 @@ import {
   productDetailsReducer,
   productAddReducer,
   productRemoveReducer,
-  productNewListReducer
+  productNewListReducer,
+  productListAdminReducer
 } from './reducers/productReducers';
 import thunk from 'redux-thunk';
 import { getProductCartReducer } from './reducers/cartReducers';
@@ -23,7 +24,7 @@ import { addRessListReducer } from './reducers/delivery_addressReduce';
 import { getCommentProductReducer } from './reducers/commentReducer';
 import { configReducer } from './reducers/configReducers';
 
-const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
 const initialState = {
   shipping: {},
@@ -32,8 +33,9 @@ const initialState = {
 };
 const reducer = combineReducers({
   productList: productListReducer,
+  productListAdmin: productListAdminReducer,
   productDetails: productDetailsReducer,
-  cart: getProductCartReducer,
+  cartUser: getProductCartReducer,
   getFullInfo: getFullInfoReducer,
   userSignin: userSigninReducer,
   userRegister: userRegisterReducer,

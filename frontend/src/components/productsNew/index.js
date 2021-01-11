@@ -38,7 +38,9 @@ const ProductsNew = (props) => {
           {!loading ? (
             <Row>
               <Col md={{ span: 8 }}>
-                {products[0] && (
+                {
+                  
+                products[0] && (
                   <ProductsNewEle>
                     <ProductNewEleImg>
                       <img
@@ -68,7 +70,7 @@ const ProductsNew = (props) => {
                         return (
                           <ProductBox>
                             <ProductBoxImg>
-                              <img src={item.thumbnail} alt={item.name}></img>
+                              <img src={item.images[0]} alt={item.name}></img>
                             </ProductBoxImg>
                             <ProductBoxText>
                               <h3>{item.name}</h3>

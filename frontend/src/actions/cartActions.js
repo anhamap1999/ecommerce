@@ -6,11 +6,7 @@ const saveProductCart =  ( {price,quantity,product_id,size})  => async ( dispatc
     try {
         dispatch( { type : SAVE_PRODUCT_CART_REQUEST }  );
         const { userSignin : { userInfo } } = getState();
-        const { data } = await axiosClient.post('/api/cart', { price ,quantity,product_id,size}, {
-            headers:{
-                authorization : 'Bearer ' + userInfo.data.access_token
-            },
-        });
+        const { data } = await axiosClient.post('/api/cart',{price,quantity,product_id,size});
         dispatch( { type : SAVE_PRODUCT_CART_SUCCESS , payload :data}  );
     } catch (error) {
         dispatch( { type : SAVE_PRODUCT_CART_FAIL , payload : error.message }  );
@@ -22,10 +18,7 @@ const getProductCart = (  ) => async ( dispatch,getState  ) =>{
       
         dispatch( { type : GET_PRODUCT_CART_REQUEST } );
         const { userSignin : { userInfo } } = getState();
-        const {data } = await axiosClient.get(`/api/cart`, {
-            headers:{
-                authorization : 'Bearer ' + userInfo.data.access_token
-            }},)
+        const {data } = await axiosClient.get(`/api/cart`)
         dispatch( { type : GET_PRODUCT_CART_SUCCESS , payload : data} );
 
     } catch (error) {
@@ -39,12 +32,7 @@ const updateProductCart = (cartId) => async ( dispatch,getState  ) =>{
       
         dispatch( { type : UPDATE_PRODUCT_CART_REQUEST , payload : cartId } );
         const { userSignin : { userInfo } } = getState();
-        const {data } = await axiosClient.put(`/api/cart/${cartId}`, {
-                    headers:{
-                        authorization : 'Bearer ' + userInfo.data.access_token
-                    }
-                }
-           ,);
+        const {data } = await axiosClient.put(`/api/cart/${cartId}`,);
         dispatch( { type : UPDATE_PRODUCT_CART_SUCCESS , payload : data} );
 
     } catch (error) {
@@ -58,10 +46,7 @@ const deleteProductCart = (cartId) => async ( dispatch,getState  ) =>{
       
         dispatch( { type : DELETE_PRODUCT_CART_REQUEST } );
         const { userSignin : { userInfo } } = getState();
-        const {data } = await axiosClient.delete(`/api/cart/${cartId}`, {
-            headers:{
-                authorization : 'Bearer ' + userInfo.data.access_token
-            }},)
+        const {data } = await axiosClient.delete(`/api/cart/${cartId}`,)
         dispatch( { type : DELETE_PRODUCT_CART_SUCCESS , payload : data} );
 
     } catch (error) {

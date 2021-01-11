@@ -152,7 +152,6 @@ exports.getProductById = async (req, res, next) => {
   try {
     const { select } = req.query;
     const { id } = req.params;
-
     const product = await Product.findOne({
       _id: id,
       status: 'approved',

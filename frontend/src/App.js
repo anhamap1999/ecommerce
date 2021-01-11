@@ -21,6 +21,8 @@ import OrderAdminScreen from './admin/order';
 import StaffAdminScreen from './admin/staff';
 import CategoryAdminScreen from './admin/category';
 import CartScreen from './components/cart';
+import StorageAdminScreen from './admin/storage';
+import RuleAdminScreen from './admin/rule';
 function App() {
   
   return (
@@ -44,6 +46,8 @@ function App() {
       <Route path="/admin/orders" component={OrderAdminScreen} />
       <Route path="/admin/staff" component={StaffAdminScreen} />
       <Route path="/admin/category" component={CategoryAdminScreen} />
+      <Route path="/admin/rule" component={RuleAdminScreen} />
+      <Route path="/admin/storage" component={StorageAdminScreen} />
     </BrowserRouter>
   );
 }

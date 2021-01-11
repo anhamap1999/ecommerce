@@ -103,7 +103,7 @@ export const ProductBoxText =styled.div`
 export const ProductBoxImg = styled.div`
     width:100%;
     height:100%;
-    &img{
+    img{
         width:100%;
         height:100%;
     }

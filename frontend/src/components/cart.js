@@ -23,7 +23,6 @@ function CartScreen(props) {
       dispatch(getProductCart())
     }, []);
     console.log("cartItems",cartItems)
-    
     const updataItemHandler = async (cartId) => {
       await dispatch(updateProductCart(cartId))
       dispatch(getProductCart())
@@ -36,22 +35,18 @@ function CartScreen(props) {
       loading ?   <div class="spinner-border text-primary" role="status">
                       <span class="sr-only"></span>
                   </div> :
-      error ? <div className="">{error}</div> :
+      error ? <div className="">{error}</div> 
+      :
       <div className="">
-          
             <div className="row">
-                    <div className="col-md-8 col-12">
+            <div className="col-md-8 col-12">
                     {
-                     cartItems &&cartItems.data&& cartItems.data.length == 0 ?
-                      <div>
-                        <h3>giỏ hàng của bạn đang rỗng ...</h3>
-                        <Link to='/products'><h1>Chọn giày ngay bây giờ ...</h1></Link>
-                      </div> 
-                      :
-                        cartItems && cartItems.data && cartItems.data.map( item =>
+                     
+                      cartItems &&
+                      cartItems.map( item =>
                         <div className="row yourcart">
                             <div className="col-md-3">
-                              <img src={Img}></img>
+                              {item.product_id.images&&<img src={item.product_id.images[0]}></img>}
                             </div>
                             <div className="col-md-2">
                             <Link to={'/product/' + item.product_id._id} >
@@ -73,6 +68,7 @@ function CartScreen(props) {
                                     <label class="input-group-text" for="inputGroupSelect01">Size</label>
                                   </div>
                                   <select class="custom-select" id="inputGroupSelect01">
+                                    <option selected>{item.size}</option>
                                   {item.product_id.size.map(x =>
                                         <option value={x}>{x}</option>
                                                   )}
@@ -97,18 +93,19 @@ function CartScreen(props) {
                               </button>
                             </div>
                         </div>
-                      )}
-                    </div>
+                        )}
+                        </div>
                     <div className="col-md-4 col-12">
-                       {   cartItems && cartItems.data &&
+                       {  
+                          cartItems && 
                           <div className="total-cart">
                           <h3 className="text-center text-secondary ">CHI TIẾT GIỎ HÀNG</h3>
                           <p>
-                          Tổng Thành tiền:  <span  style={{fontSize : '20px',color:'#ee4d2d'}}>{cartItems.data.reduce((a,c) =>
+                          Tổng Thành tiền:  <span  style={{fontSize : '20px',color:'#ee4d2d'}}>{cartItems.reduce((a,c) =>
                                               a + (c.product_id.price*c.quantity),0
                                               )}</span> VNĐ
                           </p>
-                          <p>Số lượng: {cartItems.data.length}</p>
+                          <p>Số lượng: {cartItems.length}</p>
                           <button 
                             style={{borderRadius:'5px',
                                     width:'100%'
@@ -118,7 +115,7 @@ function CartScreen(props) {
                             
                               <span>MUA HÀNG</span>
                           </button>
-                      </div>
+                          </div>
                        }
                     </div>
             </div>

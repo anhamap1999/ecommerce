@@ -44,7 +44,7 @@ const StaffAdminScreen= (props) => {
                     </thead>
                     <tbody>
                        {
-                          users && users.data&&  users.data.map(
+                          users &&   users.map(
                               ( user) =>user.role =='staff' &&
                                
                                 <tr>

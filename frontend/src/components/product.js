@@ -164,10 +164,11 @@ function ProductScreen(props) {
                         <div className='productmain'>
                           <div className='product'>
                             <div className='product-img'>
-                              <img src='' alt='giay'></img>
+                              <img src={product.images[0]} alt='giay'></img>
                             </div>
                             <div className='product-text'>
                               <h3> {product.name} </h3>
+                              <h5> {product.price} VNĐ </h5>
                               <Link to={'/product/' + product._id}>
                                 {' '}
                                 <button> Mua ngay </button>

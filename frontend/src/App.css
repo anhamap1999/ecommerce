@@ -224,7 +224,8 @@ li{
   height: 450px;
   margin-left: 10px;
   margin-right: 10px ;
-  background-color: #232323;
+  background: rgb(242,242,242);
+  background: linear-gradient(90deg, rgba(242,242,242,1) 0%, rgba(242,242,242,0.6955824566154587) 100%);
   border-radius: 20px;
   overflow: hidden;
 }
@@ -235,7 +236,8 @@ li{
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #9bdc28;
+  background: rgb(61,135,222);
+  background: linear-gradient(90deg, rgba(61,135,222,1) 0%, rgba(61,135,222,0.544321952413778) 100%);
   clip-path: circle(150px at 80% 20%);
   transition: 0.5s ease-in-out;
 }
@@ -243,14 +245,21 @@ li{
   
   clip-path: circle(300px at 80% -20%);
 }
-.product::after{
-  content: "nike";
+.main {
+  overflow-x: hidden;
+}
+.product::after {
+  content: "SHOES";
   position: absolute;
-  top: 30%;
-  left: -20%;
-  font-size: 12em;  
+  top: 47%;
+  left: 23px;
+  font-size: 87px;
   font-weight: 800;
-  color: rgba(255,255,255,0.04);
+  color: rgb(255,255,255,0.5);
+  transition: 1s;
+}
+.product:hover::after{
+  text-shadow: 1px 3px 16px black;
 }
 .product .product-img {
   position: absolute;
@@ -274,7 +283,8 @@ li{
 }
 .product-text{
   position: absolute;
-  bottom: 0;
+  bottom: -30px;
+  text-transform: uppercase;
   width: 100%;
   height: 100px;
   text-align: center;
@@ -284,8 +294,15 @@ li{
 .product:hover .product-text{
   height: 210px;
 }
+.product .product-text h5{
+  opacity: 0;
+  transition: 1s;
+}
+.product:hover .product-text h5{
+  opacity: 1;
+}
 .product-text h3{
-  color: #ffffff;
+  color: #141414;
   position: relative;
   font-weight: 600;
   

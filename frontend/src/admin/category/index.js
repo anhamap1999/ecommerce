@@ -100,8 +100,8 @@ const CategoryAdminScreen = (props) => {
                                         >
                                             <option >chọn danh mục dưới đây..</option>
                                             {
-                                                categories && categories.data 
-                                                && categories.data.map(category =>
+                                                categories
+                                                && categories.map(category =>
                                                         category.type == '1'  &&
                                                         <option value={category._id} >{category.name}</option>
                                                     
@@ -147,7 +147,7 @@ const CategoryAdminScreen = (props) => {
                     </thead>
                     <tbody>
                     {
-                    categories && categories.data && categories.data.map((category,index)=>
+                    categories  && categories.map((category,index)=>
                         <tr key = {category._id}>
                         <td>{index + 1}</td>
                         <td>{category.name}</td>

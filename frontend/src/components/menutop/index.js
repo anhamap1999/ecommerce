@@ -86,7 +86,7 @@ const NavbarTop = () => {
                   </div>
                 )}
                 <NavbarUl>
-                  {categories &&
+                  { categories &&
                     categories.length &&
                     categories.map(
                       (category) =>

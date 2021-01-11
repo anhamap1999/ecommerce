@@ -15,7 +15,14 @@ import {
   PRODUCT_NEW_LIST_SUCCESS,
   PRODUCT_NEW_LIST_FAIL,
   CHANGE_FIELDS,
+  PRODUCT_ADMIN_LIST_REQUEST,
+  PRODUCT_ADMIN_LIST_SUCCESS,
+  PRODUCT_ADMIN_LIST_FAIL,
+  PRODUCT_UPDATE_STATES_REQUEST,
+  PRODUCT_UPDATE_STATES_SUCCESS,
+  PRODUCT_UPDATE_STATES_FAIL,
 } from '../constants/productConstants';
+import axiosClient from '../modules/axios';
 import axios from '../modules/axios';
 import utils from '../modules/utils';
 
@@ -41,6 +48,24 @@ const listProducts = ({page, limit, ...query}) => async (dispatch) => {
   } catch (error) {
     const message = utils.getMessageError(error.messages);
     dispatch({ type: PRODUCT_LIST_FAIL, payload: message });
+  }
+};
+const listProductsAdmin = ({page, limit, ...query}) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_ADMIN_LIST_REQUEST });
+    const queryString = utils.formatQuery({ page, limit, ...query });
+    const { data, total_page, total } = await axios.get(
+      `/api/products/admin`
+    );
+    if (data) {
+      dispatch({
+        type: PRODUCT_ADMIN_LIST_SUCCESS,
+        payload: { data, page, total_page, total },
+      });
+    }
+  } catch (error) {
+    const message = utils.getMessageError(error.messages);
+    dispatch({ type: PRODUCT_ADMIN_LIST_FAIL, payload: message });
   }
 };
 const listNewProducts = ({page, limit, ...query}) => async (dispatch) => {
@@ -71,19 +96,36 @@ const detailsProduct = (productId) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_FAIL, payload: message });
   }
 };
+const updateStateProduct = (productId) => async(dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_UPDATE_STATES_REQUEST });
+    const {
+      userSignin: { userInfo },
+    } = getState(); 
+    const { data } = await axios.put('/api/products/update-status/' + productId, {
+      headers: {
+        authorization: 'Bearer ' + userInfo.data.user.access_token,
+      },
+    });
+    dispatch({ type: PRODUCT_UPDATE_STATES_SUCCESS, payload: data });
+    }
+   catch (error) {
+    dispatch({ type: PRODUCT_UPDATE_STATES_FAIL, payload: error.message });
+  }
+};
 const addProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_ADD_REQUEST, payload: product });
     const {
       userSignin: { userInfo },
-    } = getState();
+    } = getState(); 
 
     if (!product._id) {
-      console.log('k id', userInfo);
-      const { data } = await axios.post('/api/products/admin', product);
-      dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data });
+      
+      const { data } = await axiosClient.post('/api/products/admin',JSON.stringify(product) );
+      dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data});
     } else {
-      console.log('co id:', product._id);
+      
       const { data } = await axios.put(
         '/api/products/' + product._id,
         product,
@@ -116,4 +158,4 @@ const removeProductID = (productId) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_REMOVE_FAIL, payload: error.message });
   }
 };
-export { listProducts, detailsProduct, addProduct, removeProductID, listNewProducts, changeFields };
+export {listProductsAdmin, listProducts, updateStateProduct,detailsProduct, addProduct, removeProductID, listNewProducts, changeFields };

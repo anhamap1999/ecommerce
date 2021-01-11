@@ -116,7 +116,7 @@ const ProductsNike = (props) => {
                                     <ProductWrapper>
                                       <ProductImg>
                                         <img
-                                          src={product.thumbnail}
+                                          src={product.images[0]}
                                           alt={product.name}
                                         ></img>
                                       </ProductImg>
@@ -129,7 +129,7 @@ const ProductsNike = (props) => {
                                         </ProductPrice>
                                         <Productbutton>
                                           <Link
-                                            to={'/cart'}
+                                            to={'/cart/'+product._id}
                                             onClick={() =>
                                               addItemToCart(product)
                                             }
