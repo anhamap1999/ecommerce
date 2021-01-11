@@ -33,8 +33,14 @@ function getMessageError(errors) {
 function formatQuery(query) {
   let queryString = '?';
   for (let key in query) {
-    if (!query[key] && typeof query[key] !== 'boolean' && typeof query[key] !== 'number') {
+    if (
+      !query[key] &&
+      typeof query[key] !== 'boolean' &&
+      typeof query[key] !== 'number'
+    ) {
       delete query[key];
+    } else if (_.isArray(query[key])) {
+      query[key].forEach((item) => (queryString += `${key}[]=${item}&`));
     } else {
       queryString += `${key}=${query[key]}&`;
     }
@@ -48,7 +54,6 @@ function formatData(data) {
   return data;
 }
 
-
 function vndFormat(x) {
   if (typeof x !== 'number') return;
   return x.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -58,5 +63,5 @@ export default {
   getMessageError,
   formatQuery,
   formatData,
-  vndFormat
+  vndFormat,
 };

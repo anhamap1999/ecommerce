@@ -46,7 +46,9 @@ exports.createBankAccount = async (req, res, next) => {
     bankAccount.branch = branch._id;
 
     const result = await bankAccount.save();
-    const success = new Success({ data: result });
+    const new_bank = await BankAccount.findById(result._id).populate([{ path: 'bank' }, { path: 'branch' }]);
+
+    const success = new Success({ data: new_bank });
     res.status(200).send(success);
   } catch (error) {
     next(error);

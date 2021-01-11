@@ -14,6 +14,9 @@ import {
   PRODUCT_NEW_LIST_REQUEST,
   PRODUCT_NEW_LIST_SUCCESS,
   PRODUCT_NEW_LIST_FAIL,
+  PRODUCT_LIKE_REQUEST,
+  PRODUCT_LIKE_SUCCESS,
+  PRODUCT_LIKE_FAIL,
   CHANGE_FIELDS,
 } from '../constants/productConstants';
 import axios from '../modules/axios';
@@ -116,4 +119,15 @@ const removeProductID = (productId) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_REMOVE_FAIL, payload: error.message });
   }
 };
-export { listProducts, detailsProduct, addProduct, removeProductID, listNewProducts, changeFields };
+
+const likeProduct = (product_id, state) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_LIKE_REQUEST, error: null });
+    const { data } = await axios.put('/api/products/like-product', JSON.stringify({ id: product_id, state }));
+    dispatch({ type: PRODUCT_LIKE_SUCCESS, payload: data });
+  } catch (error) {
+    const message = utils.getMessageError(error.messages);
+    dispatch({ type: PRODUCT_LIKE_FAIL, payload: message });
+  }
+};
+export { listProducts, detailsProduct, addProduct, removeProductID, listNewProducts, changeFields, likeProduct };

@@ -34,6 +34,7 @@ const productSchema = new mongoose.Schema({
   created_by: { type: String, required: false },
   updated_by: { type: String, required: false },
   size: { type: [Number], required: true },
+  out_of_stock: { type: Boolean, required: true, default: true }
 });
 // productSchema.indexes()
 productSchema.index({ name: 'text'});

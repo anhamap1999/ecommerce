@@ -14,7 +14,8 @@ exports.getProductsValidator = async (req, res, next) => {
       limit: Joi.number().optional(),
       page: Joi.number().optional(),
       sort: Joi.string().optional(),
-      size: Joi.number().optional()
+      size: Joi.number().optional(),
+      price: Joi.array().items(Joi.number()).optional()
     });
     const result = await validate(req.query, schema);
     req.query = result;

@@ -179,8 +179,12 @@ exports.saveOrder = async (req, res) => {
     });
     const created_notification_for_staff = await notification_for_staff.save();
     res.io.emit('staff_notification', created_notification_for_staff);
-
-    const success = new Success({ data: newOrderCreated });
+    const new_order = await Order.findById(newOrderCreated._id).populate([
+      { path: 'shipping' },
+      { path: 'order_items', populate: 'product_id' },
+      { path: 'created_by' },
+    ])
+    const success = new Success({ data: new_order });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -277,12 +281,17 @@ exports.updateOrderByAdmin = async (req, res) => {
             });
           }
           product.sold_count += item.quantity;
-          await Product.findByIdAndUpdate(item.product_id, product);
           const stock = await Stock.findOne({
             product_id: item.product_id,
             size: item.size,
           });
           stock.stock -= item.quantity;
+          const stocks = await Stock.find({ product_id: item.product_id });
+          const total_stock = stocks.reduce((item, total) => item.stock + total, 0);
+          if (total_stock <= 0) {
+            product.out_of_stock = true;
+          }
+          await Product.findByIdAndUpdate(item.product_id, product);
           await Stock.findOneAndUpdate(
             { product_id: item.product_id, size: item.size },
             stock

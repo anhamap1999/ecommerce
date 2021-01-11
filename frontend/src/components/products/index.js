@@ -156,11 +156,11 @@ const ProductsNike = (props) => {
                   </>
                 );
               })
-          : loadingCat && (
+          : loadingCat ? (
               <div className='spinner-border text-primary' role='status'>
                 <span className='sr-only'>Loading...</span>
               </div>
-            )}
+            ) : null}
         {/* <h1 className='text-center'>Giày Nam</h1>
         <ProductContainer id='product'>
           <Row>

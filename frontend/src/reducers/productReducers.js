@@ -14,6 +14,9 @@ import {
   PRODUCT_NEW_LIST_FAIL,
   PRODUCT_NEW_LIST_REQUEST,
   PRODUCT_NEW_LIST_SUCCESS,
+  PRODUCT_LIKE_FAIL,
+  PRODUCT_LIKE_REQUEST,
+  PRODUCT_LIKE_SUCCESS,
   CHANGE_FIELDS,
 } from '../constants/productConstants';
 import _ from 'lodash';
@@ -50,6 +53,12 @@ function productDetailsReducer(state = { product: {} }, action) {
       return { loading: false, product: action.payload };
     case PRODUCT_DETAILS_FAIL:
       return { loading: false, error: action.payload };
+      case PRODUCT_LIKE_REQUEST:
+        return { ...state, updateLoading: true, error: null };
+      case PRODUCT_LIKE_SUCCESS:
+        return { ...state, updateLoading: false, product: action.payload };
+      case PRODUCT_LIKE_FAIL:
+        return { ...state, updateLoading: false, error: action.payload };
     default:
       return state;
   }

@@ -75,7 +75,7 @@ exports.deteleProduct = async (req, res) => {
 
 exports.getProducts = async (req, res, next) => {
   try {
-    const { select, sort, page, limit, size, ...query } = req.query;
+    const { select, sort, page, limit, size, price, ...query } = req.query;
     const options = {
       select: select ? select : '',
       sort: sort ? sort : '-created_at',
@@ -84,6 +84,9 @@ exports.getProducts = async (req, res, next) => {
     };
     if (size) {
       query.size = { $all: [size] };
+    }
+    if (price && price.length > 1) {
+      query.price = { $gte: price[0], $lte: price[1] };
     }
 
     const success = new Success({});
@@ -249,8 +252,8 @@ exports.updateProduct = async (req, res, next) => {
     product.updated_by = req.user._id;
     product.updated_at = Date.now();
     await Product.findByIdAndUpdate(req.params.id, product);
-    
-    const success = new Success({ data: product });
+    const result = await Product.findById(req.params.id).populate({ path: 'category_id' })
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -272,7 +275,8 @@ exports.updateStatusProduct = async (req, res, next) => {
     product.updated_by = req.user._id;
     product.updated_at = Date.now();
     await Product.findByIdAndUpdate(req.params.id, product);
-    const success = new Success({ data: product });
+    const result = await Product.findById(req.params.id).populate({ path: 'category_id' })
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -296,12 +300,15 @@ exports.likeProduct = async (req, res, next) => {
       user.like_products.push(id);
     } else if (state === 'unlike' && product.likes_count > 0) {
       product.likes_count--;
-      user.like_products = user.like_products.filter((item) => item !== id);
+      user.like_products = user.like_products.filter((item) => String(item) !== String(id));
     }
+    
     await Product.findByIdAndUpdate(id, product);
-    await User.findByIdAndUpdate(id, user);
+    await User.findByIdAndUpdate(req.user._id, user);
     req.user = user;
-    const success = new Success({ data: product });
+
+    const result = await Product.findById(id).populate({ path: 'category_id' })
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);

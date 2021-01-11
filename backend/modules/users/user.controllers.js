@@ -82,8 +82,8 @@ exports.changePassword = async (req, res, next) => {
     user.password = hash;
     req.user.password = hash;
     await User.findByIdAndUpdate(req.user._id, user);
-
-    const success = new Success({ data: user });
+    const updated_user = await User.findById(req.user._id).populate({ path: 'like_products' });
+    const success = new Success({ data: updated_user });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -107,8 +107,8 @@ exports.updateUser = async (req, res, next) => {
     user = { ...user._doc, ...req.body };
     req.user = { ...req.user, ...user };
     await User.findByIdAndUpdate(req.user._id, user);
-
-    const success = new Success({ data: user });
+    const updated_user = await User.findById(req.user._id).populate({ path: 'like_products' });
+    const success = new Success({ data: updated_user });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -179,7 +179,8 @@ exports.updateStatusUser = async (req, res, next) => {
     }
     user.status = req.body.status;
     await User.findByIdAndUpdate(req.params.id, user);
-    const success = new Success({ data: user });
+    const updated_user = await User.findById(req.params.id).populate({ path: 'like_products' });
+    const success = new Success({ data: updated_user });
     res.status(200).send(success);
   } catch (error) {
     next(error);

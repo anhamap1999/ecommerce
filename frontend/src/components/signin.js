@@ -42,11 +42,11 @@ function SigninScreen(props) {
       >
         <h1>Đăng nhập</h1>
 
-        {loading && (
+        {loading ? (
           <div className='spinner-border text-primary' role='status'>
             <span className='sr-only'>Loading...</span>
           </div>
-        )}
+        ) : null}
         {formError ? (
           <div style={{ color: 'white' }}>{formError}</div>
         ) : (

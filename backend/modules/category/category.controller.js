@@ -110,7 +110,9 @@ exports.createCategory = async (req, res, next) => {
     }
     category.created_by = req.user._id;
     const result = await category.save();
-    const success = new Success({ data: result });
+    const created_category = await Category.findById(result._id).populate({ path: 'parent_id' });
+    
+    const success = new Success({ data: created_category });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -158,7 +160,8 @@ exports.updateCategory = async (req, res, next) => {
     category.updated_by = req.user._id;
     category.updated_at = Date.now();
     await Category.findByIdAndUpdate(req.params.id, category);
-    const success = new Success({ data: category });
+    const result = await Category.findById(req.params.id).populate({ path: 'parent_id' });
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -167,7 +170,7 @@ exports.updateCategory = async (req, res, next) => {
 
 exports.updateStatusCategory = async (req, res, next) => {
   try {
-    const category = await Category.findById(req.params.id);
+    const category = await Category.findById(req.params.id).populate({ path: 'parent_id' });
 
     if (!category) {
       throw new Error({
@@ -189,7 +192,7 @@ exports.updateStatusCategory = async (req, res, next) => {
 
 exports.deleteCategory = async (req, res, next) => {
   try {
-    const category = await Category.findById(req.params.id);
+    const category = await Category.findById(req.params.id).populate({ path: 'parent_id' });
 
     if (!category) {
       throw new Error({

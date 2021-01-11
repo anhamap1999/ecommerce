@@ -34,7 +34,8 @@ exports.getCartById = async (req, res, next) => {
 
 exports.addCart = async (req, res, next) => {
   try {
-    const product = await Product.findById(req.body.product_id);
+    const { product_id, size, quantity } = req.body;
+    const product = await Product.findById(product_id);
     if (!product) {
       throw new Error({
         statusCode: 404,
@@ -42,10 +43,20 @@ exports.addCart = async (req, res, next) => {
         messages: { product: 'product not found' },
       });
     }
-    const cart = new Cart(req.body);
-    cart.created_by = req.user._id;
-    const result = await cart.save();
-    const success = new Success({ data: result });
+    const success = new Success({});
+    const existed_cart = await Cart.findOne({ product_id, size }).populate('product_id');
+    if (existed_cart) {
+      existed_cart.quantity += quantity;
+      existed_cart.updated_at = Date.now();
+      await Cart.findByIdAndUpdate(existed_cart._id, existed_cart);
+      success.data = existed_cart;
+    } else {
+      const cart = new Cart(req.body);
+      cart.created_by = req.user._id;
+      const result = await cart.save();
+      const created_product = await Cart.findById(result._id).populate('product_id');
+      success.data = created_product;
+    }
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -54,7 +65,7 @@ exports.addCart = async (req, res, next) => {
 
 exports.updateCart = async (req, res, next) => {
   try {
-    let cart = await Cart.findById(req.params.id);
+    let cart = await Cart.findById(req.params.id).populate('product_id');
 
     if (!cart) {
       throw new Error({
