@@ -245,7 +245,7 @@ function ProductScreen(props) {
                           <div className='productmain'>
                             <div className='product'>
                               <div className='product-img'>
-                                <img src='' alt='giay'></img>
+                                <img src={product.thumbnail} alt='giay'></img>
                               </div>
                               <div className='product-text'>
                                 <h3> {product.name} </h3>
