@@ -6,7 +6,7 @@ const getProvince = () => async (dispatch, getState) => {
   const { provinces, isGotten } = getState().address;
   if (isGotten) {
     return {
-      provinces
+      provinces,
     };
   }
   dispatch({ type: constants.GET_PROVINCE_REQUEST });
@@ -21,17 +21,27 @@ const getProvince = () => async (dispatch, getState) => {
 const getDistrict = (province_number) => async (dispatch, getState) => {
   dispatch({ type: constants.GET_DISTRICT_REQUEST });
   try {
-    const { data } = await Axios.get('/api/address/district?province_number=' + province_number);
+    const { data } = await Axios.get(
+      '/api/address/district?province_number=' + province_number
+    );
     dispatch({ type: constants.GET_DISTRICT_SUCCESS, payload: data });
   } catch (error) {
     const message = utils.getMessageError(error.messages);
     dispatch({ type: constants.GET_DISTRICT_FAIL, payload: message });
   }
 };
-const getWard = (province_number, district_number) => async (dispatch, getState) => {
+const getWard = (province_number, district_number) => async (
+  dispatch,
+  getState
+) => {
   dispatch({ type: constants.GET_WARD_REQUEST });
   try {
-    const { data } = await Axios.get('/api/address/ward?province_number=' + province_number + '&district_number='+district_number);
+    const { data } = await Axios.get(
+      '/api/address/ward?province_number=' +
+        province_number +
+        '&district_number=' +
+        district_number
+    );
     dispatch({ type: constants.GET_WARD_SUCCESS, payload: data });
   } catch (error) {
     const message = utils.getMessageError(error.messages);

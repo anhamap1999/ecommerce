@@ -16,11 +16,6 @@ router.get(
   validator.getRevenuesValidator,
   controller.getRevenues
 );
-router.get(
-  '/:id',
-  isAuth,
-  isStaff,
-  controller.getRevenueById
-);
+router.get('/:id', isAuth, isStaff, controller.getRevenueById);
 router.use(handleError);
 module.exports = router;

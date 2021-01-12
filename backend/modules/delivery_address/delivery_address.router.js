@@ -6,16 +6,8 @@ const { handleError } = require('../../middlewares/error.middleware');
 const validator = require('./delivery_address.validation');
 
 router.get('/', isAuth, controller.getAddresses);
-router.get(
-  '/:id',
-  isAuth,
-  controller.getAddressById
-);
-router.post(
-  '/',
-  isAuth,
-  controller.createAddress
-);
+router.get('/:id', isAuth, controller.getAddressById);
+router.post('/', isAuth, controller.createAddress);
 router.put(
   '/:id',
   isAuth,
@@ -30,11 +22,7 @@ router.put(
   controller.setDefaultAddress
 );
 
-router.delete(
-  '/:id',
-  isAuth,
-  controller.deleteAddress
-);
+router.delete('/:id', isAuth, controller.deleteAddress);
 
 router.use(handleError);
 module.exports = router;

@@ -6,11 +6,7 @@ const { handleError } = require('../../middlewares/error.middleware');
 const validator = require('./config.validation');
 
 router.get('/', validator.getConfigsValidator, controller.getConfigs);
-router.get(
-  '/:id',
-  validator.getConfigByIdValidator,
-  controller.getConfigById
-);
+router.get('/:id', validator.getConfigByIdValidator, controller.getConfigById);
 router.post(
   '/admin',
   isAuth,

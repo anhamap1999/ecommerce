@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const provinceSchema = new mongoose.Schema({
   name: { type: String, required: true },
   number: { type: Number, required: true },
-  code: { type: String, required: true }
+  code: { type: String, required: true },
 });
 
 const districtSchema = new mongoose.Schema({
@@ -25,5 +25,5 @@ const wardModel = mongoose.model('Ward', wardSchema);
 module.exports = {
   Province: provinceModel,
   District: districtModel,
-  Ward: wardModel
+  Ward: wardModel,
 };

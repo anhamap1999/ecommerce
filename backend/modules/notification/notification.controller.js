@@ -50,7 +50,7 @@ exports.adminGetNotification = async (req, res, next) => {
     };
 
     const success = new Success({});
-    await Notification.paginate({for: 'admin', ...query}, options)
+    await Notification.paginate({ for: 'admin', ...query }, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
           const notifications = await Notification.populate(result.docs, [
@@ -86,7 +86,7 @@ exports.staffGetNotification = async (req, res, next) => {
     };
 
     const success = new Success({});
-    await Notification.paginate({for: 'staff', ...query}, options)
+    await Notification.paginate({ for: 'staff', ...query }, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
           const notifications = await Notification.populate(result.docs, [
@@ -111,16 +111,14 @@ exports.staffGetNotification = async (req, res, next) => {
   }
 };
 
-
 exports.createNotification = async (req, res, next) => {
   try {
     const notification = new Notification(req.body);
     notification.user_id = req.user._id;
     const result = await notification.save();
-    const created_notification = await Notification.findById(result._id).populate([
-      { path: 'user_id' },
-      { path: 'object_id' },
-    ]);
+    const created_notification = await Notification.findById(
+      result._id
+    ).populate([{ path: 'user_id' }, { path: 'object_id' }]);
     const success = new Success({ data: created_notification });
     res.status(200).send(success);
   } catch (error) {

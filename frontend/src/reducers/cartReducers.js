@@ -8,11 +8,14 @@ import {
   DELETE_PRODUCT_CART_FAIL,
   DELETE_PRODUCT_CART_REQUEST,
   DELETE_PRODUCT_CART_SUCCESS,
-  CHANGE_FIELDS
+  CHANGE_FIELDS,
 } from '../constants/cartConstants';
 import _ from 'lodash';
 
-function getProductCartReducer(state = { cartItems: [], shipping: {}, payment: {}, isGotten: false }, action) {
+function getProductCartReducer(
+  state = { cartItems: [], shipping: {}, payment: {}, isGotten: false },
+  action
+) {
   switch (action.type) {
     case GET_PRODUCT_CART_REQUEST:
       return { ...state, loading: true, cartItems: [], error: null };
@@ -22,18 +25,48 @@ function getProductCartReducer(state = { cartItems: [], shipping: {}, payment: {
       return { ...state, loading: false, error: action.payload };
 
     case UPDATE_PRODUCT_CART_REQUEST:
-      return { ...state, loadingUpdate: true, error: null, updatingId: action.payload };
+      return {
+        ...state,
+        loadingUpdate: true,
+        error: null,
+        updatingId: action.payload,
+      };
     case UPDATE_PRODUCT_CART_SUCCESS:
-      return { ...state, loadingUpdate: false, cartItems: action.payload, updatingId: -1 };
+      return {
+        ...state,
+        loadingUpdate: false,
+        cartItems: action.payload,
+        updatingId: -1,
+      };
     case UPDATE_PRODUCT_CART_FAIL:
-      return { ...state, loadingUpdate: false, error: action.payload, updatingId: -1 };
+      return {
+        ...state,
+        loadingUpdate: false,
+        error: action.payload,
+        updatingId: -1,
+      };
 
     case DELETE_PRODUCT_CART_REQUEST:
-      return { ...state, loadingUpdate: true, error: null, updatingId: action.payload };
+      return {
+        ...state,
+        loadingUpdate: true,
+        error: null,
+        updatingId: action.payload,
+      };
     case DELETE_PRODUCT_CART_SUCCESS:
-      return { ...state, loadingUpdate: false, cartItems: action.payload, updatingId: -1 };
+      return {
+        ...state,
+        loadingUpdate: false,
+        cartItems: action.payload,
+        updatingId: -1,
+      };
     case DELETE_PRODUCT_CART_FAIL:
-      return { ...state, loadingUpdate: false, error: action.payload, updatingId: -1 };
+      return {
+        ...state,
+        loadingUpdate: false,
+        error: action.payload,
+        updatingId: -1,
+      };
 
     case CHANGE_FIELDS: {
       for (const key in action.payload) {

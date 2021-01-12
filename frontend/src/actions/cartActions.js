@@ -11,7 +11,7 @@ import {
   UPDATE_PRODUCT_CART_FAIL,
   UPDATE_PRODUCT_CART_REQUEST,
   UPDATE_PRODUCT_CART_SUCCESS,
-  CHANGE_FIELDS
+  CHANGE_FIELDS,
 } from '../constants/cartConstants';
 import Cookie from 'js-cookie';
 import axiosClient from '../modules/axios';

@@ -20,8 +20,33 @@ exports.getNotificationsValidator = async (req, res, next) => {
 exports.createNotificationValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
-      type: Joi.string().required().valid('order_add', 'order_update_paid', 'order_update_delivered', 'comment_add', 'cart_add', 'auth_reset_password', 'product_add', 'staff_add', 'stock_update', 'user_change_password', 'category_add', 'admin_add'),
-      onModel: Joi.string().required().valid('Order', 'Comment', 'Product', 'Cart', 'User', 'Stock', 'Category'),
+      type: Joi.string()
+        .required()
+        .valid(
+          'order_add',
+          'order_update_paid',
+          'order_update_delivered',
+          'comment_add',
+          'cart_add',
+          'auth_reset_password',
+          'product_add',
+          'staff_add',
+          'stock_update',
+          'user_change_password',
+          'category_add',
+          'admin_add'
+        ),
+      onModel: Joi.string()
+        .required()
+        .valid(
+          'Order',
+          'Comment',
+          'Product',
+          'Cart',
+          'User',
+          'Stock',
+          'Category'
+        ),
       object_id: Joi.string().required(),
       title: Joi.string().required(),
       message: Joi.string().required(),

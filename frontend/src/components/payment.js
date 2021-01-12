@@ -115,31 +115,31 @@ function PaymentSreen(props) {
     <HomePage>
       <div>
         <CheckoutSteps step1 step2 step3></CheckoutSteps>
-        <form onSubmit={submitHandler} className='border rounded'>
+        <form onSubmit={submitHandler} className="border rounded">
           <h3>Thanh toán</h3>
           <div>
             <h5>Phương thức thanh toán</h5>
             <div>
               <input
-                type='radio'
-                name='paymentMethod'
-                id='paymentMethod'
-                value='cash'
+                type="radio"
+                name="paymentMethod"
+                id="paymentMethod"
+                value="cash"
                 checked={paymentMethod === 'cash'}
                 onChange={(e) => onChange('paymentMethod', e.target.value)}
               ></input>
-              <label for='paymentMethod'>Tiền mặt</label>
+              <label for="paymentMethod">Tiền mặt</label>
             </div>
             <div>
               <input
-                type='radio'
-                name='paymentMethod'
-                id='paymentMethod'
-                value='online'
+                type="radio"
+                name="paymentMethod"
+                id="paymentMethod"
+                value="online"
                 checked={paymentMethod === 'online'}
                 onChange={(e) => onChange('paymentMethod', e.target.value)}
               ></input>
-              <label for='paymentMethod'>Qua chuyển khoản ngân hàng</label>
+              <label for="paymentMethod">Qua chuyển khoản ngân hàng</label>
             </div>
 
             {paymentMethod === 'online' &&
@@ -148,15 +148,17 @@ function PaymentSreen(props) {
               <div>
                 <label>Chọn tài khoản</label>
                 <select
-                  class='custom-select'
-                  id='inputGroupSelect01'
+                  class="custom-select"
+                  id="inputGroupSelect01"
                   onChange={(e) => onChangeBankAccount(e.target.value)}
                 >
                   <option value={-1}>{'Chọn tài khoản'}</option>
                   {bankAccounts &&
                     bankAccounts.length &&
                     bankAccounts.map((item, index) => (
-                      <option value={index}>{item.bank.name + ', ' + item.account_number}</option>
+                      <option value={index}>
+                        {item.bank.name + ', ' + item.account_number}
+                      </option>
                     ))}
                 </select>
               </div>
@@ -166,33 +168,33 @@ function PaymentSreen(props) {
               : ''}
             {paymentMethod === 'online' ? (
               <>
-                <div className='form-group'>
+                <div className="form-group">
                   <input
-                    type='text'
-                    className='form-control'
+                    type="text"
+                    className="form-control"
                     value={account_number}
                     onChange={(e) => {
                       onChange('account_number', e.target.value);
                     }}
-                    placeholder='Tên chủ thẻ'
+                    placeholder="Tên chủ thẻ"
                     disabled={bank_account}
                   />
                 </div>
-                <div className='form-group'>
+                <div className="form-group">
                   <input
-                    type='text'
-                    className='form-control'
+                    type="text"
+                    className="form-control"
                     value={account_name}
                     onChange={(e) => {
                       onChange('account_name', e.target.value);
                     }}
-                    placeholder='Số tài khoản'
+                    placeholder="Số tài khoản"
                     disabled={bank_account}
                   />
                 </div>
-                <div className='form-group'>
+                <div className="form-group">
                   <select
-                    className='custom-select'
+                    className="custom-select"
                     value={province_number}
                     onChange={onChangeProvince}
                     disabled={bank_account}
@@ -206,9 +208,9 @@ function PaymentSreen(props) {
                       ))}
                   </select>
                 </div>
-                <div className='form-group'>
+                <div className="form-group">
                   <select
-                    className='custom-select'
+                    className="custom-select"
                     value={bank}
                     onChange={onChangeBank}
                     disabled={bank_account}
@@ -220,9 +222,9 @@ function PaymentSreen(props) {
                       ))}
                   </select>
                 </div>
-                <div className='form-group'>
+                <div className="form-group">
                   <select
-                    className='custom-select'
+                    className="custom-select"
                     value={branch}
                     onChange={(e) => onChange('branch', e.target.value)}
                     disabled={bank_account}
@@ -238,9 +240,9 @@ function PaymentSreen(props) {
                 </div>
               </>
             ) : null}
-            <div className='form-group form-check'></div>
+            <div className="form-group form-check"></div>
           </div>
-          <button type='submit' className='btn btn-outline-dark'>
+          <button type="submit" className="btn btn-outline-dark">
             Tiếp tục
           </button>
         </form>

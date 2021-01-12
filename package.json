@@ -22,10 +22,12 @@
     "@babel/core": "^7.12.3",
     "@babel/node": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "prettier": "^2.2.1"
   },
   "scripts": {
-    "start": "nodemon --watch . --exec babel-node server.js"
+    "start": "nodemon --watch . --exec babel-node server.js",
+    "pretty": "prettier --single-quote --write \"./**/*.{js,jsx,json}\""
   },
   "keywords": [],
   "author": "",

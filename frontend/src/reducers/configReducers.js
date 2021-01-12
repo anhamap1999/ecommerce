@@ -1,12 +1,14 @@
 import constants from '../constants/configConstant';
 
-function configReducer(state = { configs: [], updatingIndex: -1, isGotten: false }, action) {
+function configReducer(
+  state = { configs: [], updatingIndex: -1, isGotten: false },
+  action
+) {
   switch (action.type) {
-    case constants.CREATE_CONFIG_REQUEST: 
+    case constants.CREATE_CONFIG_REQUEST:
       return { loading: true, error: null };
     case constants.CREATE_CONFIG_SUCCESS: {
-
-        return { loading: false, configs: action.payload };
+      return { loading: false, configs: action.payload };
     }
     case constants.CREATE_CONFIG_FAIL:
       return { loading: false, error: action.payload };
@@ -19,11 +21,23 @@ function configReducer(state = { configs: [], updatingIndex: -1, isGotten: false
       return { loading: false, error: action.payload };
 
     case constants.UPDATE_CONFIG_REQUEST:
-      return { updatingLoading: true, error: null, updatingIndex: action.payload };
+      return {
+        updatingLoading: true,
+        error: null,
+        updatingIndex: action.payload,
+      };
     case constants.UPDATE_CONFIG_SUCCESS:
-      return { updatingLoading: false, configs: action.payload, updatingIndex: -1 };
+      return {
+        updatingLoading: false,
+        configs: action.payload,
+        updatingIndex: -1,
+      };
     case constants.UPDATE_CONFIG_FAIL:
-      return { updatingLoading: false, error: action.payload, updatingIndex: -1 };
+      return {
+        updatingLoading: false,
+        error: action.payload,
+        updatingIndex: -1,
+      };
     default:
       return state;
   }

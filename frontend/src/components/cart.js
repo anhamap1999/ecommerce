@@ -36,41 +36,41 @@ function CartScreen(props) {
   };
   return (
     <HomePage>
-      <div className='container cart-details'>
-        <div className='text-center'>
+      <div className="container cart-details">
+        <div className="text-center">
           <h1>Giỏ hàng của bạn</h1>
         </div>
         {loading ? (
-          <div class='spinner-border text-primary' role='status'>
-            <span class='sr-only'></span>
+          <div class="spinner-border text-primary" role="status">
+            <span class="sr-only"></span>
           </div>
         ) : error ? (
-          <div className=''>{error}</div>
+          <div className="">{error}</div>
         ) : (
-          <div className=''>
-            <div className='row'>
-              <div className='col-md-8 col-12'>
+          <div className="">
+            <div className="row">
+              <div className="col-md-8 col-12">
                 {cartItems &&
                   cartItems.map((item, index) =>
-                  loadingUpdate && updatingId === item._id ? (
-                      <div class='spinner-border text-primary' role='status'>
-                        <span class='sr-only'></span>
+                    loadingUpdate && updatingId === item._id ? (
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only"></span>
                       </div>
                     ) : (
-                      <div className='row yourcart'>
-                        <div className='col-md-3'>
+                      <div className="row yourcart">
+                        <div className="col-md-3">
                           {item.product_id.images && (
                             <img src={item.product_id.images[0]}></img>
                           )}
                         </div>
-                        <div className='col-md-2'>
+                        <div className="col-md-2">
                           <Link to={'/product/' + item.product_id._id}>
-                            <h6 className='font-weight-bold'>
+                            <h6 className="font-weight-bold">
                               {item.product_id.name}
                             </h6>
                           </Link>
                         </div>
-                        <div className='col-md-2'>
+                        <div className="col-md-2">
                           <InputNumber
                             min={1}
                             max={item.product_id.stock}
@@ -78,20 +78,20 @@ function CartScreen(props) {
                             onChange={(v) => onChange(index, 'quantity', v)}
                           />
                         </div>
-                        <div className='col-md-3'>
+                        <div className="col-md-3">
                           <div>
-                            <div class='input-group mb-3'>
-                              <div class='input-group-prepend'>
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
                                 <label
-                                  class='input-group-text'
-                                  for='inputGroupSelect01'
+                                  class="input-group-text"
+                                  for="inputGroupSelect01"
                                 >
                                   Size
                                 </label>
                               </div>
                               <select
-                                class='custom-select'
-                                id='inputGroupSelect01'
+                                class="custom-select"
+                                id="inputGroupSelect01"
                                 onChange={(e) =>
                                   onChange(index, 'size', e.target.value)
                                 }
@@ -111,16 +111,16 @@ function CartScreen(props) {
                             </span>
                           </div>
                         </div>
-                        <div className='col-md-1'>
+                        <div className="col-md-1">
                           <button
-                            className='btn btn-outline-secondary'
+                            className="btn btn-outline-secondary"
                             style={{ width: '100px', marginBottom: '10px  ' }}
                             onClick={() => deleteHandler(item._id)}
                           >
                             Xóa
                           </button>
                           <button
-                            className='btn btn-outline-primary'
+                            className="btn btn-outline-primary"
                             style={{ width: '100px' }}
                             onClick={(e) =>
                               updataItemHandler(
@@ -137,10 +137,10 @@ function CartScreen(props) {
                     )
                   )}
               </div>
-              <div className='col-md-4 col-12'>
+              <div className="col-md-4 col-12">
                 {cartItems && (
-                  <div className='total-cart'>
-                    <h3 className='text-center text-secondary '>
+                  <div className="total-cart">
+                    <h3 className="text-center text-secondary ">
                       CHI TIẾT GIỎ HÀNG
                     </h3>
                     <p>
@@ -157,7 +157,7 @@ function CartScreen(props) {
                     <button
                       style={{ borderRadius: '5px', width: '100%' }}
                       onClick={redirectShipping}
-                      className='btn btn-danger'
+                      className="btn btn-danger"
                     >
                       <span>MUA HÀNG</span>
                     </button>

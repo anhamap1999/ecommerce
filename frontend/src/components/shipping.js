@@ -91,15 +91,15 @@ function ShippingScreen(props) {
     <HomePage>
       <div>
         <CheckoutSteps step1 step2></CheckoutSteps>
-        <form onSubmit={submitHandler} className='border rounded'>
+        <form onSubmit={submitHandler} className="border rounded">
           <h3>Địa chỉ giao hàng</h3>
 
           {addressList && addressList.length ? (
             <div>
               <label>Chọn địa chỉ</label>
               <select
-                class='custom-select'
-                id='inputGroupSelect01'
+                class="custom-select"
+                id="inputGroupSelect01"
                 onChange={(e) => onChangeAddress(e.target.value)}
               >
                 <option value={-1}>{'Chọn địa chỉ'}</option>
@@ -112,33 +112,33 @@ function ShippingScreen(props) {
             </div>
           ) : null}
           {addressList && addressList.length ? 'Hoặc nhập địa chỉ mới' : ''}
-          <div className='form-group'>
+          <div className="form-group">
             <input
-              type='text'
-              className='form-control'
+              type="text"
+              className="form-control"
               value={full_name}
               onChange={(e) => {
                 onChange('full_name', e.target.value);
               }}
               disabled={addressId ? true : false}
-              placeholder='Họ và tên'
+              placeholder="Họ và tên"
             />
           </div>
-          <div className='form-group'>
+          <div className="form-group">
             <input
-              type='text'
-              className='form-control'
+              type="text"
+              className="form-control"
               value={phone_number}
               onChange={(e) => {
                 onChange('phone_number', e.target.value);
               }}
               disabled={addressId ? true : false}
-              placeholder='Số điện thoại'
+              placeholder="Số điện thoại"
             />
           </div>
-          <div className='form-group'>
+          <div className="form-group">
             <select
-              className='custom-select'
+              className="custom-select"
               value={province_number}
               onChange={onChangeProvince}
               disabled={addressId ? true : false}
@@ -152,9 +152,9 @@ function ShippingScreen(props) {
                 ))}
             </select>
           </div>
-          <div className='form-group'>
+          <div className="form-group">
             <select
-              className='custom-select'
+              className="custom-select"
               value={district_number}
               onChange={onChangeDistrict}
               disabled={addressId ? true : false}
@@ -168,9 +168,9 @@ function ShippingScreen(props) {
                 ))}
             </select>
           </div>
-          <div className='form-group'>
+          <div className="form-group">
             <select
-              className='custom-select'
+              className="custom-select"
               value={ward_number}
               onChange={(e) => {
                 onChange('ward_number', e.target.value);
@@ -186,19 +186,19 @@ function ShippingScreen(props) {
                 ))}
             </select>
           </div>
-          <div className='form-group'>
+          <div className="form-group">
             <input
-              type='text'
-              className='form-control'
+              type="text"
+              className="form-control"
               value={text}
               onChange={(e) => {
                 onChange('text', e.target.value);
               }}
-              placeholder='Địa chỉ cụ thể'
+              placeholder="Địa chỉ cụ thể"
               disabled={addressId ? true : false}
             />
           </div>
-          <button type='submit' className='btn btn-outline-dark'>
+          <button type="submit" className="btn btn-outline-dark">
             Tiếp tục
           </button>
         </form>

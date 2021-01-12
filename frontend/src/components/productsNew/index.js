@@ -32,15 +32,13 @@ const ProductsNew = (props) => {
   }, []);
   return (
     <>
-      <div className='container'>
-        <h1 className='text-center'>Giày mới về</h1>
+      <div className="container">
+        <h1 className="text-center">Giày mới về</h1>
         <ProductNew>
           {!loading ? (
             <Row>
               <Col md={{ span: 8 }}>
-                {
-                  
-                products[0] && (
+                {products[0] && (
                   <ProductsNewEle>
                     <ProductNewEleImg>
                       <img
@@ -55,7 +53,7 @@ const ProductsNew = (props) => {
                       </ProductNewPrice>
                       <Link to={`/product/${products[0]._id}`}>
                         <ProductNewButton>
-                          Xem <i className='bx bx-right-arrow-alt'></i>
+                          Xem <i className="bx bx-right-arrow-alt"></i>
                         </ProductNewButton>
                       </Link>
                     </ProductNewText>
@@ -87,8 +85,8 @@ const ProductsNew = (props) => {
               </Col>
             </Row>
           ) : (
-            <div className='spinner-border text-primary' role='status'>
-              <span className='sr-only'>Loading...</span>
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
             </div>
           )}
         </ProductNew>

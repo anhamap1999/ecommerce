@@ -2,9 +2,20 @@ const express = require('express');
 
 const router = express.Router();
 
-const { loginByEmail, loginByPhone, logout, forgotPassword, resetPassword } = require('./auth.controller');
+const {
+  loginByEmail,
+  loginByPhone,
+  logout,
+  forgotPassword,
+  resetPassword,
+} = require('./auth.controller');
 const { handleError } = require('../../middlewares/error.middleware');
-const { loginByEmailValidator, loginByPhoneValidator, forgotPasswordValidator, resetPasswordValidator } = require('./auth.validation');
+const {
+  loginByEmailValidator,
+  loginByPhoneValidator,
+  forgotPasswordValidator,
+  resetPasswordValidator,
+} = require('./auth.validation');
 
 router.post('/login-by-email', loginByEmailValidator, loginByEmail);
 router.post('/login-by-phone', loginByPhoneValidator, loginByPhone);

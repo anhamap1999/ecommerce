@@ -1,6 +1,10 @@
 const express = require('express');
 const controller = require('./notification.controller');
-const { isAuth, isAdmin, isStaff } = require('../../middlewares/auth.middleware');
+const {
+  isAuth,
+  isAdmin,
+  isStaff,
+} = require('../../middlewares/auth.middleware');
 const router = express.Router();
 const { handleError } = require('../../middlewares/error.middleware');
 const validator = require('./notification.validation');
@@ -19,16 +23,8 @@ router.post(
   validator.createNotificationValidator,
   controller.createNotification
 );
-router.put(
-  '/:id',
-  isAuth,
-  controller.markNotificationAsRead
-);
-router.put(
-  '/mark-all-as-read',
-  isAuth,
-  controller.markAllNotificationsAsRead
-);
+router.put('/:id', isAuth, controller.markNotificationAsRead);
+router.put('/mark-all-as-read', isAuth, controller.markAllNotificationsAsRead);
 
 router.use(handleError);
 module.exports = router;

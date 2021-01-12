@@ -35,7 +35,7 @@ function HomePage(props) {
   return (
     <>
       <NavbarTop />
-      <div className='main'>{props.children}</div>
+      <div className="main">{props.children}</div>
       <Footer />
       <BackTop>
         <div

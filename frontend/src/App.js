@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 // import './style.scss';
 
-import {BrowserRouter,Route} from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import AboutScreen from './components/about';
 import ProductScreen from './components/product';
@@ -27,28 +27,26 @@ import PlaceOrderScreen from './components/placeorder';
 import Shipping from './components/shipping';
 import Payment from './components/payment';
 function App() {
-  
   return (
     <BrowserRouter>
-     
-      <Route exact path='/' component={AboutScreen} />
-      <Route path='/products' component={ProductScreen} />
-      <Route path='/product/:id' component={DetailsScreen} />
-      <Route path='/cart/' component={CartScreen} />
-      <Route path='/cart/:id' component={CartScreen} />
-      <Route path='/profile/user'  component={ProfileUserScreen} />
-      <Route path='/profile/place'  component={PlaceUserScreen} />
-      <Route path='/profile/payment'  component={BankingUserScreen} />
-      <Route path='/profile/order'  component={OrderUserScreen} />
-      <Route path='/register' component={RegisterScreen} />
-      <Route path='/createproduct' component={CreateProductScreen} />
-      <Route path='/signin'  component={SigninScreen}></Route>
-      <Route path='/place-order' component={PlaceOrderScreen} />
-      <Route path='/shipping' component={Shipping} />
-      <Route path='/payment' component={Payment} />
-    
-      <Route path="/admin/customer" component={CustomerAdminScreen} />   
-      <Route path="/admin/products" component={ProductAdminScreen} />   
+      <Route exact path="/" component={AboutScreen} />
+      <Route path="/products" component={ProductScreen} />
+      <Route path="/product/:id" component={DetailsScreen} />
+      <Route path="/cart/" component={CartScreen} />
+      <Route path="/cart/:id" component={CartScreen} />
+      <Route path="/profile/user" component={ProfileUserScreen} />
+      <Route path="/profile/place" component={PlaceUserScreen} />
+      <Route path="/profile/payment" component={BankingUserScreen} />
+      <Route path="/profile/order" component={OrderUserScreen} />
+      <Route path="/register" component={RegisterScreen} />
+      <Route path="/createproduct" component={CreateProductScreen} />
+      <Route path="/signin" component={SigninScreen}></Route>
+      <Route path="/place-order" component={PlaceOrderScreen} />
+      <Route path="/shipping" component={Shipping} />
+      <Route path="/payment" component={Payment} />
+
+      <Route path="/admin/customer" component={CustomerAdminScreen} />
+      <Route path="/admin/products" component={ProductAdminScreen} />
       <Route path="/admin/orders" component={OrderAdminScreen} />
       <Route path="/admin/staff" component={StaffAdminScreen} />
       <Route path="/admin/category" component={CategoryAdminScreen} />
@@ -57,6 +55,5 @@ function App() {
     </BrowserRouter>
   );
 }
-
 
 export default App;

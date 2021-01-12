@@ -5,7 +5,9 @@ const Product = require('../products/product.model');
 
 exports.getCarts = async (req, res, next) => {
   try {
-    const carts = await Cart.find({ created_by: req.user._id }).sort('-created_at');
+    const carts = await Cart.find({ created_by: req.user._id }).sort(
+      '-created_at'
+    );
     const result = await Cart.populate(carts, [{ path: 'product_id' }]);
     const success = new Success({ data: result });
     res.status(200).send(success);
@@ -44,7 +46,9 @@ exports.addCart = async (req, res, next) => {
       });
     }
     const success = new Success({});
-    const existed_cart = await Cart.findOne({ product_id, size }).populate('product_id');
+    const existed_cart = await Cart.findOne({ product_id, size }).populate(
+      'product_id'
+    );
     if (existed_cart) {
       existed_cart.quantity += quantity;
       existed_cart.updated_at = Date.now();
@@ -54,7 +58,9 @@ exports.addCart = async (req, res, next) => {
       const cart = new Cart(req.body);
       cart.created_by = req.user._id;
       const result = await cart.save();
-      const created_product = await Cart.findById(result._id).populate('product_id');
+      const created_product = await Cart.findById(result._id).populate(
+        'product_id'
+      );
       success.data = created_product;
     }
     res.status(200).send(success);

@@ -42,7 +42,7 @@ exports.createOrderValidator = async (req, res, next) => {
       bank_account: Joi.when('paymentMethod', {
         is: 'cash',
         then: Joi.string().forbidden(),
-        otherwise: Joi.string().required()
+        otherwise: Joi.string().required(),
       }),
     });
     const schema = Joi.object().keys({
@@ -65,7 +65,7 @@ exports.createOrderValidator = async (req, res, next) => {
           'shop_cancel',
           'lost_damage'
         ),
-      payment: paymentSchema
+      payment: paymentSchema,
     });
     const result = await validate(req.body, schema);
     req.body = result;

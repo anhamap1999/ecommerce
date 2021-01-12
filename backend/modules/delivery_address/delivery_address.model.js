@@ -17,7 +17,10 @@ const deliveryAddressSchema = new mongoose.Schema({
   normalizedAddress: { type: String, required: false },
   created_by: { type: String, required: false },
   created_at: { type: Date, default: Date.now(), required: true },
-  updated_at: { type: Date, required: false }
+  updated_at: { type: Date, required: false },
 });
-const deliveryAddressModel = mongoose.model('DeliveryAddress', deliveryAddressSchema);
+const deliveryAddressModel = mongoose.model(
+  'DeliveryAddress',
+  deliveryAddressSchema
+);
 module.exports = deliveryAddressModel;

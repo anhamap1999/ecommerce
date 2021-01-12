@@ -8,29 +8,15 @@ const validator = require('./cart.validation');
 
 router.get('/', isAuth, controller.getCarts);
 
-router.get(
-  '/:id',
-  isAuth,
-  controller.getCartById
-);
-router.post(
-  '/',
-  isAuth,
-  validator.addCartValidator,
-  controller.addCart
-);
+router.get('/:id', isAuth, controller.getCartById);
+router.post('/', isAuth, validator.addCartValidator, controller.addCart);
 router.put(
   '/:id',
   isAuth,
   validator.updateCartValidator,
   controller.updateCart
 );
-router.delete(
-  '/:id',
-  isAuth,
-  controller.deleteCart
-);
-
+router.delete('/:id', isAuth, controller.deleteCart);
 
 // router.put('/:id', updateProduct);
 // router.delete('/:id', isAuth, isAdmin, deteleProduct);

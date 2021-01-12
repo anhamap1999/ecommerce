@@ -35,7 +35,7 @@ exports.importStockValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
       stock: Joi.string().required(),
-      price: Joi.number().required()
+      price: Joi.number().required(),
     });
     const result = await validate(req.body, schema);
     req.body = result;

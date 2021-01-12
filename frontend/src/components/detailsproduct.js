@@ -20,11 +20,6 @@ function DetailsScreen(props) {
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState(0);
   const productDetails = useSelector((state) => state.productDetails);
-<<<<<<< HEAD
-  const { product, loading, error } = productDetails;
-  const userSignin = useSelector((state) => state.userSignin);
-  const { userInfo } = userSignin;
-=======
   const { stocks, loading: loadingStock } = useSelector((state) => state.stock);
   const { categories } = useSelector((state) => state.listCategories);
   const [likeState, setLikeState] = useState('');
@@ -35,7 +30,6 @@ function DetailsScreen(props) {
   const stock = stocks && stocks[stockIndex] ? stocks[stockIndex].stock : 0;
 
   const { product = {}, loading, error, updateLoading } = productDetails;
->>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -124,9 +118,9 @@ function DetailsScreen(props) {
     <HomePage>
       {console.log('likeState', likeState)}
       {loading || loadingStock ? (
-        <div className='container'>
-          <div className='spinner-border text-primary' role='status'>
-            <span className='sr-only'></span>
+        <div className="container">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only"></span>
           </div>
         </div>
       ) : error ? (
@@ -134,12 +128,12 @@ function DetailsScreen(props) {
       ) : (
         product &&
         !_.isEmpty(product) && (
-          <div className=' details' style={{ marginTop: '100px' }}>
-            <div className='details-product container'>
-              <div className='row'>
+          <div className=" details" style={{ marginTop: '100px' }}>
+            <div className="details-product container">
+              <div className="row">
                 <Breadcrumb>
                   <Breadcrumb.Item>
-                    <Link to='/'>Trang chủ</Link>
+                    <Link to="/">Trang chủ</Link>
                   </Breadcrumb.Item>
                   {category_parent && (
                     <Link to={'/products/' + category_parent.pure_name}>
@@ -154,8 +148,8 @@ function DetailsScreen(props) {
                   <Breadcrumb.Item>{name}</Breadcrumb.Item>
                 </Breadcrumb>
               </div>
-              <div className='row'>
-                <div className='col-md-6'>
+              <div className="row">
+                <div className="col-md-6">
                   {/* <div className='details-img'>
                     <img src={Img}></img>
                   </div> */}
@@ -171,31 +165,31 @@ function DetailsScreen(props) {
                     showNav={true}
                   />
                 </div>
-                <div className='col-md-6'>
-                  <div className='details-text'>
+                <div className="col-md-6">
+                  <div className="details-text">
                     <h3
-                      className='text-secondary'
+                      className="text-secondary"
                       style={{ textTransform: 'uppercase' }}
                     >
                       {name}
                     </h3>
-                    <div className='review-actions'>
+                    <div className="review-actions">
                       {/* <p className='action-inline'>
                         <span className='count'>{views_count}</span>{' '}
                         Lượt xem
                       </p> */}
-                      <p className='action-inline'>
-                        <span className='count'>{likes_count}</span> Lượt thích
+                      <p className="action-inline">
+                        <span className="count">{likes_count}</span> Lượt thích
                       </p>
-                      <p className='action-inline'>
-                        <span className='count'>{rating}</span> Đánh giá
+                      <p className="action-inline">
+                        <span className="count">{rating}</span> Đánh giá
                       </p>
-                      <p className='action-inline'>
-                        <span className='count'>{comments_count}</span> Bình
+                      <p className="action-inline">
+                        <span className="count">{comments_count}</span> Bình
                         luận
                       </p>
-                      <p className='action-inline'>
-                        <span className='count'>{sold_count}</span> Đã bán
+                      <p className="action-inline">
+                        <span className="count">{sold_count}</span> Đã bán
                       </p>
                     </div>
                     {/* <p className='text-secondary'>
@@ -203,7 +197,7 @@ function DetailsScreen(props) {
                     </p> */}
                     <h4>
                       GIÁ:{' '}
-                      <span className='text-warning'>
+                      <span className="text-warning">
                         {utils.vndFormat(price)}
                       </span>
                     </h4>
@@ -277,72 +271,53 @@ function DetailsScreen(props) {
                       </>
                     )}
 
-<<<<<<< HEAD
-                   {
-                     !userInfo ?
-                     <Link to={`/register`}>
-                     <button
-                       type="button"
-                       style={{ padding: "15px" }}
-                       className="btn btn-danger"
-                       
-                     >
-                       <span>
-                         <i class="bx bxs-user"></i>
-                       </span>{" "}
-                       ĐĂNG KÍ ĐỂ THÊM
-                     </button>
-                     </Link> :
-                     <Link to={`/cart/${product._id}?qty=${qty}&&size=${size}`}>
-                     <button
-                       type="button"
-                       style={{ padding: "15px" }}
-                       className="btn btn-danger"
-                       onClick={addProductTocart}
-                     >
-                       <span>
-                         <i class="bx bxs-cart"></i>
-                       </span>{" "}
-                       THÊM VÀO GIỎ HÀNG
-                     </button>
-                   </Link>
-                   }
-=======
                     {/* <Link to={`/cart/${_id}?qty=${qty}&&size=${size}`}> */}
-                    {size ? (
+                    {!userInfo ? (
+                      <Link to={`/register`}>
+                        <button
+                          type="button"
+                          style={{ padding: '15px' }}
+                          className="btn btn-danger"
+                        >
+                          <span>
+                            <i class="bx bxs-user"></i>
+                          </span>{' '}
+                          ĐĂNG KÍ ĐỂ THÊM
+                        </button>
+                      </Link>
+                    ) : size ? (
                       <Link to={`/cart`}>
                         <button
-                          type='button'
+                          type="button"
                           style={{ padding: '15px' }}
-                          className='btn btn-danger'
+                          className="btn btn-danger"
                           onClick={addProductTocart}
                         >
                           <span>
-                            <i className='bx bxs-cart'></i>
+                            <i className="bx bxs-cart"></i>
                           </span>{' '}
                           THÊM VÀO GIỎ HÀNG
                         </button>
                       </Link>
                     ) : (
                       <button
-                        type='button'
+                        type="button"
                         style={{ padding: '15px' }}
-                        className='btn btn-danger'
+                        className="btn btn-danger"
                         onClick={addProductTocart}
                       >
                         <span>
-                          <i className='bx bxs-cart'></i>
+                          <i className="bx bxs-cart"></i>
                         </span>{' '}
                         THÊM VÀO GIỎ HÀNG
                       </button>
                     )}
->>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
                     {/* comment */}
                     <Tooltip
                       title={likeState === 'unlike' ? 'Thích' : 'Bỏ thích'}
                     >
                       <button
-                        type='button'
+                        type="button"
                         style={{ padding: '13px', margin: '20px' }}
                         className={`btn ${
                           likeState === 'unlike'
@@ -353,10 +328,10 @@ function DetailsScreen(props) {
                       >
                         {updateLoading || loadingUser ? (
                           <div
-                            className='spinner-border text-primary'
-                            role='status'
+                            className="spinner-border text-primary"
+                            role="status"
                           >
-                            <span className='sr-only'></span>
+                            <span className="sr-only"></span>
                           </div>
                         ) : (
                           <AiOutlineLike
@@ -373,15 +348,15 @@ function DetailsScreen(props) {
                 </div>
               </div>
               <hr></hr>
-              <div className='detail-product-des container'>
+              <div className="detail-product-des container">
                 <h4> Thông tin chi tiết sản phẩm</h4>
                 <p>{description}</p>
               </div>
             </div>
-            <div className='container' style={{ marginTop: '20px' }}>
-              <h3 className='text-primary'>
+            <div className="container" style={{ marginTop: '20px' }}>
+              <h3 className="text-primary">
                 <i
-                  className='bx bx-comment-detail'
+                  className="bx bx-comment-detail"
                   style={{ marginRight: '5px' }}
                 ></i>{' '}
                 Bình luận{' '}
@@ -391,14 +366,8 @@ function DetailsScreen(props) {
         )
       )}
 
-<<<<<<< HEAD
       <div className="details-product container">
-        {
-          product && <CommentEle productID={product._id} />}
-=======
-      <div className='details-product container'>
         {product && <CommentEle productID={_id} />}
->>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
       </div>
     </HomePage>
   );

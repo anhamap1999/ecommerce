@@ -30,12 +30,12 @@ import axios from '../modules/axios';
 import utils from '../modules/utils';
 
 const changeFields = (object) => async (dispatch) => {
-    dispatch({
-        type: CHANGE_FIELDS,
-        payload: object
-    });
-}
-const listProducts = ({page, limit, ...query}) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_FIELDS,
+    payload: object,
+  });
+};
+const listProducts = ({ page, limit, ...query }) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
     const queryString = utils.formatQuery({ page, limit, ...query });
@@ -53,13 +53,11 @@ const listProducts = ({page, limit, ...query}) => async (dispatch) => {
     dispatch({ type: PRODUCT_LIST_FAIL, payload: message });
   }
 };
-const listProductsAdmin = ({page, limit, ...query}) => async (dispatch) => {
+const listProductsAdmin = ({ page, limit, ...query }) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_ADMIN_LIST_REQUEST });
     const queryString = utils.formatQuery({ page, limit, ...query });
-    const { data, total_page, total } = await axios.get(
-      `/api/products/admin`
-    );
+    const { data, total_page, total } = await axios.get(`/api/products/admin`);
     if (data) {
       dispatch({
         type: PRODUCT_ADMIN_LIST_SUCCESS,
@@ -71,10 +69,15 @@ const listProductsAdmin = ({page, limit, ...query}) => async (dispatch) => {
     dispatch({ type: PRODUCT_ADMIN_LIST_FAIL, payload: message });
   }
 };
-const listNewProducts = ({page, limit, ...query}) => async (dispatch) => {
+const listNewProducts = ({ page, limit, ...query }) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_NEW_LIST_REQUEST });
-    const queryString = utils.formatQuery({ page, limit, ...query, sort: '-created_at' });
+    const queryString = utils.formatQuery({
+      page,
+      limit,
+      ...query,
+      sort: '-created_at',
+    });
     const { data, total_page, total } = await axios.get(
       `/api/products${queryString}`
     );
@@ -99,21 +102,24 @@ const detailsProduct = (productId) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_FAIL, payload: message });
   }
 };
-const updateStateProduct = (productId,{status}) => async(dispatch, getState) => {
+const updateStateProduct = (productId, { status }) => async (
+  dispatch,
+  getState
+) => {
   try {
     dispatch({ type: PRODUCT_UPDATE_STATES_REQUEST });
     const {
       userSignin: { userInfo },
-    } = getState(); 
-<<<<<<< HEAD
-    console.log("stat",status)
-    const { data } = await axiosClient.put('/api/products/admin/update-status/' + productId,{status});
-=======
-    const { data } = await axios.put('/api/products/update-status/' + productId);
->>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
+    } = getState();
+    console.log('stat', status);
+    const {
+      data,
+    } = await axiosClient.put(
+      '/api/products/admin/update-status/' + productId,
+      { status }
+    );
     dispatch({ type: PRODUCT_UPDATE_STATES_SUCCESS, payload: data });
-    }
-   catch (error) {
+  } catch (error) {
     dispatch({ type: PRODUCT_UPDATE_STATES_FAIL, payload: error.message });
   }
 };
@@ -122,16 +128,16 @@ const addProduct = (product) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_ADD_REQUEST, payload: product });
     const {
       userSignin: { userInfo },
-    } = getState(); 
+    } = getState();
 
     if (!product._id) {
-      
-      const { data } = await axiosClient.post('/api/products/admin',JSON.stringify(product) );
-      dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data});
+      const { data } = await axiosClient.post(
+        '/api/products/admin',
+        JSON.stringify(product)
+      );
+      dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data });
     } else {
-      
-      const { data } = await axios.put(
-        '/api/products/' + product._id);
+      const { data } = await axios.put('/api/products/' + product._id);
 
       dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data });
     }
@@ -155,11 +161,24 @@ const removeProductID = (productId) => async (dispatch, getState) => {
 const likeProduct = (product_id, state) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_LIKE_REQUEST, error: null });
-    const { data } = await axios.put('/api/products/like-product', JSON.stringify({ id: product_id, state }));
+    const { data } = await axios.put(
+      '/api/products/like-product',
+      JSON.stringify({ id: product_id, state })
+    );
     dispatch({ type: PRODUCT_LIKE_SUCCESS, payload: data });
   } catch (error) {
     const message = utils.getMessageError(error.messages);
     dispatch({ type: PRODUCT_LIKE_FAIL, payload: message });
   }
 };
-export { listProducts, detailsProduct, addProduct, removeProductID, listNewProducts, changeFields, likeProduct, listProductsAdmin };
+export {
+  listProducts,
+  detailsProduct,
+  addProduct,
+  removeProductID,
+  listNewProducts,
+  changeFields,
+  likeProduct,
+  listProductsAdmin,
+  updateStateProduct,
+};

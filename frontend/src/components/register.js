@@ -39,14 +39,14 @@ function RegisterScreen(props) {
     }
   };
   return (
-    <div className='signin-form'>
-      <form className='box' onSubmit={submitHandler}>
+    <div className="signin-form">
+      <form className="box" onSubmit={submitHandler}>
         <h1>Đăng ký</h1>
 
         <li>
           {loading ? (
-            <div className='spinner-border text-primary' role='status'>
-              <span className='sr-only'>Loading...</span>
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
             </div>
           ) : null}
           {formError ? (
@@ -61,42 +61,42 @@ function RegisterScreen(props) {
         </li>
         <li>
           <input
-            type='text'
-            placeholder='Số điện thoại'
-            name='phone_number'
-            id='phone_number'
+            type="text"
+            placeholder="Số điện thoại"
+            name="phone_number"
+            id="phone_number"
             onChange={(e) => setPhone_number(e.target.value)}
           ></input>
         </li>
         <li>
           <input
-            type='text'
-            placeholder='Địa chỉ email'
-            name='email'
-            id='email'
+            type="text"
+            placeholder="Địa chỉ email"
+            name="email"
+            id="email"
             onChange={(e) => setEmail(e.target.value)}
           ></input>
         </li>
         <li>
           <input
-            type='password'
-            name='password'
-            placeholder='Mật khẩu'
-            id='password'
+            type="password"
+            name="password"
+            placeholder="Mật khẩu"
+            id="password"
             onChange={(e) => setPassword(e.target.value)}
           ></input>
         </li>
         <li>
           <input
-            type='password'
-            name='confirm_password'
-            placeholder='Nhập lại mật khẩu'
-            id='confirm_password'
+            type="password"
+            name="confirm_password"
+            placeholder="Nhập lại mật khẩu"
+            id="confirm_password"
             onChange={(e) => setConfirm_password(e.target.value)}
           ></input>
         </li>
         <li>
-          <button type='submit' className='re-submit'>
+          <button type="submit" className="re-submit">
             Đăng ký
           </button>
         </li>

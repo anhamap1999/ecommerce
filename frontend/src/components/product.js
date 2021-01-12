@@ -112,7 +112,7 @@ function ProductScreen(props) {
           <Row>
             <Col span={24}>
               <Tabs
-                className='custom-tabs'
+                className="custom-tabs"
                 activeKey={
                   category.type === 1
                     ? category._id
@@ -134,7 +134,7 @@ function ProductScreen(props) {
             <Col span={24}>
               {category.type > 0 && (
                 <Tabs
-                  className='custom-tabs'
+                  className="custom-tabs"
                   activeKey={category._id}
                   tabPosition={'top'}
                   onChange={(value) => onChangeFilter('category_id', value)}
@@ -143,7 +143,9 @@ function ProductScreen(props) {
                   {categories
                     .filter(
                       (item) =>
-                        item.type === 2 && (item.parent_id._id === category._id || category._id === item._id)
+                        item.type === 2 &&
+                        (item.parent_id._id === category._id ||
+                          category._id === item._id)
                     )
                     .map((i) => (
                       <TabPane tab={i.name} key={i._id} />
@@ -157,12 +159,12 @@ function ProductScreen(props) {
       <Row gutter={[8, 16]}>
         <Col md={{ span: 6 }}>
           <Card>
-            <div className='filter-div'>
-              <Button value='Đặt lại' type='primary' onClick={clearFilter}>
+            <div className="filter-div">
+              <Button value="Đặt lại" type="primary" onClick={clearFilter}>
                 Đặt lại
               </Button>
             </div>
-            <div className='filter-div'>Sắp xếp theo:</div>
+            <div className="filter-div">Sắp xếp theo:</div>
             <Select
               value={sort}
               options={sortOptions}
@@ -170,10 +172,10 @@ function ProductScreen(props) {
               style={{ width: 200 }}
             />
 
-            <div className='filter-div'>Giá:</div>
+            <div className="filter-div">Giá:</div>
             <div>
-              Giá từ: <span className='filter-div'>{price && price[0]}</span>{' '}
-              đến <span className='filter-div'>{price && price[1]}</span>
+              Giá từ: <span className="filter-div">{price && price[0]}</span>{' '}
+              đến <span className="filter-div">{price && price[1]}</span>
             </div>
             <Slider
               range
@@ -185,7 +187,7 @@ function ProductScreen(props) {
               // onAfterChange={onAfterChange}
             />
 
-            <div className='filter-div'>Size:</div>
+            <div className="filter-div">Size:</div>
             <Radio.Group
               value={size}
               onChange={(e) => onChangeFilter('size', e.target.value)}
@@ -202,8 +204,8 @@ function ProductScreen(props) {
                 ))}
             </Radio.Group>
 
-            <div className='filter-div'>Màu sắc:</div>
-            <div className='color-radio'>
+            <div className="filter-div">Màu sắc:</div>
+            <div className="color-radio">
               {colors &&
                 Object.entries(colors).map((item) => (
                   <Tooltip title={item[1]}>
@@ -226,28 +228,28 @@ function ProductScreen(props) {
         </Col>
         <Col md={{ span: 18 }}>
           {loading ? (
-            <div className='container'>
-              <div className='spinner-border text-primary' role='status'>
-                <span className='sr-only'>Loading...</span>
+            <div className="container">
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
               </div>
             </div>
           ) : error ? (
             <div>{error}</div>
           ) : (
-            <ul className='container'>
-              <div className='row'>
+            <ul className="container">
+              <div className="row">
                 {products &&
                   products.length > 0 &&
                   products.map((product) => (
                     <Link to={`/product/${product._id}`}>
-                      <div className='col-md-4' style={{ margin: '10px 0' }}>
+                      <div className="col-md-4" style={{ margin: '10px 0' }}>
                         <li>
-                          <div className='productmain'>
-                            <div className='product'>
-                              <div className='product-img'>
-                                <img src={product.thumbnail} alt='giay'></img>
+                          <div className="productmain">
+                            <div className="product">
+                              <div className="product-img">
+                                <img src={product.thumbnail} alt="giay"></img>
                               </div>
-                              <div className='product-text'>
+                              <div className="product-text">
                                 <h3> {product.name} </h3>
                                 <h5> {utils.vndFormat(product.price)} </h5>
                                 {/* <div>{product.price}</div> */}
@@ -264,12 +266,12 @@ function ProductScreen(props) {
                   ))}
                 {products && !products.length && (
                   <Empty
-                    description='Không có sản phẩm'
+                    description="Không có sản phẩm"
                     style={{ width: '-webkit-fill-available' }}
                   />
                 )}
                 {products && products.length ? (
-                  <div className='container' style={{ textAlign: 'right' }}>
+                  <div className="container" style={{ textAlign: 'right' }}>
                     <Pagination
                       current={page}
                       total={total}

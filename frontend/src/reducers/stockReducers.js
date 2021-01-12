@@ -34,14 +34,14 @@ function stockReducer(
 
     case constants.IMPORT_STOCK_REQUEST:
       return {
-        ...state, 
+        ...state,
         updatingLoading: true,
         error: null,
         updatingIndex: action.payload,
       };
     case constants.IMPORT_STOCK_SUCCESS:
       return {
-        ...state, 
+        ...state,
         updatingLoading: false,
         stocks: action.payload,
         updatingIndex: -1,

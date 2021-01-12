@@ -35,9 +35,8 @@ exports.getCategory = async (req, res, next) => {
 
 exports.addCategory = async (req, res) => {
   try {
- 
     const category = new Category(req.body);
-   
+
     const savedCategory = await category.save();
     if (savedCategory) {
       res.status(200).send('successful');
@@ -103,15 +102,19 @@ exports.createCategory = async (req, res, next) => {
         throw new Error({
           statusCode: 400,
           message: 'category.typeIsNotValid',
-          messages: { category: 'category type is less than parent category type' },
+          messages: {
+            category: 'category type is less than parent category type',
+          },
         });
       }
       category.parent_id = parent_id;
     }
     category.created_by = req.user._id;
     const result = await category.save();
-    const created_category = await Category.findById(result._id).populate({ path: 'parent_id' });
-    
+    const created_category = await Category.findById(result._id).populate({
+      path: 'parent_id',
+    });
+
     const success = new Success({ data: created_category });
     res.status(200).send(success);
   } catch (error) {
@@ -153,14 +156,18 @@ exports.updateCategory = async (req, res, next) => {
         throw new Error({
           statusCode: 400,
           message: 'category.typeIsNotValid',
-          messages: { category: 'category type is less than parent category type' },
+          messages: {
+            category: 'category type is less than parent category type',
+          },
         });
       }
     }
     category.updated_by = req.user._id;
     category.updated_at = Date.now();
     await Category.findByIdAndUpdate(req.params.id, category);
-    const result = await Category.findById(req.params.id).populate({ path: 'parent_id' });
+    const result = await Category.findById(req.params.id).populate({
+      path: 'parent_id',
+    });
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
@@ -170,7 +177,9 @@ exports.updateCategory = async (req, res, next) => {
 
 exports.updateStatusCategory = async (req, res, next) => {
   try {
-    const category = await Category.findById(req.params.id).populate({ path: 'parent_id' });
+    const category = await Category.findById(req.params.id).populate({
+      path: 'parent_id',
+    });
 
     if (!category) {
       throw new Error({
@@ -192,7 +201,9 @@ exports.updateStatusCategory = async (req, res, next) => {
 
 exports.deleteCategory = async (req, res, next) => {
   try {
-    const category = await Category.findById(req.params.id).populate({ path: 'parent_id' });
+    const category = await Category.findById(req.params.id).populate({
+      path: 'parent_id',
+    });
 
     if (!category) {
       throw new Error({
@@ -202,17 +213,17 @@ exports.deleteCategory = async (req, res, next) => {
       });
     }
     // if (category.type > 1) {
-      const categories = await Category.find({
-        status: 'active',
-        parent_id: category._id,
+    const categories = await Category.find({
+      status: 'active',
+      parent_id: category._id,
+    });
+    if (categories.length > 0) {
+      throw new Error({
+        statusCode: 404,
+        message: 'category.canNotDelete',
+        messages: { category: 'category is parent of other categories' },
       });
-      if (categories.length > 0) {
-        throw new Error({
-          statusCode: 404,
-          message: 'category.canNotDelete',
-          messages: { category: 'category is parent of other categories' },
-        });
-      }
+    }
     // }
     category.status = 'disabled';
     category.updated_by = req.user._id;
@@ -233,7 +244,9 @@ exports.getCategoryById = async (req, res, next) => {
     const category = await Category.findOne({
       _id: id,
       status: 'active',
-    }).populate({ path: 'parent_id' }).select(select);
+    })
+      .populate({ path: 'parent_id' })
+      .select(select);
 
     if (!category) {
       throw new Error({
@@ -267,7 +280,9 @@ exports.adminGetCategoryById = async (req, res, next) => {
     const { select } = req.query;
     const { id } = req.params;
 
-    const category = await Category.findById(id).populate({ path: 'parent_id' }).select(select);
+    const category = await Category.findById(id)
+      .populate({ path: 'parent_id' })
+      .select(select);
 
     if (!category) {
       throw new Error({
@@ -306,7 +321,7 @@ exports.getCategories = async (req, res, next) => {
       .sort(sort ? sort : 'name');
     const result = await Category.populate(categories, [{ path: 'parent_id' }]);
     // for (const [index, item] of categories.entries()) {
-    
+
     // }
     // for (const [index, item] of categories.entries()) {
     //   if (item.parent_id) {
@@ -323,7 +338,7 @@ exports.getCategories = async (req, res, next) => {
     //     categories[index].parent_id = parent_category;
     //   }
     // }
-    
+
     // console.log('CATEGORY', categories)
     const success = new Success({ data: result });
     res.status(200).send(success);

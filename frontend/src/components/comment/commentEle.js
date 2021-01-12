@@ -25,14 +25,21 @@ import UploadImage from '../UploadImage';
 import { uploadFile } from '../../modules/file';
 const { TextArea } = Input;
 
-export const Editor = ({ onChange, onSubmit, submitting, content, rate, images }) => (
+export const Editor = ({
+  onChange,
+  onSubmit,
+  submitting,
+  content,
+  rate,
+  images,
+}) => (
   <>
-    <Form.Item className='ant-rate-select'>
+    <Form.Item className="ant-rate-select">
       <Rate value={rate} onChange={(value) => onChange('rating', value)} />
     </Form.Item>
     <Form.Item>
       <TextArea
-        placeholder='Nhập bình luận'
+        placeholder="Nhập bình luận"
         autoSize={{ minRows: 4 }}
         onChange={(e) => onChange('content', e.target.value)}
         value={content}
@@ -49,10 +56,10 @@ export const Editor = ({ onChange, onSubmit, submitting, content, rate, images }
 
     <Form.Item>
       <Button
-        htmlType='submit'
+        htmlType="submit"
         loading={submitting}
         onClick={onSubmit}
-        type='primary'
+        type="primary"
       >
         Thêm bình luận
       </Button>
@@ -62,7 +69,7 @@ export const Editor = ({ onChange, onSubmit, submitting, content, rate, images }
 const uploadButton = (
   <div>
     <BsPlusSquareFill style={{ fontSize: '20px' }} />
-    <div className='ant-upload-text'>Upload</div>
+    <div className="ant-upload-text">Upload</div>
   </div>
 );
 const CommentEle = ({ productID }) => {
@@ -81,53 +88,12 @@ const CommentEle = ({ productID }) => {
     return () => {};
   }, []);
 
-<<<<<<< HEAD
-    return (
-      <>
-        {   loading ? 
-                            <div className="spinner-border text-primary" role="status">
-                                        <span className="sr-only"></span>
-                            </div>
-                        
-                    :
-            error ? <div> {error} </div>
-                    :
-            comment  && comment.length > 0 &&
-            comment.map(con => con.product_id._id == productID && 
-                                        <CommentedProduct  
-                                            content={con}    
-                                        />)
-            }
-        
-        {   
-           !userInfo ? <Link to='/register' className='text-primary'> Đăng kí tài khoản để bình luận </Link> :
-            userInfo && userInfo.user &&
-            <Comment
-                avatar={
-                    <Avatar
-                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        alt={userInfo.user.email}
-                    />
-                }
-                content={
-                    <Editor
-                        onChange={e =>setContent(e.target.value)}
-                        onSubmit={()=>handleSubmit()}
-                        submitting={submitting}
-                        value={content}
-                    />
-                }
-          />
-        }
-      </>
-=======
   const handleSubmit = async () => {
     if (!comments) {
       return;
     }
     await dispatch(
       postCommentProduct({ product_id: productID, content, rating })
->>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
     );
     dispatch(getCommentProduct(productID));
     setContent('');
@@ -149,8 +115,8 @@ const CommentEle = ({ productID }) => {
   return (
     <>
       {loading ? (
-        <div className='spinner-border text-primary' role='status'>
-          <span className='sr-only'></span>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only"></span>
         </div>
       ) : error ? (
         <div> {error} </div>
@@ -166,29 +132,37 @@ const CommentEle = ({ productID }) => {
         )
       )}
 
-      {userInfo && userInfo.user && (
-        <Comment
-          avatar={
-            <Avatar
-              src={
-                userInfo.user.avatar
-                  ? userInfo.user.avatar
-                  : 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-              }
-              alt={userInfo.user.email}
-            />
-          }
-          content={
-            <Editor
-              onChange={onChange}
-              onSubmit={() => handleSubmit()}
-              submitting={submitting}
-              content={content}
-              rate={rate}
-              images={images}
-            />
-          }
-        />
+      {!userInfo ? (
+        <Link to="/register" className="text-primary">
+          {' '}
+          Đăng kí tài khoản để bình luận{' '}
+        </Link>
+      ) : (
+        userInfo &&
+        userInfo.user && (
+          <Comment
+            avatar={
+              <Avatar
+                src={
+                  userInfo.user.avatar
+                    ? userInfo.user.avatar
+                    : 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+                }
+                alt={userInfo.user.email}
+              />
+            }
+            content={
+              <Editor
+                onChange={onChange}
+                onSubmit={() => handleSubmit()}
+                submitting={submitting}
+                content={content}
+                rate={rate}
+                images={images}
+              />
+            }
+          />
+        )
       )}
     </>
   );

@@ -91,19 +91,21 @@ exports.getProducts = async (req, res, next) => {
 
     const success = new Success({});
     await Product.paginate({ ...query, status: 'approved' }, options)
-      .then(async(result) => {
+      .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const products = await Product.populate(result.docs, [{ path: 'category_id' }]);
+          const products = await Product.populate(result.docs, [
+            { path: 'category_id' },
+          ]);
           success
             .addField('data', products)
             .addField('total_page', result.totalPages)
             .addField('page', result.page)
             .addField('total', result.totalDocs);
-            // res.setHeader("Access-Control-Allow-Origin", "*");
-            // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            // res.io.emit('chat message', result);
+          // res.setHeader("Access-Control-Allow-Origin", "*");
+          // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+          // res.io.emit('chat message', result);
         } else {
-          success.addField('data',  result.docs);
+          success.addField('data', result.docs);
         }
       })
       .catch((error) => {
@@ -130,9 +132,11 @@ exports.getProductsByAdmin = async (req, res, next) => {
     }
     const success = new Success({});
     await Product.paginate(query, options)
-      .then(async(result) => {
+      .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const products = await Product.populate(result.docs, [{ path: 'category_id' }]);
+          const products = await Product.populate(result.docs, [
+            { path: 'category_id' },
+          ]);
           success
             .addField('data', products)
             .addField('total_page', result.totalPages)
@@ -158,7 +162,9 @@ exports.getProductById = async (req, res, next) => {
     const product = await Product.findOne({
       _id: id,
       status: 'approved',
-    }).populate({ path: 'category_id' }).select(select);
+    })
+      .populate({ path: 'category_id' })
+      .select(select);
 
     if (!product) {
       throw new Error({
@@ -178,7 +184,9 @@ exports.adminGetProductById = async (req, res, next) => {
   try {
     const { select } = req.query;
 
-    const product = await Product.findById(req.params.id).populate({ path: 'category_id' }).select(select);
+    const product = await Product.findById(req.params.id)
+      .populate({ path: 'category_id' })
+      .select(select);
 
     if (!product) {
       throw new Error({
@@ -212,7 +220,7 @@ exports.createProduct = async (req, res, next) => {
         product_id: result._id,
         stock: 0,
         size: item,
-        created_by: req.user._id
+        created_by: req.user._id,
       });
       await stock.save();
     });
@@ -241,17 +249,19 @@ exports.updateProduct = async (req, res, next) => {
           product_id: result._id,
           stock: 0,
           size: item,
-          created_by: req.user._id
+          created_by: req.user._id,
         });
         await stock.save();
-      })
+      });
     }
     product = { ...product._doc, ...req.body };
     product.pure_name = utils.removeAccents(product.name);
     product.updated_by = req.user._id;
     product.updated_at = Date.now();
     await Product.findByIdAndUpdate(req.params.id, product);
-    const result = await Product.findById(req.params.id).populate({ path: 'category_id' })
+    const result = await Product.findById(req.params.id).populate({
+      path: 'category_id',
+    });
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
@@ -261,7 +271,6 @@ exports.updateProduct = async (req, res, next) => {
 
 exports.updateStatusProduct = async (req, res, next) => {
   try {
-   
     const product = await Product.findById(req.params.id);
 
     if (!product) {
@@ -271,12 +280,14 @@ exports.updateStatusProduct = async (req, res, next) => {
         messages: { product: 'product not found' },
       });
     }
-    
+
     product.status = req.body.status;
     product.updated_by = req.user._id;
     product.updated_at = Date.now();
     await Product.findByIdAndUpdate(req.params.id, product);
-    const result = await Product.findById(req.params.id).populate({ path: 'category_id' })
+    const result = await Product.findById(req.params.id).populate({
+      path: 'category_id',
+    });
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
@@ -301,14 +312,16 @@ exports.likeProduct = async (req, res, next) => {
       user.like_products.push(id);
     } else if (state === 'unlike' && product.likes_count > 0) {
       product.likes_count--;
-      user.like_products = user.like_products.filter((item) => String(item) !== String(id));
+      user.like_products = user.like_products.filter(
+        (item) => String(item) !== String(id)
+      );
     }
-    
+
     await Product.findByIdAndUpdate(id, product);
     await User.findByIdAndUpdate(req.user._id, user);
     req.user = user;
 
-    const result = await Product.findById(id).populate({ path: 'category_id' })
+    const result = await Product.findById(id).populate({ path: 'category_id' });
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {

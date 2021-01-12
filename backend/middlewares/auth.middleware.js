@@ -6,7 +6,6 @@ const User = require('../modules/users/user.model');
 
 exports.isAuth = async (req, res, next) => {
   try {
- 
     if (!req.header('Authorization')) {
       throw new Error({
         statusCode: 401,
@@ -15,7 +14,7 @@ exports.isAuth = async (req, res, next) => {
       });
     }
     const token = req.header('Authorization').replace('Bearer ', '');
-  
+
     const decoded = await verifyToken(token, config.JWT_SECRET_KEY);
     if (!decoded) {
       throw new Error({
@@ -25,7 +24,10 @@ exports.isAuth = async (req, res, next) => {
       });
     }
 
-    const user = await User.findOne({ _id: decoded.data._id, status: 'active' });
+    const user = await User.findOne({
+      _id: decoded.data._id,
+      status: 'active',
+    });
     if (!user) {
       throw new Error({
         statusCode: 401,
@@ -34,15 +36,14 @@ exports.isAuth = async (req, res, next) => {
       });
     }
     req.user = user;
-  
+
     next();
-  } catch(error) {
+  } catch (error) {
     next(error);
   }
 };
 
 exports.isStaff = (req, res, next) => {
-  
   if (req.user && (req.user.role === 'staff' || req.user.isAdmin)) {
     return next();
   }
@@ -56,7 +57,6 @@ exports.isStaff = (req, res, next) => {
 };
 
 exports.isAdmin = (req, res, next) => {
-  
   if (req.user && req.user.isAdmin) {
     return next();
   }

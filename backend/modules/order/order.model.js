@@ -88,7 +88,7 @@ const orderSchema = new mongoose.Schema(
     progress: {
       type: [progressSchema],
       default: [],
-    }
+    },
   },
   {
     timestamps: true,

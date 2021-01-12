@@ -15,7 +15,7 @@ exports.getProductsValidator = async (req, res, next) => {
       page: Joi.number().optional(),
       sort: Joi.string().optional(),
       size: Joi.number().optional(),
-      price: Joi.array().items(Joi.number()).optional()
+      price: Joi.array().items(Joi.number()).optional(),
     });
     const result = await validate(req.query, schema);
     req.query = result;
@@ -40,7 +40,6 @@ exports.getProductByIdValidator = async (req, res, next) => {
 
 exports.createProductValidator = async (req, res, next) => {
   try {
-    
     const schema = Joi.object().keys({
       name: Joi.string().required(),
       color: Joi.string().required(),
@@ -87,7 +86,6 @@ exports.updateProductValidator = async (req, res, next) => {
 
 exports.updateStatusProductValidator = async (req, res, next) => {
   try {
-   
     const schema = Joi.object().keys({
       status: Joi.string().required().valid('approved', 'rejected', 'disabled'),
     });
@@ -103,7 +101,7 @@ exports.likeProductValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
       state: Joi.string().required().valid('like', 'unlike'),
-      id: Joi.string().required()
+      id: Joi.string().required(),
     });
     const result = await validate(req.body, schema);
     req.body = result;

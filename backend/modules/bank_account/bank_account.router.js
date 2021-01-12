@@ -6,22 +6,14 @@ const { handleError } = require('../../middlewares/error.middleware');
 const validator = require('./bank_account.validation');
 
 router.get('/', isAuth, controller.getBankAccounts);
-router.get(
-  '/:id',
-  isAuth,
-  controller.getBankAccountById
-);
+router.get('/:id', isAuth, controller.getBankAccountById);
 router.post(
   '/',
   isAuth,
   validator.createBankAccountValidator,
   controller.createBankAccount
 );
-router.delete(
-  '/:id',
-  isAuth,
-  controller.deleteBankAccount
-);
+router.delete('/:id', isAuth, controller.deleteBankAccount);
 
 router.use(handleError);
 module.exports = router;

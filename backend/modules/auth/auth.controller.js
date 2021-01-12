@@ -52,7 +52,7 @@ exports.loginByEmail = async (req, res, next) => {
       //   user_name: user.user_name,
       //   full_name: user.full_name,
       // },
-      user
+      user,
     };
     const success = new Success({ data });
     res.status(200).send(success);
@@ -102,7 +102,7 @@ exports.loginByPhone = async (req, res, next) => {
       //   user_name: user.user_name,
       //   full_name: user.full_name,
       // },
-      user
+      user,
     };
     const success = new Success({ data });
     res.status(200).send(success);
@@ -155,7 +155,7 @@ exports.forgotPassword = async (req, res, next) => {
     //res.json(`http://localhost:27017/user/reset-password/${resetPasswordToken}`);
     // let url = await tinyUrl.shorten(`${config.HOST}/api/reset-password/${resetPasswordToken}`);
     // if (!url) {
-      const url = `${config.HOST}/auth/reset-password/${resetPasswordToken}`;
+    const url = `${config.HOST}/auth/reset-password/${resetPasswordToken}`;
     // }
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -184,12 +184,12 @@ exports.forgotPassword = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
   try {
     const resetPasswordToken = req.params.token;
-    
+
     const decoded = await verifyToken(
       resetPasswordToken,
       config.RESET_PASSWORD_SECRET_KEY
     );
-  
+
     if (!decoded) {
       throw new Error({
         message: 'auth.tokenIsExpired',
@@ -201,7 +201,7 @@ exports.resetPassword = async (req, res, next) => {
       _id: decoded.data._id,
       status: 'active',
     });
-    
+
     const hash = await bcrypt.hash(req.body.new_password, 10);
     const compare_result = await bcrypt.compare(
       req.body.confirm_new_password,
@@ -236,7 +236,8 @@ exports.resetPassword = async (req, res, next) => {
       user_id: user._id,
       type: 'auth_reset_password',
       title: 'Bảo mật',
-      message: 'Tài khoản vừa được reset mật khẩu. Vui lòng kiểm tra nếu không phải bạn.'
+      message:
+        'Tài khoản vừa được reset mật khẩu. Vui lòng kiểm tra nếu không phải bạn.',
     });
     await notification.save();
     const success = new Success({});

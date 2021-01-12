@@ -73,18 +73,18 @@ const io = require('socket.io')(http, {
   cors: {
     origin: '*',
     methods: 'GET,PUT,POST,DELETE,OPTIONS'.split(','),
-    credentials: true
-  }
+    credentials: true,
+  },
 });
 
 io.on('connection', (socket) => {
   console.log('SOCKET CONNECTION');
   // socket.on('chat message', msg => {
-    // io.emit('chat message', 'msg');
+  // io.emit('chat message', 'msg');
   // });
   socket.on('DISCONNECTION', (socket) => {
-    console.log('SOCKET DISCONNECTION')
-  })
+    console.log('SOCKET DISCONNECTION');
+  });
 });
 
 app.use((req, res, next) => {

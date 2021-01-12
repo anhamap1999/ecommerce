@@ -33,18 +33,18 @@ function SigninScreen(props) {
   };
 
   return (
-    <div className='signin-form'>
+    <div className="signin-form">
       <form
-        className='box'
+        className="box"
         onSubmit={submitHandler}
-        action='index.html'
-        method='post'
+        action="index.html"
+        method="post"
       >
         <h1>Đăng nhập</h1>
 
         {loading ? (
-          <div className='spinner-border text-primary' role='status'>
-            <span className='sr-only'>Loading...</span>
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
           </div>
         ) : null}
         {formError ? (
@@ -57,23 +57,23 @@ function SigninScreen(props) {
           )
         )}
         <input
-          type='text'
-          name='userName'
-          id='userName'
+          type="text"
+          name="userName"
+          id="userName"
           onChange={(e) => setUserName(e.target.value)}
-          placeholder='Số điện thoại hoặc email'
+          placeholder="Số điện thoại hoặc email"
         ></input>
         <input
-          type='password'
-          name='password'
-          id='password'
+          type="password"
+          name="password"
+          id="password"
           onChange={(e) => setPassword(e.target.value)}
-          placeholder='Mật khẩu'
+          placeholder="Mật khẩu"
         ></input>
-        <input type='submit' value='Đăng nhập'></input>
+        <input type="submit" value="Đăng nhập"></input>
         <Link
           to={redirect === '/' ? 'register' : 'register?redirect=' + redirect}
-          className='register'
+          className="register"
         >
           <span style={{ textDecoration: 'underline' }}>Đăng ký mới</span>
         </Link>

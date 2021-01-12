@@ -4,8 +4,7 @@ const { validate } = require('../../commons/utils');
 exports.getConfigsValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
-      key: Joi.string()
-        .optional(),
+      key: Joi.string().optional(),
       select: Joi.string().optional(),
       limit: Joi.number().optional(),
       page: Joi.number().optional(),

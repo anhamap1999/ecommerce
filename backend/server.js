@@ -16,7 +16,7 @@ const bankAccountRouter = require('./modules/bank_account/bank_account.router');
 const commentRouter = require('./modules/comment/comment.router');
 const banksRouter = require('./modules/banks/banks.router');
 const adminRouter = require('./modules/admin/admin.router');
-const  orderRouter = require('./modules/order/order.router');
+const orderRouter = require('./modules/order/order.router');
 // import dotenv from 'dotenv';
 // import config from './config';
 // import mongoose from 'mongoose';
@@ -33,13 +33,10 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   })
   .then(console.log('connected!'))
   .catch((error) => console.log(error.reason));
-
-
-
 
 const app = express();
 
@@ -53,18 +50,18 @@ app.use(express.json());
 
 app.use(bodyParser.json());
 app.use('/api/auth', authRouter);
-app.use("/api/categories", categoryRouter);
-app.use("/api/orders",orderRouter);
-app.use("/api/users", userRouter);
-app.use("/api/products",productRouter);
-app.use("/api/address", addressRouter);
-app.use("/api/delivery-address", deliveryAddressRouter);
-app.use("/api/config", configRouter);
-app.use("/api/search", searchRouter);
-app.use("/api/bank-account", bankAccountRouter);
-app.use("/api/comment", commentRouter);
-app.use("/api/banks", banksRouter);
-app.use("/api/admin", adminRouter);
+app.use('/api/categories', categoryRouter);
+app.use('/api/orders', orderRouter);
+app.use('/api/users', userRouter);
+app.use('/api/products', productRouter);
+app.use('/api/address', addressRouter);
+app.use('/api/delivery-address', deliveryAddressRouter);
+app.use('/api/config', configRouter);
+app.use('/api/search', searchRouter);
+app.use('/api/bank-account', bankAccountRouter);
+app.use('/api/comment', commentRouter);
+app.use('/api/banks', banksRouter);
+app.use('/api/admin', adminRouter);
 
 app.listen(5000, () => {
   console.log('server is running : 5000   ');

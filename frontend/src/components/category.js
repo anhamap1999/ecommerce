@@ -5,37 +5,43 @@ import { saveCategory } from '../actions/categoryAction';
 import HomePage from '../pages/homepage';
 
 function AddCategoryScreen(props) {
-    const [categoryName,setCategoryName] = useState('');
-   
-    const dispatch =useDispatch();
+  const [categoryName, setCategoryName] = useState('');
 
-    useEffect(() => {
-        
-        return () => {
-        };
-    }, []);
-    const submitHandler = (e) =>{
-        e.preventDefault();
-       
-    }
-  return <HomePage>
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {};
+  }, []);
+  const submitHandler = (e) => {
+    e.preventDefault();
+  };
+  return (
+    <HomePage>
       <div className="container">
-      <form className="rounded border " onSubmit={submitHandler}>
-                <h1> Create Category</h1>
-                <ul className="form-container">             
-                    <li className="form-group">
-                        <label htmlFor="categoryName">
-                          CategoryName
-                        </label>
-                        <input className="form-control" type="text" name="categoryName" value={categoryName} id="categoryName" onChange={(e) => setCategoryName(e.target.value)} ></input>
-                    </li>
-                    <li>
-                    <button className="btn btn-primary" type="submit" >Save Category</button>
-                    </li>
-                </ul>
-            </form> 
+        <form className="rounded border " onSubmit={submitHandler}>
+          <h1> Create Category</h1>
+          <ul className="form-container">
+            <li className="form-group">
+              <label htmlFor="categoryName">CategoryName</label>
+              <input
+                className="form-control"
+                type="text"
+                name="categoryName"
+                value={categoryName}
+                id="categoryName"
+                onChange={(e) => setCategoryName(e.target.value)}
+              ></input>
+            </li>
+            <li>
+              <button className="btn btn-primary" type="submit">
+                Save Category
+              </button>
+            </li>
+          </ul>
+        </form>
       </div>
-  </HomePage>
+    </HomePage>
+  );
 }
 
 export default AddCategoryScreen;

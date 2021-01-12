@@ -11,7 +11,7 @@ export const uploadFile = (file) => {
         console.log('ERROR', err);
         reject(null);
       },
-      async() => {
+      async () => {
         const url = await storage
           .ref(`images/`)
           .child(date + file.name)
@@ -22,15 +22,15 @@ export const uploadFile = (file) => {
         reject(null);
       }
     );
-  })
+  });
   return promise;
 };
 
 export const deleteFile = (file) => {
   return storage.refFromURL(file).delete();
-}
+};
 
 export default {
   uploadFile,
-  deleteFile
-}
+  deleteFile,
+};

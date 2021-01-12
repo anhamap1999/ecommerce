@@ -44,7 +44,7 @@ exports.addAdmin = async (req, res, next) => {
     user.isAdmin = true;
     user.role = admin;
     user.updated_at = Date.now();
-    
+
     await User.findByIdAndUpdate(req.params.id, user);
     const success = new Success({ data: user });
     res.status(200).send(success);

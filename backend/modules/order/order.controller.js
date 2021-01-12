@@ -130,7 +130,10 @@ exports.saveOrder = async (req, res) => {
       }
     });
     order_items.forEach(async (item) => {
-      const cart = await Cart.findOne({ product_id: item.product_id, size: item.size });
+      const cart = await Cart.findOne({
+        product_id: item.product_id,
+        size: item.size,
+      });
       if (!cart) {
         throw new Error({
           statusCode: 404,
@@ -180,7 +183,7 @@ exports.saveOrder = async (req, res) => {
       { path: 'shipping' },
       { path: 'order_items', populate: 'product_id' },
       { path: 'created_by' },
-    ])
+    ]);
     const success = new Success({ data: new_order });
     res.status(200).send(success);
   } catch (error) {
@@ -284,7 +287,10 @@ exports.updateOrderByAdmin = async (req, res) => {
           });
           stock.stock -= item.quantity;
           const stocks = await Stock.find({ product_id: item.product_id });
-          const total_stock = stocks.reduce((item, total) => item.stock + total, 0);
+          const total_stock = stocks.reduce(
+            (item, total) => item.stock + total,
+            0
+          );
           if (total_stock <= 0) {
             product.out_of_stock = true;
           }

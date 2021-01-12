@@ -4,15 +4,12 @@ const bcrypt = require('bcrypt');
 const { Error } = require('../../utils/Error');
 const { Success } = require('../../utils/Success');
 
-
-
 exports.register = async (req, res, next) => {
   try {
-    
     const existedUser = await User.findOne({
-      email: req.body.email
+      email: req.body.email,
     });
-    
+
     if (existedUser) {
       throw new Error({
         statusCode: 400,
@@ -42,7 +39,7 @@ exports.register = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 exports.changePassword = async (req, res, next) => {
   try {
@@ -53,18 +50,18 @@ exports.changePassword = async (req, res, next) => {
     if (!user) {
       throw new Error({
         statusCode: 400,
-        message: 'user.notFound',        
+        message: 'user.notFound',
         messages: { user: 'user not found' },
       });
     }
-    
+
     const result = await bcrypt.compare(req.body.password, user.password);
     if (!result) {
       throw new Error({
         statusCode: 404,
         message: 'auth.passwordIsIncorrect',
         messages: { auth: 'password is incorrect' },
-      })
+      });
     }
 
     const hash = await bcrypt.hash(req.body.new_password, 10);
@@ -82,13 +79,15 @@ exports.changePassword = async (req, res, next) => {
     user.password = hash;
     req.user.password = hash;
     await User.findByIdAndUpdate(req.user._id, user);
-    const updated_user = await User.findById(req.user._id).populate({ path: 'like_products' });
+    const updated_user = await User.findById(req.user._id).populate({
+      path: 'like_products',
+    });
     const success = new Success({ data: updated_user });
     res.status(200).send(success);
   } catch (error) {
     next(error);
   }
-}
+};
 
 exports.updateUser = async (req, res, next) => {
   try {
@@ -99,21 +98,23 @@ exports.updateUser = async (req, res, next) => {
     if (!user) {
       throw new Error({
         statusCode: 400,
-        message: 'user.notFound',        
+        message: 'user.notFound',
         messages: { user: 'user not found' },
       });
     }
-    
+
     user = { ...user._doc, ...req.body };
     req.user = { ...req.user, ...user };
     await User.findByIdAndUpdate(req.user._id, user);
-    const updated_user = await User.findById(req.user._id).populate({ path: 'like_products' });
+    const updated_user = await User.findById(req.user._id).populate({
+      path: 'like_products',
+    });
     const success = new Success({ data: updated_user });
     res.status(200).send(success);
   } catch (error) {
     next(error);
   }
-}
+};
 
 exports.getUserInfo = async (req, res, next) => {
   try {
@@ -124,7 +125,7 @@ exports.getUserInfo = async (req, res, next) => {
     if (!user) {
       throw new Error({
         statusCode: 400,
-        message: 'user.notFound',        
+        message: 'user.notFound',
         messages: { user: 'user not found' },
       });
     }
@@ -133,7 +134,7 @@ exports.getUserInfo = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -148,7 +149,9 @@ exports.getUsers = async (req, res, next) => {
     await User.paginate(query, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const users = await User.populate(result.docs, [{ path: 'like_products' }]);
+          const users = await User.populate(result.docs, [
+            { path: 'like_products' },
+          ]);
           success
             .addField('data', users)
             .addField('total_page', result.totalPages)
@@ -165,7 +168,7 @@ exports.getUsers = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 exports.updateStatusUser = async (req, res, next) => {
   try {
@@ -173,16 +176,18 @@ exports.updateStatusUser = async (req, res, next) => {
     if (!user) {
       throw new Error({
         statusCode: 400,
-        message: 'user.notFound',        
+        message: 'user.notFound',
         messages: { user: 'user not found' },
       });
     }
     user.status = req.body.status;
     await User.findByIdAndUpdate(req.params.id, user);
-    const updated_user = await User.findById(req.params.id).populate({ path: 'like_products' });
+    const updated_user = await User.findById(req.params.id).populate({
+      path: 'like_products',
+    });
     const success = new Success({ data: updated_user });
     res.status(200).send(success);
   } catch (error) {
     next(error);
   }
-}
+};

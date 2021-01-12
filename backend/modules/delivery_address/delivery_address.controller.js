@@ -5,7 +5,10 @@ const { Ward, Province, District } = require('../address/address.model');
 
 exports.getAddresses = async (req, res, next) => {
   try {
-    const addresses = await DeliveryAddress.find({ status: 'active', created_by: req.user._id });
+    const addresses = await DeliveryAddress.find({
+      status: 'active',
+      created_by: req.user._id,
+    });
     const success = new Success({ data: addresses });
     res.status(200).send(success);
   } catch (error) {
@@ -113,12 +116,12 @@ exports.setDefaultAddress = async (req, res, next) => {
     const address = await DeliveryAddress.findOne({
       _id: req.params.id,
       status: 'active',
-      created_by: req.user._id
+      created_by: req.user._id,
     });
     const default_address = await DeliveryAddress.findOne({
       status: 'active',
       is_default: true,
-      created_by: req.user._id
+      created_by: req.user._id,
     });
     if (!address) {
       throw new Error({

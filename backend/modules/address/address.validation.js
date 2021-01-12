@@ -18,7 +18,7 @@ exports.getDistrictsValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
       sort: Joi.string().optional(),
-      province_number: Joi.number().required()
+      province_number: Joi.number().required(),
     });
     const result = await validate(req.query, schema);
     req.query = result;
@@ -33,7 +33,7 @@ exports.getWardsValidator = async (req, res, next) => {
     const schema = Joi.object().keys({
       sort: Joi.string().optional(),
       province_number: Joi.number().required(),
-      district_number: Joi.number().required()
+      district_number: Joi.number().required(),
     });
     const result = await validate(req.query, schema);
     req.query = result;

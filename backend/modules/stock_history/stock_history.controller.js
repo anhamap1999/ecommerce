@@ -15,9 +15,11 @@ exports.getStockHistories = async (req, res, next) => {
 
     const success = new Success({});
     await StockHistory.paginate(query, options)
-      .then(async(result) => {
+      .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const stock_histories = await StockHistory.populate(result.docs, [{ path: 'product_id' }]);
+          const stock_histories = await StockHistory.populate(result.docs, [
+            { path: 'product_id' },
+          ]);
           success
             .addField('data', stock_histories)
             .addField('total_page', result.totalPages)
@@ -38,7 +40,9 @@ exports.getStockHistories = async (req, res, next) => {
 
 exports.getStockHistoryById = async (req, res, next) => {
   try {
-    const stock_history = await StockHistory.findById(req.params.id).populate({ path: 'product_id' });
+    const stock_history = await StockHistory.findById(req.params.id).populate({
+      path: 'product_id',
+    });
 
     if (!stock_history) {
       throw new Error({

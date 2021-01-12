@@ -63,7 +63,7 @@ exports.deleteStaff = async (req, res, next) => {
     }
 
     user.role = 'customer';
-    
+
     await User.findByIdAndUpdate(req.params.id, user);
     const success = new Success({ data: user });
     res.status(200).send(success);

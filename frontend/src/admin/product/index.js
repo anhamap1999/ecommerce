@@ -1,54 +1,53 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { getCatogoryAll } from "../../actions/categoryAction";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { getCatogoryAll } from '../../actions/categoryAction';
 import {
   addProduct,
   listProducts,
   listProductsAdmin,
   removeProductID,
   updateStateProduct,
-} from "../../actions/productActions";
+} from '../../actions/productActions';
 
-import vndFormat from '../../modules/utils'
-import { uploadFile } from '../../modules/file'
-import DashboardScreen from "../dashboard";
-import { Checkbox, Pagination, Space, Table } from "antd";
-import { getConfig } from "../../actions/configAction";
-import Column from "antd/lib/table/Column";
+import vndFormat from '../../modules/utils';
+import { uploadFile } from '../../modules/file';
+import DashboardScreen from '../dashboard';
+import { Checkbox, Pagination, Space, Table } from 'antd';
+import { getConfig } from '../../actions/configAction';
+import Column from 'antd/lib/table/Column';
 const ProductAdminScreen = (props) => {
   const [openmodalVisible, setModalVisible] = useState(false);
-  const [id, setId] = useState("");
-  const [name, setName] = useState("");
-  const [color, setColor] = useState("");
-  const [brand, setBrand] = useState("");
+  const [id, setId] = useState('');
+  const [name, setName] = useState('');
+  const [color, setColor] = useState('');
+  const [brand, setBrand] = useState('');
   const [image, setImage] = useState([]);
 
-  const [thumbnail, setThumbnail] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [category_id, setCategory_id] = useState("");
-  const [SKU, setSKU] = useState("");
-  const [attributes, setAttributes] = useState([1,2,3]);
-  
+  const [thumbnail, setThumbnail] = useState('');
+  const [price, setPrice] = useState('');
+  const [description, setDescription] = useState('');
+  const [category_id, setCategory_id] = useState('');
+  const [SKU, setSKU] = useState('');
+  const [attributes, setAttributes] = useState([1, 2, 3]);
+
   const productListAdmin = useSelector((state) => state.productListAdmin);
   const { products, loading, totalPage, total, error } = productListAdmin;
   const createProduct = useSelector((state) => state.createProduct);
 
   const listCategories = useSelector((state) => state.listCategories);
   const { categories, loadingCat, errorCat } = listCategories;
-  
-  const config =useSelector((state) => state.config);
-  const {configs} =config;
 
-  const sizeIndex =configs && configs.findIndex( (item) => item.key ==='size' );
-  
-  const sizes = configs[sizeIndex] ? configs
-  [sizeIndex].value : [];
-  
-  const onChangeSize = (e) =>{
+  const config = useSelector((state) => state.config);
+  const { configs } = config;
+
+  const sizeIndex = configs && configs.findIndex((item) => item.key === 'size');
+
+  const sizes = configs[sizeIndex] ? configs[sizeIndex].value : [];
+
+  const onChangeSize = (e) => {
     e.preventDefault();
-  }
+  };
   const {
     loading: loadingadd,
     success: successful,
@@ -82,39 +81,38 @@ const ProductAdminScreen = (props) => {
     setModalVisible(true);
     setId(product._id);
     setName(product.name);
-   
+
     setBrand(product.brand);
     setPrice(product.price);
     setDescription(product.description);
   };
-  const sizeAr =[];
+  const sizeAr = [];
   const onSelectSize = (e) => {
-     
-      sizeAr.push(e.target.value)
-      console.log('sizeAr',sizeAr);
-  }
-  
-  const submitHandler =  async(e) => {
+    sizeAr.push(e.target.value);
+    console.log('sizeAr', sizeAr);
+  };
+
+  const submitHandler = async (e) => {
     e.preventDefault();
     const array = [];
-    for(let i=0; i<image.length; i++){
-      const result = await uploadFile(image[i])
-      array.push(result)
+    for (let i = 0; i < image.length; i++) {
+      const result = await uploadFile(image[i]);
+      array.push(result);
     }
-    console.log("url a ", array)
+    console.log('url a ', array);
     dispatch(
       addProduct({
         _id: id,
-        name ,
-        images: array ,
-        brand ,
-        price ,
-        thumbnail ,
-        color ,
-        attributes ,
-        SKU ,
-        category_id ,
-        description ,
+        name,
+        images: array,
+        brand,
+        price,
+        thumbnail,
+        color,
+        attributes,
+        SKU,
+        category_id,
+        description,
         size: sizeAr,
       })
     );
@@ -122,93 +120,89 @@ const ProductAdminScreen = (props) => {
   const deleteproduct = (product) => {
     dispatch(removeProductID(product._id));
   };
-  const onchangeimage =(e) => {
-    if(e.target.files)
-    {
-      setImage(e.target.files)
-     
+  const onchangeimage = (e) => {
+    if (e.target.files) {
+      setImage(e.target.files);
     }
-  
   };
 
   const columnList = [
     {
-      title: "Tên sản phẩm",
-      dataIndex: "name",
-      key: "key",
+      title: 'Tên sản phẩm',
+      dataIndex: 'name',
+      key: 'key',
     },
     {
-      title: "Giá sản phẩm",
+      title: 'Giá sản phẩm',
       dataIndex: 'price',
-      key: "price",
+      key: 'price',
     },
     {
-      title: "Danh mục",
-      dataIndex: "category_id",
-      key: "key",
+      title: 'Danh mục',
+      dataIndex: 'category_id',
+      key: 'key',
       render: (text, record, index) => text.name,
     },
     {
-      title: "Số lượng",
-      dataIndex: "stock",
-      key: "key",
+      title: 'Số lượng',
+      dataIndex: 'stock',
+      key: 'key',
     },
     {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "key"
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'key',
     },
     {
-      title: "Màu",
-      dataIndex: "color",
-      key: "key",
+      title: 'Màu',
+      dataIndex: 'color',
+      key: 'key',
     },
     {
-      title: "Tùy chỉnh",
-      key: "key",
+      title: 'Tùy chỉnh',
+      key: 'key',
       render: (key) => (
         <>
-        
-        <Space size="middle"> 
-        <select
-                    className="custom-select"
-                    id="inputGroupSelect01"
-                    onChange={e => setUpdateState(e.target.value)}
-                  >
-                    <option value={key.status} selected>{key.status}</option>
-                    <option value='pending'>đang đợi</option>
-                    <option value='approved'>Cho bán</option>
-                    <option value='rejected'>Từ chối</option>
-                    <option value='disabled'>ngừng bán</option>
-                    
-        </select>
-                
-      </Space></>
-      )
-     
-    },,
+          <Space size="middle">
+            <select
+              className="custom-select"
+              id="inputGroupSelect01"
+              onChange={(e) => setUpdateState(e.target.value)}
+            >
+              <option value={key.status} selected>
+                {key.status}
+              </option>
+              <option value="pending">đang đợi</option>
+              <option value="approved">Cho bán</option>
+              <option value="rejected">Từ chối</option>
+              <option value="disabled">ngừng bán</option>
+            </select>
+          </Space>
+        </>
+      ),
+    },
+    ,
     {
-      title: "",
-      key: "key",
+      title: '',
+      key: 'key',
       render: (key) => (
-      
-        <Space size="middle"> 
-          <button className='btn btn-primary'
-                  onClick={() =>changeState(key._id)}
-                  >Cập nhật</button>
-
+        <Space size="middle">
+          <button
+            className="btn btn-primary"
+            onClick={() => changeState(key._id)}
+          >
+            Cập nhật
+          </button>
         </Space>
-        
-      )
-     
+      ),
     },
   ];
-  
-  const [updateState,setUpdateState] =useState('')
-  console.log("a",updateState)
-  const changeState = (productId) =>{
-      dispatch(updateStateProduct(productId,{status:updateState}))
-  }
+
+  const [updateState, setUpdateState] = useState('');
+  console.log('a', updateState);
+  const changeState = (productId) => {
+    dispatch(updateStateProduct(productId, { status: updateState }));
+  };
   return (
     <DashboardScreen>
       <div className="maine">
@@ -225,7 +219,7 @@ const ProductAdminScreen = (props) => {
         {openmodalVisible && (
           <div className="create-form col-md-5">
             <form className="rounded border" onSubmit={submitHandler}>
-              <h1>{id ? "Cập nhật" : "Thêm"}</h1>
+              <h1>{id ? 'Cập nhật' : 'Thêm'}</h1>
               <span onClick={() => setModalVisible(false)}> Đóng </span>
               <ul className="form-container">
                 <li>
@@ -245,14 +239,12 @@ const ProductAdminScreen = (props) => {
                 </li>
                 <li>
                   <label htmlFor="images">Ảnh</label>
-                  <input multiple
+                  <input
+                    multiple
                     className="form-control"
                     type="file"
                     onChange={onchangeimage}
-                    
-                  >
-                 
-                  </input>
+                  ></input>
                 </li>
 
                 <li>
@@ -302,20 +294,22 @@ const ProductAdminScreen = (props) => {
                     onChange={(e) => setBrand(e.target.value)}
                   ></input>
                 </li>
-                <li>                  
+                <li>
                   <label htmlFor="brand">Size</label>
                   <div className="row">
-                    {
-                      sizes && sizes.map(size =>
-                      <div className=" col-md-3">
-                        <input  type="checkbox" 
-                                value={size} 
-                                style={{marginRight: "4px"}} 
-                                onChange={onSelectSize}
-                                aria-label="Checkbox for following text input" />
-                        {size}
-                      </div>)
-                    }
+                    {sizes &&
+                      sizes.map((size) => (
+                        <div className=" col-md-3">
+                          <input
+                            type="checkbox"
+                            value={size}
+                            style={{ marginRight: '4px' }}
+                            onChange={onSelectSize}
+                            aria-label="Checkbox for following text input"
+                          />
+                          {size}
+                        </div>
+                      ))}
                   </div>
                 </li>
                 <li>
@@ -365,7 +359,7 @@ const ProductAdminScreen = (props) => {
 
                 <li>
                   <button className="btn btn-danger" type="submit">
-                    {id ? "Cập nhật" : "Thêm sản phẩm"}
+                    {id ? 'Cập nhật' : 'Thêm sản phẩm'}
                   </button>
                 </li>
               </ul>
@@ -374,7 +368,7 @@ const ProductAdminScreen = (props) => {
         )}
         <div
           className="list-product-add  "
-          className={!openmodalVisible ? "col-md-12" : "col-md-7"}
+          className={!openmodalVisible ? 'col-md-12' : 'col-md-7'}
         >
           <table className="table">
             <tbody>
@@ -390,10 +384,7 @@ const ProductAdminScreen = (props) => {
                     responsive
                     columns={columnList}
                     dataSource={products}
-                  >
-                    
-                    </Table>
-                    
+                  ></Table>
                 )
               )}
             </tbody>

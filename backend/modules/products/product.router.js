@@ -56,7 +56,6 @@ router.get(
   controller.getProductById
 );
 
-
 // router.put('/:id', updateProduct);
 // router.delete('/:id', isAuth, isAdmin, deteleProduct);
 

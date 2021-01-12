@@ -23,7 +23,7 @@ const CategorySchema = new schema({
   parent_id: {
     type: mongoose.SchemaTypes.ObjectId,
     required: false,
-    ref: 'Category'
+    ref: 'Category',
   },
   image: {
     type: String,

@@ -10,8 +10,10 @@ function PlaceOrderScreen(props) {
   const cart = useSelector((state) => state.cartUser);
   const { shipping, payment, cartItems } = cart;
 
-  const { loading, success, error, orders } = useSelector((state) => state.ordersList);
-//   const { loading, success, error, order } = orderSave;
+  const { loading, success, error, orders } = useSelector(
+    (state) => state.ordersList
+  );
+  //   const { loading, success, error, order } = orderSave;
   const { provinces, districts, wards } = useSelector((state) => state.address);
   const { configs } = useSelector((state) => state.config);
   const configIndex =
@@ -74,54 +76,54 @@ function PlaceOrderScreen(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     const paymentData = {
-        paymentMethod: payment.paymentMethod
+      paymentMethod: payment.paymentMethod,
     };
     if (payment.paymentMethod === 'online') {
-        paymentData.bank_account = payment.bank_account
+      paymentData.bank_account = payment.bank_account;
     }
     dispatch(
       saveOrder({
-        order_items: cartItems.map(i => ({
-            quantity: i.quantity,
-            price: i.product_id.price,
-            product_id: i.product_id._id,
-            size: i.size
+        order_items: cartItems.map((i) => ({
+          quantity: i.quantity,
+          price: i.product_id.price,
+          product_id: i.product_id._id,
+          size: i.size,
         })),
         shipping: shipping.addressId,
         payment: paymentData,
         items_price: itemsPrice,
         shipping_price: shippingPrice,
         total_price: totalPrice,
-        tax_price: taxPrice
+        tax_price: taxPrice,
       })
     );
   };
 
   return (
     <HomePage>
-      <div className='container placeorder'>
+      <div className="container placeorder">
         <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
-        <div className='row'>
-          <div className='col-md-7'>
-            <div className='general'>
+        <div className="row">
+          <div className="col-md-7">
+            <div className="general">
               <h3>Địa chỉ nhận hàng</h3>
-              <h5 className='font-weight-bold'>{shipping.full_name}</h5>
+              <h5 className="font-weight-bold">{shipping.full_name}</h5>
               <div>(+84) {String(shipping.phone_number).slice(1)}</div>
               <div>{shipping.text}</div>
               <div>{wards[wardIndex].name}</div>
               <div>{districts[districtIndex].name}</div>
               <div>{provinces[provinceIndex].name}</div>
             </div>
-            <div className='general'>
+            <div className="general">
               <h3>Phương thức thanh toán</h3>
-              <h5 className='font-weight-bold'>
+              <h5 className="font-weight-bold">
                 {payment.paymentMethod === 'cash'
                   ? 'Tiền mặt'
                   : 'Chuyển khoản ngân hàng'}
               </h5>
               {payment.paymentMethod === 'online' ? (
                 <>
-                  <div className='font-weight-bold'>
+                  <div className="font-weight-bold">
                     Tên tài khoản : {payment.account_name}
                   </div>
                   <div>Ngân hàng : {banks[bankIndex].name}</div>
@@ -131,14 +133,18 @@ function PlaceOrderScreen(props) {
                 ''
               )}
             </div>
-            <div className='general cart-place'>
+            <div className="general cart-place">
               <h3>Sản phẩm</h3>
               <div>
                 <Row>
                   {cartItems.map((item) => (
                     <>
                       <Col span={6}>
-                        <Avatar size={80} src={item.product_id.thumbnail} shape='square' />
+                        <Avatar
+                          size={80}
+                          src={item.product_id.thumbnail}
+                          shape="square"
+                        />
                         {/* <img
                           src={item.product_id.thumbnail}
                           alt={item.product_id ? item.product_id.pure_name : ''}
@@ -148,7 +154,7 @@ function PlaceOrderScreen(props) {
                       <Col style={{ margin: '10px 0' }} span={18}>
                         <div>
                           Tên sản phẩm:{' '}
-                          <span className='font-weight-bold'>
+                          <span className="font-weight-bold">
                             {item.product_id.name}
                           </span>
                         </div>
@@ -160,17 +166,17 @@ function PlaceOrderScreen(props) {
                     </div> */}
                         <div>
                           Số lượng:{' '}
-                          <span className='font-weight-bold'>
+                          <span className="font-weight-bold">
                             {item.quantity}
                           </span>
                         </div>
                         <div>
                           Size:{' '}
-                          <span className='font-weight-bold'>{item.size}</span>
+                          <span className="font-weight-bold">{item.size}</span>
                         </div>
                         <div>
                           Đơn giá:{' '}
-                          <span className='font-weight-bold'>
+                          <span className="font-weight-bold">
                             {utils.vndFormat(item.product_id.price)}
                           </span>
                         </div>
@@ -181,9 +187,9 @@ function PlaceOrderScreen(props) {
               </div>
             </div>
           </div>
-          <div className='col-md-5'>
-            <form className='order' onSubmit={submitHandler}>
-              <button type='submit'>Đặt hàng</button>
+          <div className="col-md-5">
+            <form className="order" onSubmit={submitHandler}>
+              <button type="submit">Đặt hàng</button>
               {/* <h3>Tổng tiền</h3> */}
               <p>Tổng tiền hàng : {utils.vndFormat(itemsPrice)}</p>
               <p>Phí vận chuyển : {utils.vndFormat(shippingPrice)}</p>

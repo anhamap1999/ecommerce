@@ -16,7 +16,7 @@ const BannerTop = () => {
   return (
     <>
       <BannerContainer>
-        <div className='container' id='banner'>
+        <div className="container" id="banner">
           <Row>
             <Col md={{ span: 12 }}>
               <BannerText>

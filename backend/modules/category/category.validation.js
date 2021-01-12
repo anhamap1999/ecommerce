@@ -57,9 +57,7 @@ exports.updateStatusCategoryValidator = async (req, res, next) => {
 exports.getCategoriesValidator = async (req, res, next) => {
   try {
     const schema = Joi.object().keys({
-      status: Joi.string()
-        .optional()
-        .valid('active', 'disabled'),
+      status: Joi.string().optional().valid('active', 'disabled'),
       parent_id: Joi.string().optional(),
       type: Joi.number().optional().valid(1, 2, 2),
       select: Joi.string().optional(),

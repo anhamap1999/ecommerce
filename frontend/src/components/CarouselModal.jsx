@@ -22,7 +22,7 @@ export default class CarouselModal extends React.Component {
     const { imageUrls, visible } = this.props;
     return (
       <Modal
-        className='carousel-modal'
+        className="carousel-modal"
         visible={visible}
         onCancel={this.onCancel}
         footer={null}
@@ -30,7 +30,7 @@ export default class CarouselModal extends React.Component {
         <Row style={{ display: 'flex' }}>
           <Col span={2} style={{ display: 'flex' }}>
             <div
-              className='arrow rl-45'
+              className="arrow rl-45"
               onClick={() => this.carousel.prev()}
             ></div>
           </Col>
@@ -44,7 +44,7 @@ export default class CarouselModal extends React.Component {
             >
               {imageUrls.map((image, index) => {
                 return (
-                  <div key={index} className='text-center'>
+                  <div key={index} className="text-center">
                     <img
                       alt={image}
                       style={{ margin: 'auto', width: '100%' }}
@@ -57,7 +57,7 @@ export default class CarouselModal extends React.Component {
           </Col>
           <Col span={2} style={{ display: 'flex' }}>
             <div
-              className='arrow rr-45'
+              className="arrow rr-45"
               onClick={() => this.carousel.next()}
             ></div>
           </Col>

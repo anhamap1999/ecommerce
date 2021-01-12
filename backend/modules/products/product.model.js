@@ -12,7 +12,11 @@ const productSchema = new mongoose.Schema({
   rating: { type: Number, default: 0, required: true },
   numReviews: { type: Number, default: 0, required: true },
   user_id: { type: String, require: true },
-  category_id: { type: mongoose.SchemaTypes.ObjectId, ref: 'Category', required: true },
+  category_id: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: 'Category',
+    required: true,
+  },
   thumbnail: { type: String, required: true },
   likes_count: { type: Number, required: true, default: 0 },
   comments_count: { type: Number, required: true, default: 0 },
@@ -34,10 +38,10 @@ const productSchema = new mongoose.Schema({
   created_by: { type: String, required: false },
   updated_by: { type: String, required: false },
   size: { type: [Number], required: true },
-  out_of_stock: { type: Boolean, required: true, default: true }
+  out_of_stock: { type: Boolean, required: true, default: true },
 });
 // productSchema.indexes()
-productSchema.index({ name: 'text'});
+productSchema.index({ name: 'text' });
 productSchema.plugin(paginate);
 const productModel = mongoose.model('Product', productSchema);
 module.exports = productModel;

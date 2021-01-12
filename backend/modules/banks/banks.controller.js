@@ -39,10 +39,11 @@ exports.getBranches = async (req, res, next) => {
       });
     }
 
-    const branches = await Branch.find({ province_number, bank_number })
-      .sort(sort ? sort : 'number');
-      // .populate(populate.includes('province_id') ? 'province_id' : '')
-      // .populate(populate.includes('bank_id') ? 'bank_id' : '');
+    const branches = await Branch.find({ province_number, bank_number }).sort(
+      sort ? sort : 'number'
+    );
+    // .populate(populate.includes('province_id') ? 'province_id' : '')
+    // .populate(populate.includes('bank_id') ? 'bank_id' : '');
 
     const success = new Success({ data: branches });
     res.status(200).send(success);

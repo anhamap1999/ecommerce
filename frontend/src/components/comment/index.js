@@ -19,18 +19,18 @@ const CommentedProduct = ({ content }) => {
   };
 
   const actions = [
-    <Tooltip key='comment-basic-like' title='Like'>
+    <Tooltip key="comment-basic-like" title="Like">
       <span onClick={like}>
         {createElement(action === 'liked' ? 'LikeFilled' : 'LikeOutlined')}
-        <span className='comment-action'>{likes}</span>
+        <span className="comment-action">{likes}</span>
       </span>
     </Tooltip>,
-    <Tooltip key='comment-basic-dislike' title='Dislike'>
+    <Tooltip key="comment-basic-dislike" title="Dislike">
       <span onClick={dislike}>
         {React.createElement(
           action === 'disliked' ? 'DislikeFilled' : 'DislikeOutlined'
         )}
-        <span className='comment-action'>{dislikes}</span>
+        <span className="comment-action">{dislikes}</span>
       </span>
     </Tooltip>,
     // <span key='comment-basic-reply-to'>Trả lời</span>,
@@ -49,8 +49,8 @@ const CommentedProduct = ({ content }) => {
         }
         avatar={
           <Avatar
-            src='https://1.bp.blogspot.com/-A7UYXuVWb_Q/XncdHaYbcOI/AAAAAAAAZhM/hYOevjRkrJEZhcXPnfP42nL3ZMu4PvIhgCLcBGAsYHQ/s1600/Trend-Avatar-Facebook%2B%25281%2529.jpg'
-            alt='Han Solo'
+            src="https://1.bp.blogspot.com/-A7UYXuVWb_Q/XncdHaYbcOI/AAAAAAAAZhM/hYOevjRkrJEZhcXPnfP42nL3ZMu4PvIhgCLcBGAsYHQ/s1600/Trend-Avatar-Facebook%2B%25281%2529.jpg"
+            alt="Han Solo"
           />
         }
         content={<p>{content.content}</p>}

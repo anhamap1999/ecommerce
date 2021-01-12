@@ -12,7 +12,7 @@ exports.registerValidator = async (req, res, next) => {
       password: Joi.string().required().min(6).max(100),
       confirm_password: Joi.string().required().min(6).max(100),
       phone_number: Joi.string().length(10),
-    }); 
+    });
     const result = await validate(req.body, schema);
     req.body = result;
     next();
@@ -54,18 +54,15 @@ exports.updateUserValidator = async (req, res, next) => {
 
 exports.getUsersValidator = async (req, res, next) => {
   try {
-    
     const schema = Joi.object().keys({
-      status: Joi.string()
-        .optional()
-        .valid('active', 'disabled'),
+      status: Joi.string().optional().valid('active', 'disabled'),
       role: Joi.string().optional().valid('admin', 'staff', 'customer'),
       select: Joi.string().optional(),
       limit: Joi.number().optional(),
       page: Joi.number().optional(),
       sort: Joi.string().optional(),
     });
-  
+
     const result = await validate(req.query, schema);
     req.query = result;
     next();

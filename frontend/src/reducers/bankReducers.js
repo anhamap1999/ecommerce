@@ -32,7 +32,7 @@ function bankReducer(
       return {
         ...state,
         loading: false,
-        bankAccounts: action.payload
+        bankAccounts: action.payload,
       };
     case GET_BANK_FAIL:
       return { ...state, loading: false, error: action.payload };
@@ -43,7 +43,7 @@ function bankReducer(
       return {
         ...state,
         loading: false,
-        banks: action.payload
+        banks: action.payload,
       };
     case GET_BANKS_FAIL:
       return { ...state, loading: false, error: action.payload };
@@ -54,7 +54,7 @@ function bankReducer(
       return {
         ...state,
         loading: false,
-        branches: action.payload
+        branches: action.payload,
       };
     case GET_BRANCH_FAIL:
       return { ...state, loading: false, error: action.payload };

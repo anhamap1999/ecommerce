@@ -124,20 +124,20 @@ const NavbarTop = () => {
 
   return (
     <>
-      <NavbarHeader className='navbarheader' id='header'>
-        <div className='container'>
+      <NavbarHeader className="navbarheader" id="header">
+        <div className="container">
           <Row>
             <Col md={{ span: 3 }}>
               <NavbarLogo>
-                <NavbarLink to='/'>Shoes</NavbarLink>
+                <NavbarLink to="/">Shoes</NavbarLink>
               </NavbarLogo>
             </Col>
 
             <Col md={{ span: 12 }}>
               <NavbarMenu>
                 {loadingCat || loadingConfig ? (
-                  <div className='spinner-border text-primary' role='status'>
-                    <span className='sr-only'>Loading...</span>
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
                   </div>
                 ) : null}
                 <NavbarUl>
@@ -155,10 +155,10 @@ const NavbarTop = () => {
                               }`}
                               key={category._id}
                             >
-                              <div className='hover_show'>
+                              <div className="hover_show">
                                 <Link
                                   to={`/products/${category.pure_name}`}
-                                  className='cool-link'
+                                  className="cool-link"
                                   onClick={() =>
                                     onClickItem('category_id', category._id)
                                   }
@@ -217,7 +217,7 @@ const NavbarTop = () => {
                       }`}
                       key={'brand'}
                     >
-                      <div className='hover_show'>
+                      <div className="hover_show">
                         {/* <Link to={`/products`} className='cool-link'> */}
                         {'Thương hiệu'}
                         {/* </Link> */}
@@ -249,28 +249,30 @@ const NavbarTop = () => {
             </Col>
             <Col md={{ span: 9 }}>
               <NavbarShop>
-                <Link to='/cart'>
+                <Link to="/cart">
                   {/* {' '} */}
-              <Badge count={cartItems && cartItems.length} className='ant-badge-shopping'>
-                  
-                  <i className='bx bx-shopping-bag'></i>
+                  <Badge
+                    count={cartItems && cartItems.length}
+                    className="ant-badge-shopping"
+                  >
+                    <i className="bx bx-shopping-bag"></i>
                   </Badge>
                 </Link>
               </NavbarShop>
               <NavbarLogin to={userInfo ? '/profile/user' : '/signin'}>
                 {userInfo && userInfo.user ? (
-                  <div className='userInfo'>
-                    <i className='cool-link'>
+                  <div className="userInfo">
+                    <i className="cool-link">
                       {userInfo.user.email}
-                      <ul className='hover_show other-custom'>
+                      <ul className="hover_show other-custom">
                         <li>
                           {' '}
-                          <Link to='/profile/user'>Tài khoản của bạn</Link>{' '}
+                          <Link to="/profile/user">Tài khoản của bạn</Link>{' '}
                         </li>
                         {userInfo.user.isAdmin ? (
                           <>
                             <li>
-                              <Link to='/admin/customer'>Quản Trị Web</Link>
+                              <Link to="/admin/customer">Quản Trị Web</Link>
                             </li>
                           </>
                         ) : (
@@ -283,7 +285,7 @@ const NavbarTop = () => {
                     </i>
                   </div>
                 ) : (
-                  <i className='bx bx-user'></i>
+                  <i className="bx bx-user"></i>
                 )}
               </NavbarLogin>
             </Col>

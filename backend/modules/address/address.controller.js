@@ -94,7 +94,7 @@ exports.postAddress = async (req, res, next) => {
           District.create({
             number: district_number,
             name,
-            province_number: number
+            province_number: number,
           })
         );
         wards.forEach((ward) => {
@@ -104,7 +104,7 @@ exports.postAddress = async (req, res, next) => {
               number: ward_number,
               name: prefix + ' ' + name,
               province_number: number,
-              district_number
+              district_number,
             })
           );
         });

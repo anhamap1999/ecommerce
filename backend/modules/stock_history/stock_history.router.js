@@ -16,11 +16,6 @@ router.get(
   validator.getStockHistoriesValidator,
   controller.getStockHistories
 );
-router.get(
-  '/:id',
-  isAuth,
-  isStaff,
-  controller.getStockHistoryById
-);
+router.get('/:id', isAuth, isStaff, controller.getStockHistoryById);
 router.use(handleError);
 module.exports = router;

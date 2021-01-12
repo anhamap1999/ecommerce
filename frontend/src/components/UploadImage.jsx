@@ -257,15 +257,15 @@ class ImageList extends React.Component {
     const uploadButton = (
       <div>
         <AiOutlinePlus style={{ fontSize: '20px' }} />
-        <div className='ant-upload-text'>Upload</div>
+        <div className="ant-upload-text">Upload</div>
       </div>
     );
     return (
       <>
-        <div className='clearfix'>
+        <div className="clearfix">
           <Upload
             customRequest={this.customUpload}
-            listType='picture-card'
+            listType="picture-card"
             fileList={fileList}
             onPreview={this.handlePreview}
             onRemove={this.onRemove}
@@ -273,12 +273,12 @@ class ImageList extends React.Component {
             multiple={this.props.maxLength > 1 ? true : false}
             showUploadList={{
               showDownloadIcon: false,
-            //   showPreviewIcon:
-            //     imageType === 'company_cover' || imageType === 'banner'
-            //       ? false
-            //       : true,
+              //   showPreviewIcon:
+              //     imageType === 'company_cover' || imageType === 'banner'
+              //       ? false
+              //       : true,
             }}
-            accept='.png, .jpg, .jpeg'
+            accept=".png, .jpg, .jpeg"
             // prefixCls='Loại file hợp lệ: .png .jpg .jpeg'
           >
             {/* {uploadButton} */}
@@ -295,12 +295,14 @@ class ImageList extends React.Component {
               footer={null}
               onCancel={this.handleCancel}
             >
-              <img alt='example' style={{ width: '100%' }} src={previewImage} />
+              <img alt="example" style={{ width: '100%' }} src={previewImage} />
             </Modal>
           ) : (
             <CarouselModal
               visible={previewVisible}
-              imageUrls={fileList.map((file) => typeof file === 'string' ? file : file.url)}
+              imageUrls={fileList.map((file) =>
+                typeof file === 'string' ? file : file.url
+              )}
               imageWidth={this.props.imageWidth}
               onClose={() => {
                 this.setState({ previewVisible: false });
@@ -314,7 +316,7 @@ class ImageList extends React.Component {
             <i style={{ display: 'block', lineHeight: 'normal' }}>
               Loại file hợp lệ: .png, .jpg, .jpeg
             </i>
-            <p className='my-0' style={{ lineHeight: 'normal' }}>
+            <p className="my-0" style={{ lineHeight: 'normal' }}>
               <i>Dung lượng tối đa: 10 MB</i>
             </p>
           </>

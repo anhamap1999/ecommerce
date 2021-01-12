@@ -20,7 +20,7 @@ exports.getBranchesValidator = async (req, res, next) => {
       sort: Joi.string().optional(),
       populate: Joi.string().optional(),
       province_number: Joi.number().required(),
-      bank_number: Joi.number().required()
+      bank_number: Joi.number().required(),
     });
     const result = await validate(req.query, schema);
     req.query = result;

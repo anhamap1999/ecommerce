@@ -6,10 +6,7 @@ const { handleError } = require('../../middlewares/error.middleware');
 const validator = require('./comment.validation');
 
 router.get('/', validator.getCommentsValidator, controller.getComments);
-router.get(
-  '/:id',
-  controller.getCommentById
-);
+router.get('/:id', controller.getCommentById);
 router.post(
   '/',
   isAuth,

@@ -9,7 +9,13 @@ const validator = require('./staff.validation');
 
 router.get('/', isAuth, isAdmin, controller.getStaff);
 router.get('/:id', isAuth, isAdmin, controller.getStaffById);
-router.post('/', isAuth, isAdmin, validator.addStaffValidator, controller.addStaff);
+router.post(
+  '/',
+  isAuth,
+  isAdmin,
+  validator.addStaffValidator,
+  controller.addStaff
+);
 router.delete('/:id', isAuth, isAdmin, controller.deleteStaff);
 
 router.use(handleError);
