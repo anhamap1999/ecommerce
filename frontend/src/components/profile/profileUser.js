@@ -44,15 +44,15 @@ export default function ProfileUserScreen(props) {
             :
             error ? <div>{error}</div>
             : 
-            !open && userFullInfo && userFullInfo.data && <div className="profileuser" style={{marginTop : '20px'}}>                    
+            !open && userFullInfo &&  <div className="profileuser" style={{marginTop : '20px'}}>                    
                         <form onSubmit={submidHandler}>
                         <div className="form-group">
                             <label >Email </label>
-                            <input type="email" className="form-control"   placeholder={userFullInfo.data.email}  disabled />
+                            <input type="email" className="form-control"   placeholder={userFullInfo.email}  disabled />
                         </div>
                         <div className="form-group">
                             <label >Số điện thoại</label>
-                            <input type="text" className="form-control" placeholder={userFullInfo.data.phone_number}  disabled />
+                            <input type="text" className="form-control" placeholder={userFullInfo.phone_number}  disabled />
                         </div>
                         <div className="form-group">
                             <label >Họ và tên</label>

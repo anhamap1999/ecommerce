@@ -7,6 +7,7 @@ import {
   listProducts,
   listProductsAdmin,
   removeProductID,
+  updateStateProduct,
 } from "../../actions/productActions";
 
 import vndFormat from '../../modules/utils'
@@ -155,9 +156,7 @@ const ProductAdminScreen = (props) => {
     {
       title: "Trạng thái",
       dataIndex: "status",
-      key: "key",
-      
-     
+      key: "key"
     },
     {
       title: "Màu",
@@ -187,8 +186,8 @@ const ProductAdminScreen = (props) => {
      
     },
   ];
-  const changeState = () =>{
-
+  const changeState = (productId) =>{
+      dispatch(updateStateProduct(productId))
   }
   return (
     <DashboardScreen>

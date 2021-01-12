@@ -24,12 +24,12 @@ export const ProductWrapper = styled.div`
     }
 `;
 export const ProductImg = styled.div`
-        width: 240px;
+        width: 210px;
         height: 190px;
     & img{
         width: 100%;
         height: 100%;
-        transform: rotate(25deg);
+        
     }
   
 `;
