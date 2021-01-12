@@ -35,8 +35,8 @@ function DetailsScreen(props) {
   useEffect(() => {
     dispatch(detailsProduct(props.match.params.id));
     dispatch(getStocks({ product_id: props.match.params.id }));
-    const { user } = JSON.parse(localStorage.getItem('userInfo'));
-
+    
+    const {user}=localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {}
     const state =
       user &&
       user.like_products &&
@@ -130,14 +130,14 @@ function DetailsScreen(props) {
         !_.isEmpty(product) && (
           <div className=" details" style={{ marginTop: '100px' }}>
             <div className="details-product container">
-              <div className="row">
+              <div className="row" style={{padding: '0px 0 20px 15px'}}>
                 <Breadcrumb>
                   <Breadcrumb.Item>
                     <Link to="/">Trang chủ</Link>
                   </Breadcrumb.Item>
                   {category_parent && (
                     <Link to={'/products/' + category_parent.pure_name}>
-                      {category_parent.pure_name}
+                      {category_parent.pure_name} <span style={{padding: '0 7px',color: "#ccc"}}>/</span>
                     </Link>
                   )}
                   <Breadcrumb.Item>

@@ -73,7 +73,7 @@ export default function PlaceUserScreen(props) {
   };
   return (
     <ProfileScreen>
-      <div className="" style={{ marginTop: '20px' }}>
+      <div style={{ marginTop: '100px' }}>
         <div className="header__title">
           <div className="row">
             <div className="col-sm-8">

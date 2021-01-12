@@ -59,7 +59,7 @@ function CartScreen(props) {
                     ) : (
                       <div className="row yourcart">
                         <div className="col-md-3">
-                          {item.product_id.images && (
+                          {item.product_id&&item.product_id.images && (
                             <img src={item.product_id.images[0]}></img>
                           )}
                         </div>

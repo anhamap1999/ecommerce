@@ -38,7 +38,7 @@ const ProductsNew = (props) => {
           {!loading ? (
             <Row>
               <Col md={{ span: 8 }}>
-                {products[0] && (
+                {products&&products[0] && (
                   <ProductsNewEle>
                     <ProductNewEleImg>
                       <img
@@ -62,7 +62,7 @@ const ProductsNew = (props) => {
               </Col>
               <Col md={{ span: 16 }}>
                 <ProductNewContainer>
-                  {products.length > 2 &&
+                  {products &&products.length > 2 &&
                     products.map((item, index) => {
                       if (index > 0 && index < 5) {
                         return (

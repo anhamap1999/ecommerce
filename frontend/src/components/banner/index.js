@@ -12,9 +12,11 @@ import {
 import Img from './giay.png';
 import { Link } from 'react-router-dom';
 
+
 const BannerTop = () => {
   return (
     <>
+  
       <BannerContainer>
         <div className="container" id="banner">
           <Row>

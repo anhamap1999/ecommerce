@@ -106,7 +106,7 @@ function PlaceOrderScreen(props) {
         <div className="row">
           <div className="col-md-7">
             <div className="general">
-              <h3>Địa chỉ nhận hàng</h3>
+              <h3 className='text-secondary'>Địa chỉ nhận hàng</h3>
               <h5 className="font-weight-bold">{shipping.full_name}</h5>
               <div>(+84) {String(shipping.phone_number).slice(1)}</div>
               <div>{shipping.text}</div>
@@ -115,7 +115,7 @@ function PlaceOrderScreen(props) {
               <div>{provinces[provinceIndex].name}</div>
             </div>
             <div className="general">
-              <h3>Phương thức thanh toán</h3>
+              <h3 className='text-secondary'>Phương thức thanh toán</h3>
               <h5 className="font-weight-bold">
                 {payment.paymentMethod === 'cash'
                   ? 'Tiền mặt'
@@ -127,14 +127,14 @@ function PlaceOrderScreen(props) {
                     Tên tài khoản : {payment.account_name}
                   </div>
                   <div>Ngân hàng : {banks[bankIndex].name}</div>
-                  <div>Chi nhánh : {branches[branchIndex].name}</div>
+                  {branches&&<div>Chi nhánh : {branches[branchIndex].name}</div>}
                 </>
               ) : (
                 ''
               )}
             </div>
             <div className="general cart-place">
-              <h3>Sản phẩm</h3>
+              <h3 className='text-secondary'>Sản phẩm</h3>
               <div>
                 <Row>
                   {cartItems.map((item) => (
@@ -195,7 +195,7 @@ function PlaceOrderScreen(props) {
               <p>Phí vận chuyển : {utils.vndFormat(shippingPrice)}</p>
               <p>Tiền thuế : {utils.vndFormat(taxPrice)}</p>
               {/* <h1 className=' rounded badge-dark'> */}
-              <h1> Thành tiền : {utils.vndFormat(totalPrice)}</h1>
+              <h1> Thành tiền : <span className='text-danger'>{utils.vndFormat(totalPrice)}</span></h1>
             </form>
           </div>
         </div>

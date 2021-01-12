@@ -6,7 +6,7 @@ const StockHistory = require('../stock_history/stock_history.model');
 const Revenue = require('../revenue/revenue.model');
 const Cart = require('../cart/cart.model');
 const moment = require('moment');
-
+const { Error, Success } = require('../../utils');
 exports.getOrders = async (req, res, next) => {
   try {
     const { select, sort, page, limit, ...query } = req.query;
@@ -80,7 +80,7 @@ exports.getOrdersByAdmin = async (req, res, next) => {
   }
 };
 
-exports.getOrderById = async (req, res) => {
+exports.getOrderById = async (req, res,next) => {
   try {
     const order = await Order.findOne({
       _id: req.params.id,
@@ -105,7 +105,7 @@ exports.getOrderById = async (req, res) => {
   }
 };
 
-exports.saveOrder = async (req, res) => {
+exports.saveOrder = async (req, res ,next) => {
   try {
     const { order_items } = req.body;
     order_items.forEach(async (item) => {
@@ -122,6 +122,13 @@ exports.saveOrder = async (req, res) => {
           product_id: item.product_id,
           size: item.size,
         });
+        if(!stock){
+          throw new Error({
+            statusCode: 404,
+            message: 'stock.notFound',
+            messages: { stock: 'stock is not enough' },
+          });
+        }
         if (stock.stock < item.quantity) {
           throw new Error({
             statusCode: 404,
@@ -199,7 +206,7 @@ exports.saveOrder = async (req, res) => {
   }
 };
 
-exports.updateOrderByAdmin = async (req, res) => {
+exports.updateOrderByAdmin = async (req, res,next) => {
   try {
     const order = await Order.findById(req.params.id).populate([
       { path: 'shipping' },
@@ -463,7 +470,7 @@ exports.updateOrderByAdmin = async (req, res) => {
   }
 };
 
-exports.updateOrder = async (req, res) => {
+exports.updateOrder = async (req, res,next) => {
   try {
     const order = await Order.findById(req.params.id).populate([
       { path: 'shipping' },

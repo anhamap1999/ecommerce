@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import HomePage from '../../pages/homepage';
 const style = {
   width: '100%',
-  marginTop: '20px',
+  marginTop: '100px',
 };
 const styleA = {
   background: '#eee',

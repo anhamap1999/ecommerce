@@ -255,7 +255,7 @@ function ProductScreen(props) {
                                 {/* <div>{product.price}</div> */}
                                 <Link to={'/product/' + product._id}>
                                   {' '}
-                                  <button> Mua ngay </button>
+                                  <button className='btn btn-3'> Mua ngay </button>
                                 </Link>
                               </div>
                             </div>

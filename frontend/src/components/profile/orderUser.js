@@ -7,8 +7,8 @@ import ProfileScreen from './profile';
 
 export default function OrderUserScreen(props) {
   return (
-    <ProfileScreen>
-      <div style={{ marginTop: '20px' }}>
+    <ProfileScreen >
+      <div style={{ marginTop: '100px' }}>
         <div className="col-sm-8">
           <h4>Đơn hàng của tôi</h4>
         </div>

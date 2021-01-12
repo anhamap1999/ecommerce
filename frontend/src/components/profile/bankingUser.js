@@ -57,15 +57,17 @@ export default function BankingUserScreen(props) {
       createBankNew({
         account_name,
         account_number,
-        bank_number: bank,
-        branch_number: branch,
+        bank,
+        branch,
+        province_number
+
       })
     );
   };
   console.log(account_name, account_number, bank, branch, province_number);
   return (
     <ProfileScreen>
-      <div className="" style={{ marginTop: '20px' }}>
+      <div style={{ marginTop: '100px' }}>
         <div className="header__title">
           <div className="row">
             <div className="col-sm-8">
@@ -156,7 +158,7 @@ export default function BankingUserScreen(props) {
                 <div className="form-group form-check"></div>
 
                 <button type="submit" className="btn btn-primary">
-                  Thêm địa chỉ mới
+                  Thêm tài khoản ngân hàng mới
                 </button>
               </form>
             </Modal>
