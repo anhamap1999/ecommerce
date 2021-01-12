@@ -38,7 +38,11 @@ const ProductsNew = (props) => {
           {!loading ? (
             <Row>
               <Col md={{ span: 8 }}>
+<<<<<<< HEAD
                 {products&&products[0] && (
+=======
+                {products && products[0] && (
+>>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
                   <ProductsNewEle>
                     <ProductNewEleImg>
                       <img
@@ -66,7 +70,7 @@ const ProductsNew = (props) => {
                     products.map((item, index) => {
                       if (index > 0 && index < 5) {
                         return (
-                          <ProductBox>
+                          <ProductBox key={item._id}>
                             <ProductBoxImg>
                               <img src={item.images[0]} alt={item.name}></img>
                             </ProductBoxImg>

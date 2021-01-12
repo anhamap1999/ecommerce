@@ -4,6 +4,8 @@ const { Success } = require('../../utils/Success');
 const utils = require('../../commons/utils');
 const User = require('../users/user.model');
 const Stock = require('../stock/stock.model');
+const Category = require('../category/category.model');
+
 const _ = require('lodash');
 
 exports.getProduct = async (req, res) => {
@@ -41,9 +43,6 @@ exports.saveProduct = async (req, res) => {
 };
 exports.updateProduct = async (req, res) => {
   const productId = req.params.id;
-  console.log('a');
-  console.log('ID', productId);
-  console.log('BODY', req.body);
   const product = await Product.findById(productId);
   if (product) {
     product.name = req.body.name;
@@ -88,7 +87,16 @@ exports.getProducts = async (req, res, next) => {
     if (price && price.length > 1) {
       query.price = { $gte: price[0], $lte: price[1] };
     }
-
+    // if (category_id) {
+    //   const category = await Category.findById(category_id);
+    //   if (!category) {
+    //     throw new Error({
+    //       statusCode: 404,
+    //       message: 'category.notFound',
+    //       messages: { category: 'category not found' },
+    //     });
+    //   }
+    // }
     const success = new Success({});
     await Product.paginate({ ...query, status: 'approved' }, options)
       .then(async (result) => {

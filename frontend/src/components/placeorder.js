@@ -57,12 +57,12 @@ function PlaceOrderScreen(props) {
     (t, i) => t + (i.product_id ? i.product_id.price : 0) * i.quantity,
     0
   );
-  const shippingPrice =
+  const shippingPrice = shippingFee ? (
     itemsPrice >= shippingFee.free_threshold
       ? 0
       : shippingFee.fee[shipping.district_number]
       ? shippingFee.fee[shipping.district_number]
-      : shippingFee.fee['other'];
+      : shippingFee.fee['other']) : 0;
   const taxPrice = 0;
   const totalPrice = itemsPrice + shippingPrice + taxPrice;
 
@@ -110,9 +110,9 @@ function PlaceOrderScreen(props) {
               <h5 className="font-weight-bold">{shipping.full_name}</h5>
               <div>(+84) {String(shipping.phone_number).slice(1)}</div>
               <div>{shipping.text}</div>
-              <div>{wards[wardIndex].name}</div>
-              <div>{districts[districtIndex].name}</div>
-              <div>{provinces[provinceIndex].name}</div>
+              <div>{wards[wardIndex] ? wards[wardIndex].name : ''}</div>
+              <div>{districts[districtIndex] ? districts[districtIndex].name : ''}</div>
+              <div>{provinces[provinceIndex] ? provinces[provinceIndex].name : ''}</div>
             </div>
             <div className="general">
               <h3 className='text-secondary'>Phương thức thanh toán</h3>
@@ -126,8 +126,13 @@ function PlaceOrderScreen(props) {
                   <div className="font-weight-bold">
                     Tên tài khoản : {payment.account_name}
                   </div>
+<<<<<<< HEAD
                   <div>Ngân hàng : {banks[bankIndex].name}</div>
                   {branches&&<div>Chi nhánh : {branches[branchIndex].name}</div>}
+=======
+                  <div>Ngân hàng : {banks[bankIndex] ? banks[bankIndex].name : ''}</div>
+                  <div>Chi nhánh : {branches[branchIndex] ? branches[branchIndex].name : ''}</div>
+>>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
                 </>
               ) : (
                 ''
@@ -137,9 +142,9 @@ function PlaceOrderScreen(props) {
               <h3 className='text-secondary'>Sản phẩm</h3>
               <div>
                 <Row>
-                  {cartItems.map((item) => (
+                  {cartItems.map((item, index) => (
                     <>
-                      <Col span={6}>
+                      <Col span={6} key={index}>
                         <Avatar
                           size={80}
                           src={item.product_id.thumbnail}

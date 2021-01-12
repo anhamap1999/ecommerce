@@ -111,7 +111,7 @@ const ProductsNike = (props) => {
                           ) {
                             count++;
                             return count > 6 ? null : (
-                              <Col md={{ span: 8 }}>
+                              <Col md={{ span: 8 }} key={product._id}>
                                 <Link to={`/product/${product._id}`}>
                                   <ProductWrapper>
                                     <ProductImg>

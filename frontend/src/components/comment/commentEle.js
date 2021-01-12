@@ -34,12 +34,12 @@ export const Editor = ({
   images,
 }) => (
   <>
-    <Form.Item className="ant-rate-select">
+    <Form.Item className='ant-rate-select'>
       <Rate value={rate} onChange={(value) => onChange('rating', value)} />
     </Form.Item>
     <Form.Item>
       <TextArea
-        placeholder="Nhập bình luận"
+        placeholder='Nhập bình luận'
         autoSize={{ minRows: 4 }}
         onChange={(e) => onChange('content', e.target.value)}
         value={content}
@@ -56,10 +56,10 @@ export const Editor = ({
 
     <Form.Item>
       <Button
-        htmlType="submit"
+        htmlType='submit'
         loading={submitting}
         onClick={onSubmit}
-        type="primary"
+        type='primary'
       >
         Thêm bình luận
       </Button>
@@ -69,7 +69,7 @@ export const Editor = ({
 const uploadButton = (
   <div>
     <BsPlusSquareFill style={{ fontSize: '20px' }} />
-    <div className="ant-upload-text">Upload</div>
+    <div className='ant-upload-text'>Upload</div>
   </div>
 );
 const CommentEle = ({ productID }) => {
@@ -115,8 +115,8 @@ const CommentEle = ({ productID }) => {
   return (
     <>
       {loading ? (
-        <div className="spinner-border text-primary" role="status">
-          <span className="sr-only"></span>
+        <div className='spinner-border text-primary' role='status'>
+          <span className='sr-only'></span>
         </div>
       ) : error ? (
         <div> {error} </div>
@@ -125,17 +125,23 @@ const CommentEle = ({ productID }) => {
         comment &&
         comment.length > 0 &&
         comment.map(
+<<<<<<< HEAD
           (con) =>con.product_id&&
             con.product_id._id === productID && (
               <CommentedProduct content={con} />
+=======
+          (con) =>
+          con.product_id && con.product_id._id === productID && (
+              <CommentedProduct key={con.product_id._id} content={con} />
+>>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
             )
         )
       )}
 
       {!userInfo ? (
-        <Link to="/register" className="text-primary">
+        <Link to='/signin' className='text-primary'>
           {' '}
-          Đăng kí tài khoản để bình luận{' '}
+          <div>Đăng nhập để bình luận</div>{' '}
         </Link>
       ) : (
         userInfo &&

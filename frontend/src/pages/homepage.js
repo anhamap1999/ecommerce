@@ -25,11 +25,15 @@ function HomePage(props) {
   // socket.on('chat message', function(msg) {
   //   console.log('RECEIVE', msg);
   // });
+  const { user } = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCatogoryAll());
     dispatch(getConfig());
-    dispatch(getProductCart());
+    if (user) {
+      dispatch(getProductCart());
+    }
     dispatch(getProvince());
   }, []);
   return (

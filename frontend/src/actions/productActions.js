@@ -24,6 +24,12 @@ import {
   PRODUCT_UPDATE_STATES_REQUEST,
   PRODUCT_UPDATE_STATES_SUCCESS,
   PRODUCT_UPDATE_STATES_FAIL,
+  SEARCH_PRODUCT_REQUEST,
+  SEARCH_PRODUCT_SUCCESS,
+  SEARCH_PRODUCT_FAIL,
+  CHANGE_SEARCH_FIELDS,
+  CHANGE_ADD_PRODUCT_FIELDS,
+  CHANGE_ADMIN_PRODUCT_FIELDS
 } from '../constants/productConstants';
 import axiosClient from '../modules/axios';
 import axios from '../modules/axios';
@@ -109,10 +115,6 @@ const updateStateProduct = (productId, { status }) => async (
   try {
     dispatch({ type: PRODUCT_UPDATE_STATES_REQUEST });
     const {
-      userSignin: { userInfo },
-    } = getState();
-    console.log('stat', status);
-    const {
       data,
     } = await axiosClient.put(
       '/api/products/admin/update-status/' + productId,
@@ -126,9 +128,6 @@ const updateStateProduct = (productId, { status }) => async (
 const addProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_ADD_REQUEST, payload: product });
-    const {
-      userSignin: { userInfo },
-    } = getState();
 
     if (!product._id) {
       const { data } = await axiosClient.post(
@@ -137,7 +136,8 @@ const addProduct = (product) => async (dispatch, getState) => {
       );
       dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data });
     } else {
-      const { data } = await axios.put('/api/products/' + product._id);
+      const { data } = await axios.put('/api/products/' + product._id,
+      JSON.stringify(product));
 
       dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data });
     }
@@ -145,11 +145,15 @@ const addProduct = (product) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_ADD_FAIL, payload: error.message });
   }
 };
+
+const changeAddProductFields = (object) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_ADD_PRODUCT_FIELDS,
+    payload: object,
+  });
+};
 const removeProductID = (productId) => async (dispatch, getState) => {
   try {
-    const {
-      userSignin: { userInfo },
-    } = getState();
     dispatch({ type: PRODUCT_REMOVE_REQUEST, payload: productId });
     const { data } = await axios.delete('/api/products/' + productId);
     dispatch({ type: PRODUCT_REMOVE_SUCCESS, payload: data, success: true });
@@ -171,6 +175,36 @@ const likeProduct = (product_id, state) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_LIKE_FAIL, payload: message });
   }
 };
+const searchProducts = ({ page, limit, ...query }) => async (dispatch) => {
+  try {
+    dispatch({ type: SEARCH_PRODUCT_REQUEST });
+    const queryString = utils.formatQuery({ page, limit, ...query });
+    const { data, total_page, total } = await axios.get(
+      `/api/search${queryString}`
+    );
+    if (data) {
+      dispatch({
+        type: SEARCH_PRODUCT_SUCCESS,
+        payload: { data, page, total_page, total },
+      });
+    }
+  } catch (error) {
+    const message = utils.getMessageError(error.messages);
+    dispatch({ type: SEARCH_PRODUCT_FAIL, payload: message });
+  }
+};
+const changeSearchFields = (object) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_SEARCH_FIELDS,
+    payload: object,
+  });
+};
+const changeAdminProductFields = (object) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_ADMIN_PRODUCT_FIELDS,
+    payload: object,
+  });
+};
 export {
   listProducts,
   detailsProduct,
@@ -181,4 +215,8 @@ export {
   likeProduct,
   listProductsAdmin,
   updateStateProduct,
+  searchProducts,
+  changeSearchFields,
+  changeAddProductFields,
+  changeAdminProductFields
 };

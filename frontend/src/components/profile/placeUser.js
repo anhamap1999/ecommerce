@@ -198,7 +198,7 @@ export default function PlaceUserScreen(props) {
       ) : (
         addressList &&
         addressList.map((address) => (
-          <div className="container">
+          <div className="container" key={address._id}>
             <div className="row">
               <div className="col-sm-3">
                 <div className="text-muted" style={{ height: '35px' }}>

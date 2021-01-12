@@ -114,7 +114,7 @@ const CategoryAdminScreen = (props) => {
                       categories.map(
                         (category) =>
                           category.type == '1' && (
-                            <option value={category._id}>
+                            <option value={category._id} key={category._id}>
                               {category.name}
                             </option>
                           )

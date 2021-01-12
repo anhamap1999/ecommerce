@@ -21,6 +21,12 @@ import {
   PRODUCT_ADMIN_LIST_REQUEST,
   PRODUCT_ADMIN_LIST_SUCCESS,
   PRODUCT_ADMIN_LIST_FAIL,
+  SEARCH_PRODUCT_REQUEST,
+  SEARCH_PRODUCT_SUCCESS,
+  SEARCH_PRODUCT_FAIL,
+  CHANGE_SEARCH_FIELDS,
+  CHANGE_ADD_PRODUCT_FIELDS,
+  CHANGE_ADMIN_PRODUCT_FIELDS,
 } from '../constants/productConstants';
 import _ from 'lodash';
 
@@ -48,30 +54,33 @@ function productListReducer(state = { products: [], query: {} }, action) {
       return state;
   }
 }
-function productListAdminReducer(state = { products: [], query: {} }, action) {
-  switch (action.type) {
-    case PRODUCT_ADMIN_LIST_REQUEST:
-      return { ...state, loading: true, products: [], error: null };
-    case PRODUCT_ADMIN_LIST_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        products: action.payload.data,
-        totalPage: action.payload.total_page,
-        total: action.payload.total,
-      };
-    case PRODUCT_ADMIN_LIST_FAIL:
-      return { ...state, loading: false, error: action.payload };
-    case CHANGE_FIELDS: {
-      for (const key in action.payload) {
-        _.set(state, key, action.payload[key]);
-      }
-      return { ...state };
-    }
-    default:
-      return state;
-  }
-}
+// function productListAdminReducer(
+//   state = { products: [], query: { limit: 30, page: 1, status: '' } },
+//   action
+// ) {
+//   switch (action.type) {
+//     case PRODUCT_ADMIN_LIST_REQUEST:
+//       return { ...state, loading: true, products: [], error: null };
+//     case PRODUCT_ADMIN_LIST_SUCCESS:
+//       return {
+//         ...state,
+//         loading: false,
+//         products: action.payload.data,
+//         totalPage: action.payload.total_page,
+//         total: action.payload.total,
+//       };
+//     case PRODUCT_ADMIN_LIST_FAIL:
+//       return { ...state, loading: false, error: action.payload };
+//     case CHANGE_ADMIN_GET_PRODUCT_FIELDS: {
+//       for (const key in action.payload) {
+//         _.set(state, key, action.payload[key]);
+//       }
+//       return { ...state };
+//     }
+//     default:
+//       return state;
+//   }
+// }
 function productDetailsReducer(state = { product: {} }, action) {
   switch (action.type) {
     case PRODUCT_DETAILS_REQUEST:
@@ -90,18 +99,33 @@ function productDetailsReducer(state = { product: {} }, action) {
       return state;
   }
 }
-function productAddReducer(state = { product: {} }, action) {
-  switch (action.type) {
-    case PRODUCT_ADD_REQUEST:
-      return { loading: true, error: null };
-    case PRODUCT_ADD_SUCCESS:
-      return { loading: false, success: true, product: action.payload };
-    case PRODUCT_ADD_FAIL:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-}
+// function productAddReducer(
+//   state = { product: {}, modalVisible: false, loading: false },
+//   action
+// ) {
+//   switch (action.type) {
+//     case PRODUCT_ADD_REQUEST:
+//       return { ...state, loading: true, error: null };
+//     case PRODUCT_ADD_SUCCESS:
+//       return {
+//         ...state,
+//         loading: false,
+//         success: true,
+//         product: action.payload,
+//       };
+//     case PRODUCT_ADD_FAIL:
+//       return { ...state, loading: false, error: action.payload };
+
+//     case CHANGE_ADD_PRODUCT_FIELDS: {
+//       for (const key in action.payload) {
+//         _.set(state, key, action.payload[key]);
+//       }
+//       return { ...state };
+//     }
+//     default:
+//       return state;
+//   }
+// }
 function productRemoveReducer(state = { product: {} }, action) {
   switch (action.type) {
     case PRODUCT_REMOVE_REQUEST:
@@ -132,11 +156,105 @@ function productNewListReducer(state = { products: [] }, action) {
       return state;
   }
 }
+
+function searchProductReducer(
+  state = { query: { limit: 30, page: 1 }, products: [] },
+  action
+) {
+  switch (action.type) {
+    case SEARCH_PRODUCT_REQUEST:
+      return { ...state, loading: true, products: [], error: null };
+    case SEARCH_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        products: action.payload.data,
+        totalPage: action.payload.total_page,
+        total: action.payload.total,
+      };
+    case SEARCH_PRODUCT_FAIL:
+      return { ...state, loading: false, error: action.payload };
+
+    case CHANGE_SEARCH_FIELDS: {
+      for (const key in action.payload) {
+        _.set(state, key, action.payload[key]);
+      }
+      return { ...state };
+    }
+    default:
+      return state;
+  }
+}
+
+function productReducer(
+  state = {
+    query: { limit: 30, page: 1 },
+    products: [],
+    product: {},
+    loading: false,
+    modalVisible: false,
+    updatingIndex: -1,
+    total: 0,
+    newProducts: []
+  },
+  action
+) {
+  switch (action.type) {
+    case PRODUCT_ADD_REQUEST:
+      return { ...state, loading: true, error: null };
+    case PRODUCT_ADD_SUCCESS: {
+      const list = state.products.length > state.limit ? state.products.pop() : state.products;
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        product: action.payload,
+        products: [ action.payload, ...list ]
+      };
+    }
+    case PRODUCT_ADD_FAIL:
+      return { ...state, loading: false, error: action.payload };
+
+    case CHANGE_ADMIN_PRODUCT_FIELDS: {
+      for (const key in action.payload) {
+        _.set(state, key, action.payload[key]);
+      }
+      return { ...state };
+    }
+    // case PRODUCT_REMOVE_REQUEST:
+    //   return { ...state, loading: true, error: null };
+    // case PRODUCT_REMOVE_SUCCESS:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     success: true,
+    //     product: action.payload,
+    //   };
+    // case PRODUCT_REMOVE_FAIL:
+    //   return { ...state, loading: false, error: action.payload };
+
+    case PRODUCT_ADMIN_LIST_REQUEST:
+      return { ...state, loading: true, products: [], error: null };
+    case PRODUCT_ADMIN_LIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        products: action.payload.data,
+        total: action.payload.total,
+      };
+    case PRODUCT_ADMIN_LIST_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
 export {
   productListReducer,
   productDetailsReducer,
-  productAddReducer,
+  // productAddReducer,
   productRemoveReducer,
   productNewListReducer,
-  productListAdminReducer,
+  // productListAdminReducer,
+  searchProductReducer,
+  productReducer,
 };

@@ -52,6 +52,7 @@ exports.createProductValidator = async (req, res, next) => {
       SKU: Joi.string().required(),
       attributes: Joi.array().optional(),
       size: Joi.array().items(Joi.number()),
+      // parent_category_id: Joi.string().required(),
     });
     const result = await validate(req.body, schema);
     req.body = result;

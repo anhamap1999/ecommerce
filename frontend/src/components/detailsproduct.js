@@ -35,13 +35,18 @@ function DetailsScreen(props) {
   useEffect(() => {
     dispatch(detailsProduct(props.match.params.id));
     dispatch(getStocks({ product_id: props.match.params.id }));
+<<<<<<< HEAD
     
     const {user}=localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {}
+=======
+    const { user } = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+
+>>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
     const state =
       user &&
       user.like_products &&
       user.like_products.findIndex(
-        (item) => String(item._id) === String(_id)
+        (item) => String(item._id) === String(props.match.params.id)
       ) >= 0
         ? 'like'
         : 'unlike';
@@ -98,12 +103,15 @@ function DetailsScreen(props) {
   };
 
   const onLikeProduct = async () => {
+    const { user } = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+    if (!user) {
+      props.history.push('/signin?redirect=products/' + props.match.params.id);
+    }
     await dispatch(
       likeProduct(_id, likeState === 'unlike' ? 'like' : 'unlike')
     );
     // likeState = likeState === 'unlike' ? 'like' : 'unlike';
     await dispatch(getFullInfoUser());
-    const { user } = JSON.parse(localStorage.getItem('userInfo'));
     const state =
       user &&
       user.like_products &&
@@ -116,7 +124,6 @@ function DetailsScreen(props) {
   };
   return (
     <HomePage>
-      {console.log('likeState', likeState)}
       {loading || loadingStock ? (
         <div className="container">
           <div className="spinner-border text-primary" role="status">
@@ -216,7 +223,6 @@ function DetailsScreen(props) {
                             value={qty}
                             onChange={(value) => setQty(value)}
                           />
-                          {console.log(qty)}
                         </div>
                         <div style={{ marginBottom: '5px', marginTop: '10px' }}>
                           <span style={{ fontSize: '16pt' }}>Size: </span>
@@ -224,6 +230,7 @@ function DetailsScreen(props) {
                             {sizes &&
                               sizes.map((item) => (
                                 <Radio.Button
+                                  key={item}
                                   value={item}
                                   // className={`product-detail-size ${
                                   //   item === size ? 'product-detail-size-focus' : ''
@@ -273,16 +280,16 @@ function DetailsScreen(props) {
 
                     {/* <Link to={`/cart/${_id}?qty=${qty}&&size=${size}`}> */}
                     {!userInfo ? (
-                      <Link to={`/register`}>
+                      <Link to={`/signin`}>
                         <button
                           type="button"
                           style={{ padding: '15px' }}
                           className="btn btn-danger"
                         >
                           <span>
-                            <i class="bx bxs-user"></i>
+                            <i className="bx bxs-user"></i>
                           </span>{' '}
-                          ĐĂNG KÍ ĐỂ THÊM
+                          ĐĂNG NHẬP ĐỂ THÊM
                         </button>
                       </Link>
                     ) : size ? (

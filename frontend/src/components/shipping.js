@@ -98,7 +98,7 @@ function ShippingScreen(props) {
             <div>
               <label>Chọn địa chỉ</label>
               <select
-                class="custom-select"
+                className="custom-select"
                 id="inputGroupSelect01"
                 onChange={(e) => onChangeAddress(e.target.value)}
               >
@@ -106,7 +106,7 @@ function ShippingScreen(props) {
                 {addressList &&
                   addressList.length &&
                   addressList.map((item, index) => (
-                    <option value={index}>{item.normalizedAddress}</option>
+                    <option key={index} value={index}>{item.normalizedAddress}</option>
                   ))}
               </select>
             </div>

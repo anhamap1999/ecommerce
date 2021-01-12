@@ -41,9 +41,9 @@ const StaffAdminScreen = (props) => {
             <tbody>
               {users &&
                 users.map(
-                  (user) =>
-                    user.role == 'staff' && (
-                      <tr>
+                  (user, index) =>
+                    user.role === 'staff' && (
+                      <tr key={index}>
                         <td>
                           {user.full_name ? (
                             user.full_name

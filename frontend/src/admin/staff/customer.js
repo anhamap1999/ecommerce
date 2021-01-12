@@ -16,8 +16,8 @@ const CustomerAdminInfo = ({ usersData }) => {
           </thead>
           <tbody>
             {usersData &&
-              usersData.map((user) => (
-                <tr>
+              usersData.map((user, index) => (
+                <tr key={index}>
                   <th scope="col">
                     {user.full_name ? (
                       user.full_name

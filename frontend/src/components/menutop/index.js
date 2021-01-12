@@ -9,12 +9,12 @@ import {
   NavbarShop,
   NavbarUl,
 } from './navbarMenu';
-import { Col, Row, Badge } from 'antd';
+import { Col, Row, Badge, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
-import { getCatogoryAll } from '../../actions/categoryAction';
-import { changeFields, listProducts } from '../../actions/productActions';
+// import { getCatogoryAll } from '../../actions/categoryAction';
+import { changeFields, listProducts, searchProducts, changeSearchFields } from '../../actions/productActions';
 
 window.onscroll = () => {
   const nav = document.getElementById('header');
@@ -48,7 +48,9 @@ const NavbarTop = () => {
   const index = configs && configs.findIndex((item) => item.key === 'brand');
   const brands = configs[index] ? configs[index].value : [];
   const { cartItems } = useSelector((state) => state.cartUser);
+  const { query: searchQuery } = useSelector((state) => state.searchProduct);
 
+  const history = useHistory();
   const location = useLocation();
   const categoryIndex =
     categories &&
@@ -122,22 +124,32 @@ const NavbarTop = () => {
     }
   };
 
+  const onChangeSearch = value => {
+    dispatch(changeSearchFields({'query.name': value }));
+  }
+
+  const onSearch = value => {
+    dispatch(searchProducts(searchQuery));
+    history.push('/search');
+    // window.location.href = '/search';
+  }
+
   return (
     <>
-      <NavbarHeader className="navbarheader" id="header">
-        <div className="container">
+      <NavbarHeader className='navbarheader' id='header'>
+        <div className='container'>
           <Row>
             <Col md={{ span: 3 }}>
               <NavbarLogo>
-                <NavbarLink to="/">Shoes</NavbarLink>
+                <NavbarLink to='/'>Shoes</NavbarLink>
               </NavbarLogo>
             </Col>
 
-            <Col md={{ span: 12 }}>
+            <Col md={{ span: 8 }}>
               <NavbarMenu>
                 {loadingCat || loadingConfig ? (
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="sr-only">Loading...</span>
+                  <div className='spinner-border text-primary' role='status'>
+                    <span className='sr-only'>Loading...</span>
                   </div>
                 ) : null}
                 <NavbarUl>
@@ -155,10 +167,10 @@ const NavbarTop = () => {
                               }`}
                               key={category._id}
                             >
-                              <div className="hover_show">
+                              <div className='hover_show'>
                                 <Link
                                   to={`/products/${category.pure_name}`}
-                                  className="cool-link"
+                                  className='cool-link'
                                   onClick={() =>
                                     onClickItem('category_id', category._id)
                                   }
@@ -180,6 +192,7 @@ const NavbarTop = () => {
                                                     ? 'cool-link-focus'
                                                     : ''
                                                 }
+                                                key={categoryEle._id}
                                               >
                                                 <Link
                                                   to={`/products/${category.pure_name}/${categoryEle.pure_name}`}
@@ -190,11 +203,6 @@ const NavbarTop = () => {
                                                     )
                                                   }
                                                 >
-                                                  {console.log(
-                                                    'FOCUS',
-                                                    focusCategory.name,
-                                                    categoryEle.name
-                                                  )}
                                                   {categoryEle.name}
                                                 </Link>
                                               </li>
@@ -217,7 +225,7 @@ const NavbarTop = () => {
                       }`}
                       key={'brand'}
                     >
-                      <div className="hover_show">
+                      <div className='hover_show'>
                         {/* <Link to={`/products`} className='cool-link'> */}
                         {'Thương hiệu'}
                         {/* </Link> */}
@@ -230,6 +238,7 @@ const NavbarTop = () => {
                                     ? 'cool-link-focus'
                                     : ''
                                 }
+                                key={brand}
                               >
                                 <Link
                                   to={`/products`}
@@ -247,32 +256,42 @@ const NavbarTop = () => {
                 </NavbarUl>
               </NavbarMenu>
             </Col>
+            <Col md={{ span: 4 }} style={{ display: 'inline-flex' }}>
+              
+          <Input.Search
+            placeholder={'Tìm sản phẩm'}
+            onSearch={value => onSearch(value)}
+            onChange={e => onChangeSearch(e.target.value)}
+            value={searchQuery.name}
+            allowClear={true}
+          />
+            </Col>
             <Col md={{ span: 9 }}>
               <NavbarShop>
-                <Link to="/cart">
+                <Link to='/cart'>
                   {/* {' '} */}
                   <Badge
                     count={cartItems && cartItems.length}
-                    className="ant-badge-shopping"
+                    className='ant-badge-shopping'
                   >
-                    <i className="bx bx-shopping-bag"></i>
+                    <i className='bx bx-shopping-bag'></i>
                   </Badge>
                 </Link>
               </NavbarShop>
               <NavbarLogin to={userInfo ? '/profile/user' : '/signin'}>
                 {userInfo && userInfo.user ? (
-                  <div className="userInfo">
-                    <i className="cool-link">
+                  <div className='userInfo'>
+                    <i className='cool-link'>
                       {userInfo.user.email}
-                      <ul className="hover_show other-custom">
+                      <ul className='hover_show other-custom'>
                         <li>
                           {' '}
-                          <Link to="/profile/user">Tài khoản của bạn</Link>{' '}
+                          <Link to='/profile/user'>Tài khoản của bạn</Link>{' '}
                         </li>
                         {userInfo.user.isAdmin ? (
                           <>
                             <li>
-                              <Link to="/admin/customer">Quản Trị Web</Link>
+                              <Link to='/admin/customer'>Quản Trị Web</Link>
                             </li>
                           </>
                         ) : (
@@ -285,7 +304,7 @@ const NavbarTop = () => {
                     </i>
                   </div>
                 ) : (
-                  <i className="bx bx-user"></i>
+                  <i className='bx bx-user'></i>
                 )}
               </NavbarLogin>
             </Col>

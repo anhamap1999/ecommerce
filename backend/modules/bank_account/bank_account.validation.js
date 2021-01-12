@@ -3,7 +3,6 @@ const { validate } = require('../../commons/utils');
 
 exports.createBankAccountValidator = async (req, res, next) => {
   try {
-    console.log('zoday');
     const schema = Joi.object().keys({
       account_number: Joi.string().required(),
       account_name: Joi.string().required(),
