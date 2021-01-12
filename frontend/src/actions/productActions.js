@@ -27,7 +27,9 @@ import {
   SEARCH_PRODUCT_REQUEST,
   SEARCH_PRODUCT_SUCCESS,
   SEARCH_PRODUCT_FAIL,
-  CHANGE_SEARCH_FIELDS
+  CHANGE_SEARCH_FIELDS,
+  CHANGE_ADD_PRODUCT_FIELDS,
+  CHANGE_ADMIN_PRODUCT_FIELDS
 } from '../constants/productConstants';
 import axiosClient from '../modules/axios';
 import axios from '../modules/axios';
@@ -113,9 +115,6 @@ const updateStateProduct = (productId, { status }) => async (
   try {
     dispatch({ type: PRODUCT_UPDATE_STATES_REQUEST });
     const {
-      userSignin: { userInfo },
-    } = getState();
-    const {
       data,
     } = await axiosClient.put(
       '/api/products/admin/update-status/' + productId,
@@ -129,9 +128,6 @@ const updateStateProduct = (productId, { status }) => async (
 const addProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_ADD_REQUEST, payload: product });
-    const {
-      userSignin: { userInfo },
-    } = getState();
 
     if (!product._id) {
       const { data } = await axiosClient.post(
@@ -140,7 +136,8 @@ const addProduct = (product) => async (dispatch, getState) => {
       );
       dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data });
     } else {
-      const { data } = await axios.put('/api/products/' + product._id);
+      const { data } = await axios.put('/api/products/' + product._id,
+      JSON.stringify(product));
 
       dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data });
     }
@@ -148,11 +145,15 @@ const addProduct = (product) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_ADD_FAIL, payload: error.message });
   }
 };
+
+const changeAddProductFields = (object) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_ADD_PRODUCT_FIELDS,
+    payload: object,
+  });
+};
 const removeProductID = (productId) => async (dispatch, getState) => {
   try {
-    const {
-      userSignin: { userInfo },
-    } = getState();
     dispatch({ type: PRODUCT_REMOVE_REQUEST, payload: productId });
     const { data } = await axios.delete('/api/products/' + productId);
     dispatch({ type: PRODUCT_REMOVE_SUCCESS, payload: data, success: true });
@@ -198,6 +199,12 @@ const changeSearchFields = (object) => async (dispatch) => {
     payload: object,
   });
 };
+const changeAdminProductFields = (object) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_ADMIN_PRODUCT_FIELDS,
+    payload: object,
+  });
+};
 export {
   listProducts,
   detailsProduct,
@@ -209,5 +216,7 @@ export {
   listProductsAdmin,
   updateStateProduct,
   searchProducts,
-  changeSearchFields
+  changeSearchFields,
+  changeAddProductFields,
+  changeAdminProductFields
 };

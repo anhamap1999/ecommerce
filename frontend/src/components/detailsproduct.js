@@ -41,7 +41,7 @@ function DetailsScreen(props) {
       user &&
       user.like_products &&
       user.like_products.findIndex(
-        (item) => String(item._id) === String(_id)
+        (item) => String(item._id) === String(props.match.params.id)
       ) >= 0
         ? 'like'
         : 'unlike';
