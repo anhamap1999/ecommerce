@@ -117,7 +117,9 @@ i.bx.bx-shopping-bag {
   }
 }
 .main {
-  margin-top: 70px;
+  margin-top: 140px;
+  position: relative;
+  bottom: 50px;
 }
 i.bx.bx-user {
   font-size: 32px;
@@ -962,3 +964,53 @@ form:not(.ant-form-vertical) .ant-input-group-wrapper {
 .upload-image .ant-btn:hover {
   background-color: none !important;
 } */
+.page-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  /* background-color: red; */
+  /* color: white; */
+  text-align: center;
+}
+.custom-select {
+  margin-left: 0 !important;
+}
+
+.ant-input-search .ant-input-group-addon {
+  /* display: none; */
+  margin: none !important;
+  padding: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+.ant-input-search .ant-input-search-button {
+
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border-radius: none !important;
+  /* border: none !important; */
+  height: 32px !important;
+}
+
+.ant-input-search .ant-input-affix-wrapper {
+
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border-radius: none !important;
+  /* border: none !important; */
+  height: 32px !important;
+}
+
+.ant-input-search .ant-input {
+
+  /* margin: 0 !important; */
+  padding: 5px !important;
+  box-shadow: none !important;
+  border-radius: none !important;
+  /* border: none !important; */
+  height: 26px !important;
+  margin: auto !important
+}

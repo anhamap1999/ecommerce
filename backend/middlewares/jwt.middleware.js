@@ -27,7 +27,6 @@ exports.verifyToken = (token, secretKey) => {
     jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
         reject(err);
-        console.log('loi cmnr');
       }
       resolve(decoded);
     });

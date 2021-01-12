@@ -17,6 +17,11 @@ const productSchema = new mongoose.Schema({
     ref: 'Category',
     required: true,
   },
+  // parent_category_id: {
+  //   type: mongoose.SchemaTypes.ObjectId,
+  //   ref: 'Category',
+  //   required: true,
+  // },
   thumbnail: { type: String, required: true },
   likes_count: { type: Number, required: true, default: 0 },
   comments_count: { type: Number, required: true, default: 0 },
@@ -41,7 +46,7 @@ const productSchema = new mongoose.Schema({
   out_of_stock: { type: Boolean, required: true, default: true },
 });
 // productSchema.indexes()
-productSchema.index({ name: 'text' });
+productSchema.index({ name: 'text', pure_name: 'text' });
 productSchema.plugin(paginate);
 const productModel = mongoose.model('Product', productSchema);
 module.exports = productModel;

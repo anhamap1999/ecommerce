@@ -50,11 +50,9 @@ function getFullInfoReducer(state = {}, action) {
     case GET_FULL_INFO_FAIL:
       return { ...state, loading: false, error: action.payload };
     case CHANGE_USER_INFO_FIELDS: {
-      console.log('BEFORE', state)
       for (const key in action.payload) {
         _.set(state, key, action.payload[key]);
       }
-      console.log('AFTER', state)
 
       return { ...state };
     }

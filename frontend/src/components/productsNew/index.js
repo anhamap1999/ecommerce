@@ -66,7 +66,7 @@ const ProductsNew = (props) => {
                     products.map((item, index) => {
                       if (index > 0 && index < 5) {
                         return (
-                          <ProductBox>
+                          <ProductBox key={item._id}>
                             <ProductBoxImg>
                               <img src={item.images[0]} alt={item.name}></img>
                             </ProductBoxImg>

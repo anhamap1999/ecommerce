@@ -17,9 +17,9 @@ const CustomerAdminInfo = ({ usersData }) => {
           <tbody>
             {usersData &&
               usersData.map(
-                (user) =>
-                  user.role == 'customer' && (
-                    <tr>
+                (user, index) =>
+                  user.role === 'customer' && (
+                    <tr key={index}>
                       <td>
                         {user.full_name ? (
                           user.full_name

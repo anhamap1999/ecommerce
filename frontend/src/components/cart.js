@@ -41,8 +41,8 @@ function CartScreen(props) {
           <h1>Giỏ hàng của bạn</h1>
         </div>
         {loading ? (
-          <div class="spinner-border text-primary" role="status">
-            <span class="sr-only"></span>
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only"></span>
           </div>
         ) : error ? (
           <div className="">{error}</div>
@@ -53,11 +53,11 @@ function CartScreen(props) {
                 {cartItems &&
                   cartItems.map((item, index) =>
                     loadingUpdate && updatingId === item._id ? (
-                      <div class="spinner-border text-primary" role="status">
-                        <span class="sr-only"></span>
+                      <div className="spinner-border text-primary" role="status">
+                        <span className="sr-only"></span>
                       </div>
                     ) : (
-                      <div className="row yourcart">
+                      <div className="row yourcart" key={index}>
                         <div className="col-md-3">
                           {item.product_id.images && (
                             <img src={item.product_id.images[0]}></img>
@@ -80,17 +80,17 @@ function CartScreen(props) {
                         </div>
                         <div className="col-md-3">
                           <div>
-                            <div class="input-group mb-3">
-                              <div class="input-group-prepend">
+                            <div className="input-group mb-3">
+                              <div className="input-group-prepend">
                                 <label
-                                  class="input-group-text"
+                                  className="input-group-text"
                                   for="inputGroupSelect01"
                                 >
                                   Size
                                 </label>
                               </div>
                               <select
-                                class="custom-select"
+                                className="custom-select"
                                 id="inputGroupSelect01"
                                 onChange={(e) =>
                                   onChange(index, 'size', e.target.value)
@@ -98,7 +98,7 @@ function CartScreen(props) {
                               >
                                 <option selected>{item.size}</option>
                                 {item.product_id.size.map((x) => (
-                                  <option value={x}>{x}</option>
+                                  <option key={x} value={x}>{x}</option>
                                 ))}
                               </select>
                             </div>

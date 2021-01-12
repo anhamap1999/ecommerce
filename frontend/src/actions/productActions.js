@@ -24,6 +24,10 @@ import {
   PRODUCT_UPDATE_STATES_REQUEST,
   PRODUCT_UPDATE_STATES_SUCCESS,
   PRODUCT_UPDATE_STATES_FAIL,
+  SEARCH_PRODUCT_REQUEST,
+  SEARCH_PRODUCT_SUCCESS,
+  SEARCH_PRODUCT_FAIL,
+  CHANGE_SEARCH_FIELDS
 } from '../constants/productConstants';
 import axiosClient from '../modules/axios';
 import axios from '../modules/axios';
@@ -111,7 +115,6 @@ const updateStateProduct = (productId, { status }) => async (
     const {
       userSignin: { userInfo },
     } = getState();
-    console.log('stat', status);
     const {
       data,
     } = await axiosClient.put(
@@ -171,6 +174,30 @@ const likeProduct = (product_id, state) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_LIKE_FAIL, payload: message });
   }
 };
+const searchProducts = ({ page, limit, ...query }) => async (dispatch) => {
+  try {
+    dispatch({ type: SEARCH_PRODUCT_REQUEST });
+    const queryString = utils.formatQuery({ page, limit, ...query });
+    const { data, total_page, total } = await axios.get(
+      `/api/search${queryString}`
+    );
+    if (data) {
+      dispatch({
+        type: SEARCH_PRODUCT_SUCCESS,
+        payload: { data, page, total_page, total },
+      });
+    }
+  } catch (error) {
+    const message = utils.getMessageError(error.messages);
+    dispatch({ type: SEARCH_PRODUCT_FAIL, payload: message });
+  }
+};
+const changeSearchFields = (object) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_SEARCH_FIELDS,
+    payload: object,
+  });
+};
 export {
   listProducts,
   detailsProduct,
@@ -181,4 +208,6 @@ export {
   likeProduct,
   listProductsAdmin,
   updateStateProduct,
+  searchProducts,
+  changeSearchFields
 };

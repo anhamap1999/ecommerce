@@ -24,8 +24,9 @@ import CartScreen from './components/cart';
 import StorageAdminScreen from './admin/storage';
 import RuleAdminScreen from './admin/rule';
 import PlaceOrderScreen from './components/placeorder';
-import Shipping from './components/shipping';
-import Payment from './components/payment';
+import ShippingScreen from './components/shipping';
+import PaymentScreen from './components/payment';
+import SearchScreen from './components/search';
 function App() {
   return (
     <BrowserRouter>
@@ -42,8 +43,9 @@ function App() {
       <Route path="/createproduct" component={CreateProductScreen} />
       <Route path="/signin" component={SigninScreen}></Route>
       <Route path="/place-order" component={PlaceOrderScreen} />
-      <Route path="/shipping" component={Shipping} />
-      <Route path="/payment" component={Payment} />
+      <Route path="/shipping" component={ShippingScreen} />
+      <Route path="/payment" component={PaymentScreen} />
+      <Route path="/search" component={SearchScreen} />
 
       <Route path="/admin/customer" component={CustomerAdminScreen} />
       <Route path="/admin/products" component={ProductAdminScreen} />

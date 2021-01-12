@@ -10,7 +10,6 @@ const OrderAdminScreen = (props) => {
     dispatch(getListOrdersAdmin());
     return () => {};
   }, []);
-  console.log('order', orders);
   return (
     <DashboardScreen>
       <h3>Danh sách đặt hàng</h3>

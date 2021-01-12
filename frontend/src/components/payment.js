@@ -110,7 +110,6 @@ function PaymentSreen(props) {
     dispatch(getBranches(province_number, e.target.value));
     onChange('bank', e.target.value);
   };
-  console.log('PAYMENT', payment);
   return (
     <HomePage>
       <div>
@@ -148,7 +147,7 @@ function PaymentSreen(props) {
               <div>
                 <label>Chọn tài khoản</label>
                 <select
-                  class="custom-select"
+                  className="custom-select"
                   id="inputGroupSelect01"
                   onChange={(e) => onChangeBankAccount(e.target.value)}
                 >
@@ -156,7 +155,7 @@ function PaymentSreen(props) {
                   {bankAccounts &&
                     bankAccounts.length &&
                     bankAccounts.map((item, index) => (
-                      <option value={index}>
+                      <option key={index} value={index}>
                         {item.bank.name + ', ' + item.account_number}
                       </option>
                     ))}
@@ -218,7 +217,7 @@ function PaymentSreen(props) {
                     <option selected>Chọn Ngân hàng</option>
                     {banks &&
                       banks.map((option) => (
-                        <option value={option.number}>{option.name}</option>
+                        <option key={option.number} value={option.number}>{option.name}</option>
                       ))}
                   </select>
                 </div>

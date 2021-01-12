@@ -89,7 +89,6 @@ const ProductAdminScreen = (props) => {
   const sizeAr = [];
   const onSelectSize = (e) => {
     sizeAr.push(e.target.value);
-    console.log('sizeAr', sizeAr);
   };
 
   const submitHandler = async (e) => {
@@ -99,7 +98,6 @@ const ProductAdminScreen = (props) => {
       const result = await uploadFile(image[i]);
       array.push(result);
     }
-    console.log('url a ', array);
     dispatch(
       addProduct({
         _id: id,
@@ -199,7 +197,6 @@ const ProductAdminScreen = (props) => {
   ];
 
   const [updateState, setUpdateState] = useState('');
-  console.log('a', updateState);
   const changeState = (productId) => {
     dispatch(updateStateProduct(productId, { status: updateState }));
   };
@@ -268,7 +265,7 @@ const ProductAdminScreen = (props) => {
                   >
                     <option selected>chọn danh mục</option>
                     {categories.map((x) => (
-                      <option value={x._id}>{x.name}</option>
+                      <option key={x._id} value={x._id}>{x.name}</option>
                     ))}
                   </select>
                 </li>
@@ -299,7 +296,7 @@ const ProductAdminScreen = (props) => {
                   <div className="row">
                     {sizes &&
                       sizes.map((size) => (
-                        <div className=" col-md-3">
+                        <div className=" col-md-3" key={size}>
                           <input
                             type="checkbox"
                             value={size}

@@ -134,7 +134,7 @@ export default function BankingUserScreen(props) {
                     <option selected>Chọn Ngân hàng</option>
                     {bankData &&
                       bankData.map((option) => (
-                        <option value={option.number}>{option.name}</option>
+                        <option key={option.number} value={option.number}>{option.name}</option>
                       ))}
                   </select>
                 </div>

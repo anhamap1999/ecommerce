@@ -20,6 +20,7 @@ import {
   USER_SIGNIN_FAIL,
   USER_SIGNIN_REQUEST,
   USER_SIGNIN_SUCCESS,
+  CHANGE_USER_INFO_FIELDS
 } from '../constants/userConstants';
 
 const signin = (userName, password) => async (dispatch) => {
@@ -141,6 +142,12 @@ const changePwd = (new_password, confirm_new_password) => async (
     dispatch({ type: CHANGE_PWD_FAIL, payload: error.message });
   }
 };
+const changeUserInfoFields = (object) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_USER_INFO_FIELDS,
+    payload: object,
+  });
+};
 export {
   signin,
   getUserInfoAdmin,
@@ -148,4 +155,5 @@ export {
   updateInfoUser,
   getFullInfoUser,
   changePwd,
+  changeUserInfoFields
 };

@@ -6,6 +6,7 @@ import {
   productRemoveReducer,
   productNewListReducer,
   productListAdminReducer,
+  searchProductReducer
 } from './reducers/productReducers';
 import thunk from 'redux-thunk';
 import { getProductCartReducer } from './reducers/cartReducers';
@@ -64,6 +65,7 @@ const reducer = combineReducers({
   stock: stockReducer,
   address: addressReducer,
   bank: bankReducer,
+  searchProduct: searchProductReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

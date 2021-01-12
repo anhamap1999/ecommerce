@@ -4,13 +4,19 @@ const Product = require('../products/product.model');
 
 exports.search = async (req, res, next) => {
   try {
-    const { select, sort, page, limit, name } = req.query;
+    const { select, sort, page, limit, name, size, price, ...query } = req.query;
     const options = {
       select: select ? select : '',
       sort: sort ? sort : '-created_at',
       page: page && page >= 1 ? page : 1,
       limit: limit && limit >= 10 ? limit : 10,
     };
+    if (size) {
+      query.size = { $all: [size] };
+    }
+    if (price && price.length > 1) {
+      query.price = { $gte: price[0], $lte: price[1] };
+    }
 
     let total_page,
       total = 0;
@@ -23,6 +29,7 @@ exports.search = async (req, res, next) => {
         {
           $text: { $search: absoluteText },
           status: 'approved',
+          ...query
         },
         options
       )
@@ -42,9 +49,10 @@ exports.search = async (req, res, next) => {
       const products = await Product.find({
         $text: { $search: name },
         status: 'approved',
+        ...query
       });
       const uniqueProducts = products.filter(
-        (item) => data.findIndex((i) => i._id === item._id) < 0
+        (item) => data.findIndex((i) => String(i._id) === String(item._id)) < 0
       );
 
       if (uniqueProducts.length) {
@@ -121,13 +129,19 @@ exports.search = async (req, res, next) => {
 
 exports.adminSearch = async (req, res, next) => {
   try {
-    const { select, sort, page, limit, name } = req.query;
+    const { select, sort, page, limit, name, size, price, ...query } = req.query;
     const options = {
       select: select ? select : '',
       sort: sort ? sort : '-created_at',
       page: page && page >= 1 ? page : 1,
       limit: limit && limit >= 10 ? limit : 10,
     };
+    if (size) {
+      query.size = { $all: [size] };
+    }
+    if (price && price.length > 1) {
+      query.price = { $gte: price[0], $lte: price[1] };
+    }
 
     let total_page,
       total = 0;
@@ -139,6 +153,7 @@ exports.adminSearch = async (req, res, next) => {
       await Product.paginate(
         {
           $text: { $search: absoluteText },
+          ...query
         },
         options
       )
@@ -157,9 +172,10 @@ exports.adminSearch = async (req, res, next) => {
     if (total < options.limit) {
       const products = await Product.find({
         $text: { $search: name },
+        ...query
       });
       const uniqueProducts = products.filter(
-        (item) => data.findIndex((i) => i._id === item._id) < 0
+        (item) => data.findIndex((i) => String(i._id) === String(item._id)) < 0
       );
 
       if (uniqueProducts.length) {

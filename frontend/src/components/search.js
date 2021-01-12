@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { listProducts, changeFields } from '../actions/productActions';
+import { searchProducts, changeSearchFields } from '../actions/productActions';
 // import axios from 'axios';
 import HomePage from '../pages/homepage';
 import {
@@ -18,6 +18,9 @@ import {
   Tabs,
 } from 'antd';
 import utils from '../modules/utils';
+import _ from 'lodash';
+
+
 const { TabPane } = Tabs;
 const sortOptions = [
   { label: 'Giá: tăng dần', value: 'price' },
@@ -29,7 +32,7 @@ const sortOptions = [
   { label: 'Bán chạy nhất', value: '-sold_counts' },
 ];
 function ProductScreen(props) {
-  const productList = useSelector((state) => state.productList);
+  const productList = useSelector((state) => state.searchProduct);
   const { products, loading, error, total, totalPage, query } = productList;
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.listCategories);
@@ -55,13 +58,13 @@ function ProductScreen(props) {
   const category = categories[categoryIndex] ? categories[categoryIndex] : {};
   // const { page } = {};
   const onPaginationChange = (page, limit) => {
-    dispatch(changeFields({ 'query.page': page, 'query.limit': limit }));
+    dispatch(changeSearchFields({ 'query.page': page, 'query.limit': limit }));
     setReload(!reload);
   };
   console.log('QUERY', query);
   useEffect(() => {
     dispatch(
-      changeFields({
+      changeSearchFields({
         'query.page': 1,
         'query.limit': 30,
         'query.sort': '-created_at',
@@ -70,7 +73,7 @@ function ProductScreen(props) {
     );
     return () => {
       dispatch(
-        changeFields({
+        changeSearchFields({
           query: {},
           products: [],
           total: 0,
@@ -81,18 +84,21 @@ function ProductScreen(props) {
     };
   }, []);
   useEffect(() => {
-    dispatch(listProducts(query));
+      if (!(!query.name || _.isEmpty(query.name))) {
+          dispatch(searchProducts(query));
+      }
     // return () => {};
   }, [reload]);
   console.log('products', products);
 
   const onChangeFilter = (key, value) => {
-    dispatch(changeFields({ [`query.${key}`]: value, page: 1 }));
-    setReload(!reload);
+    dispatch(changeSearchFields({ [`query.${key}`]: value, page: 1 }));
+    dispatch(searchProducts(query));
+    // setReload(!reload);
   };
   const clearFilter = () => {
     dispatch(
-      changeFields({
+      changeSearchFields({
         query: {
           ...query,
           sort: '-created_at',

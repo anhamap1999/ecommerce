@@ -21,6 +21,10 @@ import {
   PRODUCT_ADMIN_LIST_REQUEST,
   PRODUCT_ADMIN_LIST_SUCCESS,
   PRODUCT_ADMIN_LIST_FAIL,
+  SEARCH_PRODUCT_REQUEST,
+  SEARCH_PRODUCT_SUCCESS,
+  SEARCH_PRODUCT_FAIL,
+  CHANGE_SEARCH_FIELDS
 } from '../constants/productConstants';
 import _ from 'lodash';
 
@@ -132,6 +136,32 @@ function productNewListReducer(state = { products: [] }, action) {
       return state;
   }
 }
+
+function searchProductReducer(state = { query: { limit: 30, page: 1 }, products: [] }, action) {
+  switch (action.type) {
+    case SEARCH_PRODUCT_REQUEST:
+      return { ...state, loading: true, products: [], error: null };
+    case SEARCH_PRODUCT_SUCCESS:
+      return {
+        ...state, 
+        loading: false,
+        products: action.payload.data,
+        totalPage: action.payload.total_page,
+        total: action.payload.total,
+      };
+    case SEARCH_PRODUCT_FAIL:
+      return { ...state, loading: false, error: action.payload };
+
+    case CHANGE_SEARCH_FIELDS: {
+      for (const key in action.payload) {
+        _.set(state, key, action.payload[key]);
+      }
+      return { ...state };
+    }
+    default:
+      return state;
+  }
+}
 export {
   productListReducer,
   productDetailsReducer,
@@ -139,4 +169,5 @@ export {
   productRemoveReducer,
   productNewListReducer,
   productListAdminReducer,
+  searchProductReducer
 };

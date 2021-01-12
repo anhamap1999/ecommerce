@@ -137,9 +137,9 @@ function PlaceOrderScreen(props) {
               <h3>Sản phẩm</h3>
               <div>
                 <Row>
-                  {cartItems.map((item) => (
+                  {cartItems.map((item, index) => (
                     <>
-                      <Col span={6}>
+                      <Col span={6} key={index}>
                         <Avatar
                           size={80}
                           src={item.product_id.thumbnail}
