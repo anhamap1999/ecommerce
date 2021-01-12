@@ -109,39 +109,47 @@ exports.saveOrder = async (req, res) => {
   try {
     const { order_items } = req.body;
     order_items.forEach(async (item) => {
-      const product = await Product.findById(item.product_id);
-      if (!product) {
-        throw new Error({
-          statusCode: 404,
-          message: 'product.notFound',
-          messages: { product: 'product not found' },
+      try {
+        const product = await Product.findById(item.product_id);
+        if (!product) {
+          throw new Error({
+            statusCode: 404,
+            message: 'product.notFound',
+            messages: { product: 'product not found' },
+          });
+        }
+        const stock = await Stock.findOne({
+          product_id: item.product_id,
+          size: item.size,
         });
-      }
-      const stock = await Stock.findOne({
-        product_id: item.product_id,
-        size: item.size,
-      });
-      if (stock.stock < item.quantity) {
-        throw new Error({
-          statusCode: 404,
-          message: 'stock.notFound',
-          messages: { stock: 'stock is not enough' },
-        });
+        if (stock.stock < item.quantity) {
+          throw new Error({
+            statusCode: 404,
+            message: 'stock.notFound',
+            messages: { stock: 'stock is not enough' },
+          });
+        }
+      } catch (error) {
+        next(error);
       }
     });
     order_items.forEach(async (item) => {
-      const cart = await Cart.findOne({
-        product_id: item.product_id,
-        size: item.size,
-      });
-      if (!cart) {
-        throw new Error({
-          statusCode: 404,
-          message: 'cart.notFound',
-          messages: { cart: 'cart not found' },
+      try {
+        const cart = await Cart.findOne({
+          product_id: item.product_id,
+          size: item.size,
         });
+        if (!cart) {
+          throw new Error({
+            statusCode: 404,
+            message: 'cart.notFound',
+            messages: { cart: 'cart not found' },
+          });
+        }
+        await Cart.findByIdAndRemove(cart._id);
+      } catch (error) {
+        next(error);
       }
-      await Cart.findByIdAndRemove(cart._id);
     });
     const newOrder = new Order({
       order_items: req.body.order_items,
@@ -243,24 +251,28 @@ exports.updateOrderByAdmin = async (req, res) => {
           });
         }
         order_items.forEach(async (item) => {
-          const product = await Product.findById(item.product_id);
-          if (!product) {
-            throw new Error({
-              statusCode: 404,
-              message: 'product.notFound',
-              messages: { product: 'product not found' },
+          try {
+            const product = await Product.findById(item.product_id);
+            if (!product) {
+              throw new Error({
+                statusCode: 404,
+                message: 'product.notFound',
+                messages: { product: 'product not found' },
+              });
+            }
+            const stock = await Stock.findOne({
+              product_id: item.product_id,
+              size: item.size,
             });
-          }
-          const stock = await Stock.findOne({
-            product_id: item.product_id,
-            size: item.size,
-          });
-          if (stock.stock < item.quantity) {
-            throw new Error({
-              statusCode: 404,
-              message: 'stock.notFound',
-              messages: { stock: 'stock is not enough' },
-            });
+            if (stock.stock < item.quantity) {
+              throw new Error({
+                statusCode: 404,
+                message: 'stock.notFound',
+                messages: { stock: 'stock is not enough' },
+              });
+            }
+          } catch (error) {
+            next(error);
           }
         });
         let revenue = await Revenue.findOne({
@@ -272,40 +284,44 @@ exports.updateOrderByAdmin = async (req, res) => {
           });
         }
         order_items.forEach(async (item) => {
-          const product = await Product.findById(item.product_id);
-          if (!product) {
-            throw new Error({
-              statusCode: 404,
-              message: 'product.notFound',
-              messages: { product: 'product not found' },
+          try {
+            const product = await Product.findById(item.product_id);
+            if (!product) {
+              throw new Error({
+                statusCode: 404,
+                message: 'product.notFound',
+                messages: { product: 'product not found' },
+              });
+            }
+            product.sold_count += item.quantity;
+            const stock = await Stock.findOne({
+              product_id: item.product_id,
+              size: item.size,
             });
+            stock.stock -= item.quantity;
+            const stocks = await Stock.find({ product_id: item.product_id });
+            const total_stock = stocks.reduce(
+              (item, total) => item.stock + total,
+              0
+            );
+            if (total_stock <= 0) {
+              product.out_of_stock = true;
+            }
+            await Product.findByIdAndUpdate(item.product_id, product);
+            await Stock.findOneAndUpdate(
+              { product_id: item.product_id, size: item.size },
+              stock
+            );
+            const stock_history = new StockHistory({
+              ...stock._doc,
+              stock: item.quantity,
+              price: item.price,
+            });
+            await stock_history.save();
+            revenue.total_revenue += item.quantity * item.price;
+          } catch (error) {
+            next(error);
           }
-          product.sold_count += item.quantity;
-          const stock = await Stock.findOne({
-            product_id: item.product_id,
-            size: item.size,
-          });
-          stock.stock -= item.quantity;
-          const stocks = await Stock.find({ product_id: item.product_id });
-          const total_stock = stocks.reduce(
-            (item, total) => item.stock + total,
-            0
-          );
-          if (total_stock <= 0) {
-            product.out_of_stock = true;
-          }
-          await Product.findByIdAndUpdate(item.product_id, product);
-          await Stock.findOneAndUpdate(
-            { product_id: item.product_id, size: item.size },
-            stock
-          );
-          const stock_history = new StockHistory({
-            ...stock._doc,
-            stock: item.quantity,
-            price: item.price,
-          });
-          await stock_history.save();
-          revenue.total_revenue += item.quantity * item.price;
         });
         revenue.total_revenue += order.tax_price + order.shipping_price;
         revenue.total_additional_fee += order.tax_price + order.shipping_price;
