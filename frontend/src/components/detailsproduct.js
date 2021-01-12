@@ -20,6 +20,11 @@ function DetailsScreen(props) {
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState(0);
   const productDetails = useSelector((state) => state.productDetails);
+<<<<<<< HEAD
+  const { product, loading, error } = productDetails;
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
+=======
   const { stocks, loading: loadingStock } = useSelector((state) => state.stock);
   const { categories } = useSelector((state) => state.listCategories);
   const [likeState, setLikeState] = useState('');
@@ -30,6 +35,7 @@ function DetailsScreen(props) {
   const stock = stocks && stocks[stockIndex] ? stocks[stockIndex].stock : 0;
 
   const { product = {}, loading, error, updateLoading } = productDetails;
+>>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -271,6 +277,37 @@ function DetailsScreen(props) {
                       </>
                     )}
 
+<<<<<<< HEAD
+                   {
+                     !userInfo ?
+                     <Link to={`/register`}>
+                     <button
+                       type="button"
+                       style={{ padding: "15px" }}
+                       className="btn btn-danger"
+                       
+                     >
+                       <span>
+                         <i class="bx bxs-user"></i>
+                       </span>{" "}
+                       ĐĂNG KÍ ĐỂ THÊM
+                     </button>
+                     </Link> :
+                     <Link to={`/cart/${product._id}?qty=${qty}&&size=${size}`}>
+                     <button
+                       type="button"
+                       style={{ padding: "15px" }}
+                       className="btn btn-danger"
+                       onClick={addProductTocart}
+                     >
+                       <span>
+                         <i class="bx bxs-cart"></i>
+                       </span>{" "}
+                       THÊM VÀO GIỎ HÀNG
+                     </button>
+                   </Link>
+                   }
+=======
                     {/* <Link to={`/cart/${_id}?qty=${qty}&&size=${size}`}> */}
                     {size ? (
                       <Link to={`/cart`}>
@@ -299,6 +336,7 @@ function DetailsScreen(props) {
                         THÊM VÀO GIỎ HÀNG
                       </button>
                     )}
+>>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
                     {/* comment */}
                     <Tooltip
                       title={likeState === 'unlike' ? 'Thích' : 'Bỏ thích'}
@@ -353,8 +391,14 @@ function DetailsScreen(props) {
         )
       )}
 
+<<<<<<< HEAD
+      <div className="details-product container">
+        {
+          product && <CommentEle productID={product._id} />}
+=======
       <div className='details-product container'>
         {product && <CommentEle productID={_id} />}
+>>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
       </div>
     </HomePage>
   );

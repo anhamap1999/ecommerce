@@ -16,7 +16,7 @@ const bankAccountRouter = require('./modules/bank_account/bank_account.router');
 const commentRouter = require('./modules/comment/comment.router');
 const banksRouter = require('./modules/banks/banks.router');
 const adminRouter = require('./modules/admin/admin.router');
-
+const  orderRouter = require('./modules/order/order.router');
 // import dotenv from 'dotenv';
 // import config from './config';
 // import mongoose from 'mongoose';
@@ -54,7 +54,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use('/api/auth', authRouter);
 app.use("/api/categories", categoryRouter);
-// app.use("/api/orders",orderRouter);
+app.use("/api/orders",orderRouter);
 app.use("/api/users", userRouter);
 app.use("/api/products",productRouter);
 app.use("/api/address", addressRouter);

@@ -14,6 +14,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import CommentedProduct from '.';
 import {
   postCommentProduct,
@@ -80,12 +81,53 @@ const CommentEle = ({ productID }) => {
     return () => {};
   }, []);
 
+<<<<<<< HEAD
+    return (
+      <>
+        {   loading ? 
+                            <div className="spinner-border text-primary" role="status">
+                                        <span className="sr-only"></span>
+                            </div>
+                        
+                    :
+            error ? <div> {error} </div>
+                    :
+            comment  && comment.length > 0 &&
+            comment.map(con => con.product_id._id == productID && 
+                                        <CommentedProduct  
+                                            content={con}    
+                                        />)
+            }
+        
+        {   
+           !userInfo ? <Link to='/register' className='text-primary'> Đăng kí tài khoản để bình luận </Link> :
+            userInfo && userInfo.user &&
+            <Comment
+                avatar={
+                    <Avatar
+                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                        alt={userInfo.user.email}
+                    />
+                }
+                content={
+                    <Editor
+                        onChange={e =>setContent(e.target.value)}
+                        onSubmit={()=>handleSubmit()}
+                        submitting={submitting}
+                        value={content}
+                    />
+                }
+          />
+        }
+      </>
+=======
   const handleSubmit = async () => {
     if (!comments) {
       return;
     }
     await dispatch(
       postCommentProduct({ product_id: productID, content, rating })
+>>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
     );
     dispatch(getCommentProduct(productID));
     setContent('');

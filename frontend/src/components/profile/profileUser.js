@@ -44,15 +44,15 @@ export default function ProfileUserScreen(props) {
             :
             error ? <div>{error}</div>
             : 
-            !open && userFullInfo && userFullInfo.data && <div className="profileuser" style={{marginTop : '20px'}}>                    
+            !open && userFullInfo &&  <div className="profileuser" style={{marginTop : '20px'}}>                    
                         <form onSubmit={submidHandler}>
                         <div className="form-group">
                             <label >Email </label>
-                            <input type="email" className="form-control"   placeholder={userFullInfo.data.email}  disabled />
+                            <input type="email" className="form-control"   placeholder={userFullInfo.email}  disabled />
                         </div>
                         <div className="form-group">
                             <label >Số điện thoại</label>
-                            <input type="text" className="form-control" placeholder={userFullInfo.data.phone_number}  disabled />
+                            <input type="text" className="form-control" placeholder={userFullInfo.phone_number}  disabled />
                         </div>
                         <div className="form-group">
                             <label >Họ và tên</label>
@@ -81,17 +81,17 @@ export default function ProfileUserScreen(props) {
 }
 {
                         open && (
-                            <form onSubmit={submidHandlerPwd}>
+                            <form onSubmit={submidHandlerPwd} style={{marginTop:'20px'}}>
                                 <div className="form-group">
-                                    <label >Old Password </label>
+                                    <label >Mật khẩu cũ </label>
                                     <input type="password" className="form-control"   />
                                 </div>
                                 <div className="form-group">
-                                    <label > New Password </label>
+                                    <label >Mật khẩu mới </label>
                                     <input type="password" className="form-control" value={new_password}  onChange={ e => setNew_password(e.target.value)}  />
                                 </div>
                                 <div className="form-group">
-                                    <label >Repassword </label>
+                                    <label >Nhập lại mật khẩu  </label>
                                     <input type="password" className="form-control"   value={confirm_new_password}  onChange={ e => setConfirm_new_password(e.target.value)}  />
                                 </div>
                              

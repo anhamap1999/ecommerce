@@ -19,13 +19,19 @@ import {
   categorySaveReducer,
   getListCategoriesReducer,
 } from './reducers/categoryReducers';
-import { orderSaveReducer, ordersListReducer } from './reducers/orderReduces';
+import { orderListAdminReducer, orderSaveReducer, ordersListReducer } from './reducers/orderReduces';
 import { addRessListReducer } from './reducers/delivery_addressReduce';
 import { getCommentProductReducer } from './reducers/commentReducer';
 import { configReducer } from './reducers/configReducers';
+<<<<<<< HEAD
+import { getListOrdersAdmin } from './actions/orderAction';
+import { getBankAccountReducer } from './reducers/bankReducer';
+
+=======
 import { stockReducer } from './reducers/stockReducers';
 import { addressReducer } from './reducers/addressReducers';
 import { bankReducer } from './reducers/bankReducers';
+>>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
 
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
 const initialState = {
@@ -52,9 +58,14 @@ const reducer = combineReducers({
   listCommentProduct: getCommentProductReducer,
   listNewProduct: productNewListReducer,
   config: configReducer,
+<<<<<<< HEAD
+  listOrderAdmin :  orderListAdminReducer,
+  getListbank : getBankAccountReducer
+=======
   stock: stockReducer,
   address: addressReducer,
   bank: bankReducer,
+>>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

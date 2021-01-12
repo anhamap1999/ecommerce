@@ -6,7 +6,7 @@ const User = require('../modules/users/user.model');
 
 exports.isAuth = async (req, res, next) => {
   try {
-    
+ 
     if (!req.header('Authorization')) {
       throw new Error({
         statusCode: 401,
