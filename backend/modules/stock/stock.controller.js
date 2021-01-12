@@ -129,7 +129,38 @@ exports.importStock = async (req, res, next) => {
       existedRevenue.total -= req.body.price * req.body.stock;
       await existedRevenue.save();
     }
-    const success = new Success({ data: stock });
+    const product = await Product.findById(stock.product_id);
+    product.out_of_stock = false;
+    await Product.findByIdAndUpdate(stock.product_id, product);
+    const result = await Stock.findById(req.params.id).populate({
+      path: 'product_id',
+    });
+    const success = new Success({ data: result });
+    res.status(200).send(success);
+  } catch (error) {
+    next(error);
+  }
+};
+exports.createStock = async (req, res, next) => {
+  try {
+    const products = await Product.find({});
+    const stockPromises = [];
+    products.forEach((p) => {
+      const { _id, size } = p;
+      size.forEach((s) => {
+        stockPromises.push(
+          Stock.create({
+            product_id: _id,
+            size: s,
+            stock: 0,
+            created_by: req.user._id,
+          })
+        );
+      });
+    });
+
+    await Promise.all([...stockPromises]);
+    const success = new Success({});
     res.status(200).send(success);
   } catch (error) {
     next(error);

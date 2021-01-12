@@ -5,9 +5,9 @@ const creareAddressNew = ({full_name,phone_number,province_number,district_numbe
 
     dispatch({ type: CREATE_ADDRESS_NEW_REQUEST } ); 
     try {
-      const { userSignin : { userInfo } } = getState();
-      const { data } = await axios.post("/api/delivery-address",{full_name,phone_number,province_number,district_number,ward_number,text});
-      dispatch({ type: CREATE_ADDRESS_NEW_SUCCESS, payload: data });
+      const { addressList } = getState().listAddress;
+      const { data } = await axios.post("/api/delivery-address",JSON.stringify({full_name,phone_number,province_number,district_number,ward_number,text}));
+      dispatch({ type: CREATE_ADDRESS_NEW_SUCCESS, payload: [...addressList, data] });
     } catch (error) {
       dispatch({ type: CREATE_ADDRESS_NEW_FAIL, payload: error.message });
     }

@@ -134,7 +134,12 @@ exports.updateComment = async (req, res, next) => {
     comment = { ...comment._doc, ...req.body };
     comment.updated_at = Date.now();
     await Comment.findByIdAndUpdate(req.params.id, comment);
-    const success = new Success({ data: comment });
+    const result = await Comment.findById(req.params.id).populate([
+      { path: 'created_by' },
+      { path: 'product_id' },
+      { path: 'reply_to' },
+    ]);
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -184,7 +189,12 @@ exports.likeComment = async (req, res, next) => {
       comment.likes_count--;
     }
     await Comment.findByIdAndUpdate(id, comment);
-    const success = new Success({ data: comment });
+    const result = await Comment.findById(id).populate([
+      { path: 'created_by' },
+      { path: 'product_id' },
+      { path: 'reply_to' },
+    ]);
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);

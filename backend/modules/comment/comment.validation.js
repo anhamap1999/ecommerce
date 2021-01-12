@@ -26,8 +26,12 @@ exports.createCommentValidator = async (req, res, next) => {
       rating: Joi.number().required(),
       product_id: Joi.string().required(),
       images: Joi.array().optional().items(Joi.string()),
+<<<<<<< HEAD
       reply_to: Joi.string().optional(),
       
+=======
+      reply_to: Joi.string().optional()
+>>>>>>> a9c1674a2513e8c9790e3efd9f9608909fd02312
     });
     const result = await validate(req.body, schema);
     req.body = result;

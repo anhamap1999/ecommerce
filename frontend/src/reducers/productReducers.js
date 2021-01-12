@@ -14,6 +14,9 @@ import {
   PRODUCT_NEW_LIST_FAIL,
   PRODUCT_NEW_LIST_REQUEST,
   PRODUCT_NEW_LIST_SUCCESS,
+  PRODUCT_LIKE_FAIL,
+  PRODUCT_LIKE_REQUEST,
+  PRODUCT_LIKE_SUCCESS,
   CHANGE_FIELDS,
   PRODUCT_ADMIN_LIST_REQUEST,
   PRODUCT_ADMIN_LIST_SUCCESS,
@@ -39,7 +42,7 @@ function productListReducer(state = { products: [], query: {} }, action) {
       for (const key in action.payload) {
         _.set(state, key, action.payload[key]);
       }
-      return state;
+      return {...state};
     }
     default:
       return state;
@@ -63,7 +66,7 @@ function productListAdminReducer(state = { products: [], query: {} }, action) {
       for (const key in action.payload) {
         _.set(state, key, action.payload[key]);
       }
-      return state;
+      return {...state};
     }
     default:
       return state;
@@ -77,6 +80,12 @@ function productDetailsReducer(state = { product: {} }, action) {
       return { loading: false, product: action.payload };
     case PRODUCT_DETAILS_FAIL:
       return { loading: false, error: action.payload };
+      case PRODUCT_LIKE_REQUEST:
+        return { ...state, updateLoading: true, error: null };
+      case PRODUCT_LIKE_SUCCESS:
+        return { ...state, updateLoading: false, product: action.payload };
+      case PRODUCT_LIKE_FAIL:
+        return { ...state, updateLoading: false, error: action.payload };
     default:
       return state;
   }

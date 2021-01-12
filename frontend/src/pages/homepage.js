@@ -4,9 +4,11 @@ import NavbarTop from '../components/menutop/index';
 // import socketIOClient from 'socket.io-client';
 import { getCatogoryAll } from '../actions/categoryAction';
 import { getConfig } from '../actions/configAction';
+import { getProductCart } from '../actions/cartActions';
 import { useDispatch } from 'react-redux';
 import { BackTop } from 'antd';
 import { MdKeyboardArrowUp } from 'react-icons/md';
+import { getProvince } from '../actions/addressActions';
 
 function HomePage(props) {
   // const socket = socketIOClient('localhost:5000', {transports: ['websocket']});
@@ -27,6 +29,8 @@ function HomePage(props) {
   useEffect(() => {
     dispatch(getCatogoryAll());
     dispatch(getConfig());
+    dispatch(getProductCart());
+    dispatch(getProvince());
   }, []);
   return (
     <>

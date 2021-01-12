@@ -44,11 +44,11 @@ function RegisterScreen(props) {
         <h1>Đăng ký</h1>
 
         <li>
-          {loading && (
+          {loading ? (
             <div className='spinner-border text-primary' role='status'>
               <span className='sr-only'>Loading...</span>
             </div>
-          )}
+          ) : null}
           {formError ? (
             <div style={{ color: 'white' }}>{formError}</div>
           ) : (

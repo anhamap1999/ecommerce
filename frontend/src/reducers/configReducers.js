@@ -3,7 +3,7 @@ import constants from '../constants/configConstant';
 function configReducer(state = { configs: [], updatingIndex: -1, isGotten: false }, action) {
   switch (action.type) {
     case constants.CREATE_CONFIG_REQUEST: 
-      return { loading: true, configs: [], error: null };
+      return { loading: true, error: null };
     case constants.CREATE_CONFIG_SUCCESS: {
 
         return { loading: false, configs: action.payload };
@@ -19,11 +19,11 @@ function configReducer(state = { configs: [], updatingIndex: -1, isGotten: false
       return { loading: false, error: action.payload };
 
     case constants.UPDATE_CONFIG_REQUEST:
-      return { updatingLoading: true, configs: [], error: null, updatingIndex: action.payload };
+      return { updatingLoading: true, error: null, updatingIndex: action.payload };
     case constants.UPDATE_CONFIG_SUCCESS:
       return { updatingLoading: false, configs: action.payload, updatingIndex: -1 };
     case constants.UPDATE_CONFIG_FAIL:
-      return { updatingLoading: false, error: action.payload };
+      return { updatingLoading: false, error: action.payload, updatingIndex: -1 };
     default:
       return state;
   }

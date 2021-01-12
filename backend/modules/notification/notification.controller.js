@@ -117,7 +117,11 @@ exports.createNotification = async (req, res, next) => {
     const notification = new Notification(req.body);
     notification.user_id = req.user._id;
     const result = await notification.save();
-    const success = new Success({ data: result });
+    const created_notification = await Notification.findById(result._id).populate([
+      { path: 'user_id' },
+      { path: 'object_id' },
+    ]);
+    const success = new Success({ data: created_notification });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -137,7 +141,11 @@ exports.markNotificationAsRead = async (req, res, next) => {
     notification.is_read = true;
     notification.updated_by = Date.now();
     await Notification.findByIdAndUpdate(req.params.id, notification);
-    const success = new Success({ data: notification });
+    const result = await Notification.findById(req.params.id).populate([
+      { path: 'user_id' },
+      { path: 'object_id' },
+    ]);
+    const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
     next(error);
@@ -149,14 +157,14 @@ exports.markAllNotificationsAsRead = async (req, res, next) => {
     const notifications = await Notification.find({ is_read: false });
     notification.is_read = true;
     notification.updated_by = Date.now();
-    const result = await Notification.findByIdAndUpdate(
-      req.params.id,
-      notifications.map((item) => {
-        item.is_read = true;
-        item.updated_by = Date.now();
-        return item;
-      })
-    );
+    // const result = await Notification.findByIdAndUpdate(
+    //   req.params.id,
+    //   notifications.map((item) => {
+    //     item.is_read = true;
+    //     item.updated_by = Date.now();
+    //     return item;
+    //   })
+    // );
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {

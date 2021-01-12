@@ -17,5 +17,7 @@ router.put(
   validator.importStockValidator,
   controller.importStock
 );
+
+// router.get('/create', isAuth, isAdmin, controller.createStock)
 router.use(handleError);
 module.exports = router;

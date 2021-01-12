@@ -26,7 +26,7 @@ export default function BankingUserScreen(props) {
   const {banks ,loading,error} = getListbank;
   console.log(banks)
   useEffect(() => {
-    dispatch(getListBank())
+    
     const fetchData = async () => {
       const result = await Axios.get('/api/banks');
       setBankData(result.data);

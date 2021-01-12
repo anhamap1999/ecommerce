@@ -27,7 +27,7 @@ function userRegisterReducer(state = {}, action) {
   function getFullInfoReducer(state = {}, action) {
     switch (action.type) {
       case GET_FULL_INFO_REQUEST:
-        return { loading: true };
+        return { loading: true, error: null };
       case GET_FULL_INFO_SUCCESS:
         return { loading: false, userFullInfo: action.payload };
       case GET_FULL_INFO_FAIL:

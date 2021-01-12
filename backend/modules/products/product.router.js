@@ -19,6 +19,12 @@ router.get(
   controller.getProductsByAdmin
 );
 router.put(
+  '/like-product',
+  isAuth,
+  validator.likeProductValidator,
+  controller.likeProduct
+);
+router.put(
   '/admin/update-status/:id',
   isAuth,
   isAdmin,

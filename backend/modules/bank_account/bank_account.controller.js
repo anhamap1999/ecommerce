@@ -6,8 +6,14 @@ const { Bank, Branch } = require('../banks/banks.model');
 
 exports.getBankAccounts = async (req, res, next) => {
   try {
-    const banks = await BankAccount.find({ created_by: req.user._id, status: 'active' });
-    const result = await BankAccount.populate(banks, [{ path: 'bank' }, { path: 'branch' }]);
+    const banks = await BankAccount.find({
+      created_by: req.user._id,
+      status: 'active',
+    });
+    const result = await BankAccount.populate(banks, [
+      { path: 'bank' },
+      { path: 'branch' },
+    ]);
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
@@ -27,7 +33,10 @@ exports.getBankAccountById = async (req, res, next) => {
       });
     }
 
-    const result = await BankAccount.populate(bank, [{ path: 'bank' }, { path: 'branch' }]);
+    const result = await BankAccount.populate(bank, [
+      { path: 'bank' },
+      { path: 'branch' },
+    ]);
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
@@ -37,16 +46,32 @@ exports.getBankAccountById = async (req, res, next) => {
 
 exports.createBankAccount = async (req, res, next) => {
   try {
-    const bankAccount = new BankAccount(req.body);
+    const {
+      bank_number,
+      branch_number,
+      account_number,
+      account_name,
+      province_number,
+    } = req.body;
 
-    const bank = await Bank.findOne({ number: bankAccount.bank_number });
-    const branch = await Branch.findOne({ number: bankAccount.branch_number });
+    const bank = await Bank.findOne({ number: bank_number });
+    const branch = await Branch.findOne({ number: branch_number });
+    const bankAccount = new BankAccount({
+      bank: bank._id,
+      branch: branch._id,
+      account_number,
+      account_name,
+      province_number,
+    });
     bankAccount.created_by = req.user._id;
-    bankAccount.bank = bank._id;
-    bankAccount.branch = branch._id;
 
     const result = await bankAccount.save();
-    const success = new Success({ data: result });
+    const new_bank = await BankAccount.findById(result._id).populate([
+      { path: 'bank' },
+      { path: 'branch' },
+    ]);
+
+    const success = new Success({ data: new_bank });
     res.status(200).send(success);
   } catch (error) {
     next(error);

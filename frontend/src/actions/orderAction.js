@@ -22,11 +22,7 @@ const getListOrders = () => async (dispatch, getState) =>{
         dispatch( { type : ORDER_LIST_REQUEST }  );
         const { userSignin : { userInfo } } = getState();
         
-        const { data } = await axios.get('/api/orders', {
-                headers:{
-                    authorization : 'Bearer ' + userInfo.token
-                },
-            });
+        const { data } = await axios.get('/api/order');
          
         dispatch( { type : ORDER_LIST_SUCCESS , payload : data }  );
         
@@ -38,14 +34,10 @@ const getListOrders = () => async (dispatch, getState) =>{
 const saveOrder = (order) => async (dispatch, getState) =>{
     try {
         dispatch( { type : ORDER_SAVE_REQUEST , payload : order }  );
-        const { userSignin : { userInfo } } = getState();
-        const { data } = await axios.post('/api/orders', order, {
-                headers:{
-                    authorization : 'Bearer ' + userInfo.token
-                },
-            });
-         
-        dispatch( { type : ORDER_SAVE_SUCCESS , payload : data }  );
+        const { orders } = getState().odersList;
+        const { data } = await axios.post('/api/order', JSON.stringify(order));
+        console.log('DATA', data)
+        dispatch( { type : ORDER_SAVE_SUCCESS , payload : {...orders, data} }  );
         
         
     } catch (error) {
