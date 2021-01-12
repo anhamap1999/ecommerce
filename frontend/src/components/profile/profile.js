@@ -9,7 +9,7 @@ function ProfileScreen(props) {
 
   return (
     <HomePage>
-      <div className="container" style={{ marginTop: '70px' }}>
+      <div className="container" style={{ marginTop: '-70px' }}>
         <div className="row">
           <div className="col-md-3">
             <SlideBarProfile userInfo={userInfo} />

@@ -35,13 +35,8 @@ function DetailsScreen(props) {
   useEffect(() => {
     dispatch(detailsProduct(props.match.params.id));
     dispatch(getStocks({ product_id: props.match.params.id }));
-<<<<<<< HEAD
     
     const {user}=localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {}
-=======
-    const { user } = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
-
->>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
     const state =
       user &&
       user.like_products &&

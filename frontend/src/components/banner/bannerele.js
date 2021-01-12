@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const BannerContainer = styled.div`
   width: 100%;
   height: 430px;
-  margin-top: 70px;
+  
   margin-bottom: 10px;
   background-color: #f2f2f2;
   position: relative;

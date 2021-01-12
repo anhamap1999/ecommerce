@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 
 const BannerTop = () => {
   return (
-    <>
+    <div >
   
       <BannerContainer>
         <div className="container" id="banner">
@@ -45,7 +45,7 @@ const BannerTop = () => {
           </Row>
         </div>
       </BannerContainer>
-    </>
+    </div>
   );
 };
 

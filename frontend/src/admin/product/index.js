@@ -68,7 +68,7 @@ const ProductAdminScreen = (props) => {
   // }, [successdelete]);
 
   const openModal = (product) => {
-    if (product.id) {
+    if (product._id) {
       dispatch(changeAdminProductFields({ modalVisible: true }));
     } else {
       dispatch(

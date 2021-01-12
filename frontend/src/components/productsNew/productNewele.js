@@ -16,9 +16,8 @@ export const ProductsNewEle = styled.div`
 export const ProductNewEleImg = styled.div`
   width: 100%;
   height: 50%;
-  &img {
-    width: 100%;
-    height: 100%;
+  & img {
+    width: 300px;
   }
 `;
 export const ProductNewText = styled.div``;
@@ -97,7 +96,8 @@ export const ProductBoxImg = styled.div`
   width: 100%;
   height: 100%;
   img {
-    width: 100%;
-    height: 100%;
+    margin-left: 16px;
+    width: 220px;
+    height: 240px;
   }
 `;

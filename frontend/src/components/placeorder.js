@@ -126,13 +126,13 @@ function PlaceOrderScreen(props) {
                   <div className="font-weight-bold">
                     Tên tài khoản : {payment.account_name}
                   </div>
-<<<<<<< HEAD
+
                   <div>Ngân hàng : {banks[bankIndex].name}</div>
                   {branches&&<div>Chi nhánh : {branches[branchIndex].name}</div>}
-=======
+
                   <div>Ngân hàng : {banks[bankIndex] ? banks[bankIndex].name : ''}</div>
                   <div>Chi nhánh : {branches[branchIndex] ? branches[branchIndex].name : ''}</div>
->>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
+
                 </>
               ) : (
                 ''

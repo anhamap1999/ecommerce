@@ -25,14 +25,11 @@ export default function ProfileUserScreen(props) {
 
   const getFullInfo = useSelector((state) => state.getFullInfo);
   const { userFullInfo, loading, error } = getFullInfo;
-<<<<<<< HEAD
 console.log(userFullInfo)
   const fetchdata = async() =>{
       await dispatch(getFullInfoUser());
 
   }
-=======
->>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
   useEffect(() => {
     fetchdata();
     return () => {};
@@ -62,11 +59,7 @@ console.log(userFullInfo)
       ) : (
         !open &&
         userFullInfo && (
-<<<<<<< HEAD
           <div className="profileuser" style={{ marginTop: '100px' }}>
-=======
-          <div className='profileuser' style={{ marginTop: '20px' }}>
->>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
             <form onSubmit={submidHandler}>
               <div className='form-group'>
                 <label>Email </label>

@@ -116,16 +116,16 @@ i.bx.bx-shopping-bag {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-<<<<<<< HEAD
+
 .ant-notification{
   top: 80px !important;
     z-index: 20000;
-=======
+}
 .main {
   margin-top: 140px;
   position: relative;
   bottom: 50px;
->>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
+
 }
 i.bx.bx-user {
   font-size: 32px;
@@ -611,12 +611,10 @@ ul {
   height: 50px;
   border: none;
   border-radius: 5px;
-<<<<<<< HEAD
   background: rgb(61,135,222);
   background: linear-gradient(90deg, rgba(61,135,222,1) 0%, rgba(61,135,222,0.544321952413778) 100%);
-=======
-  background-color: rgb(158, 184, 190);
->>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
+
+
   color: white;
   font-size: 20px;
   font-weight: 700;

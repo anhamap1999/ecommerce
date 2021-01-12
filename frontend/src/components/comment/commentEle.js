@@ -125,15 +125,9 @@ const CommentEle = ({ productID }) => {
         comment &&
         comment.length > 0 &&
         comment.map(
-<<<<<<< HEAD
           (con) =>con.product_id&&
             con.product_id._id === productID && (
               <CommentedProduct content={con} />
-=======
-          (con) =>
-          con.product_id && con.product_id._id === productID && (
-              <CommentedProduct key={con.product_id._id} content={con} />
->>>>>>> 27b97d330f2021028a9c159cc7c165d1796dca35
             )
         )
       )}
