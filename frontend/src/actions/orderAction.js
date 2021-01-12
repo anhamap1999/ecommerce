@@ -19,11 +19,9 @@ const getListOrders = () => async (dispatch, getState) =>{
 const saveOrder = (order) => async (dispatch, getState) =>{
     try {
         dispatch( { type : ORDER_SAVE_REQUEST , payload : order }  );
-        const { orders } = getState().odersList;
+        const { orders } = getState().ordersList;
         const { data } = await axios.post('/api/order', JSON.stringify(order));
-        console.log('DATA', data)
         dispatch( { type : ORDER_SAVE_SUCCESS , payload : {...orders, data} }  );
-        
         
     } catch (error) {
         dispatch( { type : ORDER_SAVE_FAIL , payload : error.message }  );

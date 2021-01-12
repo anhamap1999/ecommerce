@@ -156,7 +156,7 @@ function PaymentSreen(props) {
                   {bankAccounts &&
                     bankAccounts.length &&
                     bankAccounts.map((item, index) => (
-                      <option value={index}>{item.account_number}</option>
+                      <option value={index}>{item.bank.name + ', ' + item.account_number}</option>
                     ))}
                 </select>
               </div>

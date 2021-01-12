@@ -81,7 +81,7 @@ function PlaceOrderScreen(props) {
     }
     dispatch(
       saveOrder({
-        orderItems: cartItems.map(i => ({
+        order_items: cartItems.map(i => ({
             quantity: i.quantity,
             price: i.product_id.price,
             product_id: i.product_id._id,
