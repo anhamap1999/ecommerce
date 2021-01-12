@@ -129,7 +129,7 @@ const ProductsNike = (props) => {
                                         </ProductPrice>
                                         <Productbutton>
                                           <Link
-                                            to={'/cart/'+product._id}
+                                            to={'/product/'+product._id}
                                             onClick={() =>
                                               addItemToCart(product)
                                             }

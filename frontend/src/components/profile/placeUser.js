@@ -26,9 +26,9 @@ const [ward_number, setWard_number] = useState('');
 const [text, setText] = useState('');
 
   
-const [provinceData, setProvinceData] = useState({ });
-const [districtData, setDistrictData] = useState({ });
-const [wardData, setWardData] = useState({ });  
+const [provinceData, setProvinceData] = useState([]);
+const [districtData, setDistrictData] = useState([]);
+const [wardData, setWardData] = useState([]);  
 const listAddress = useSelector(state => state.listAddress)
 const { addressList ,loading ,error} = listAddress;
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const { addressList ,loading ,error} = listAddress;
       };
       fetchData();
     }, []);
-    
+  
   const onChangeProvince = async (e) =>{
     setProvince_number(e.target.value);
     const result1= await Axios.get('/api/address/district?province_number=' + e.target.value);
@@ -99,7 +99,7 @@ const { addressList ,loading ,error} = listAddress;
                                     onChange={onChangeProvince}  >
                                 <option selected >Tỉnh/Thành phố</option>
                                 {
-                                 provinceData.data && provinceData.data.map((option) => (
+                                 provinceData && provinceData.map((option) => (
                                     <option   
                                         key={option.province_id}
                                         value={option.number} 
@@ -117,7 +117,7 @@ const { addressList ,loading ,error} = listAddress;
                               onChange={ onChangeDistrict}  >
                                 <option selected >Quận/Huyện</option>
                                 {
-                                 districtData.data && districtData.data.map((option) => (
+                                 districtData && districtData.map((option) => (
                                     <option   
                                         key={option.district_id}
                                         value={option.number} 
@@ -135,7 +135,7 @@ const { addressList ,loading ,error} = listAddress;
                                   onChange={ e => { setWard_number(e.target.value)}} >
                                 <option selected >Tòa nhà , Tên Đường</option>
                                 {
-                                 wardData.data && wardData.data.map((option) => (
+                                 wardData && wardData.map((option) => (
                                     <option   
                                         key={option.district_id}
                                         value={option.number} 
@@ -171,7 +171,7 @@ const { addressList ,loading ,error} = listAddress;
                     <span className="sr-only">Loading...</span>
                   </div> :
         error ? <div>{error}</div>:
-    addressList.data && addressList.data.map(address => 
+    addressList && addressList.map(address => 
       <div className="container">
       <div className="row">
         <div className="col-sm-3">

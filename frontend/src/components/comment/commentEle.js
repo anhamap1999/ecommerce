@@ -3,6 +3,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import CommentedProduct from '.';
 import { postCommentProduct,getCommentProduct  } from '../../actions/commentAction';
 const { TextArea } = Input;
@@ -64,15 +65,15 @@ export const Editor = ({ onChange, onSubmit, submitting, value }) => (
                     :
             error ? <div> {error} </div>
                     :
-            comment && comment.data  && comment.data.length > 0 &&
-            comment.data.map(con => con.product_id._id == productID && 
+            comment  && comment.length > 0 &&
+            comment.map(con => con.product_id._id == productID && 
                                         <CommentedProduct  
-                                            content={con}
-                                            
+                                            content={con}    
                                         />)
             }
         
-        { 
+        {   
+           !userInfo ? <Link to='/register' className='text-primary'> Đăng kí tài khoản để bình luận </Link> :
             userInfo && userInfo.user &&
             <Comment
                 avatar={

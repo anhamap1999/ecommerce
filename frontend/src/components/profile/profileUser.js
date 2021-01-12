@@ -81,17 +81,17 @@ export default function ProfileUserScreen(props) {
 }
 {
                         open && (
-                            <form onSubmit={submidHandlerPwd}>
+                            <form onSubmit={submidHandlerPwd} style={{marginTop:'20px'}}>
                                 <div className="form-group">
-                                    <label >Old Password </label>
+                                    <label >Mật khẩu cũ </label>
                                     <input type="password" className="form-control"   />
                                 </div>
                                 <div className="form-group">
-                                    <label > New Password </label>
+                                    <label >Mật khẩu mới </label>
                                     <input type="password" className="form-control" value={new_password}  onChange={ e => setNew_password(e.target.value)}  />
                                 </div>
                                 <div className="form-group">
-                                    <label >Repassword </label>
+                                    <label >Nhập lại mật khẩu  </label>
                                     <input type="password" className="form-control"   value={confirm_new_password}  onChange={ e => setConfirm_new_password(e.target.value)}  />
                                 </div>
                              

@@ -258,6 +258,7 @@ exports.updateProduct = async (req, res, next) => {
 
 exports.updateStatusProduct = async (req, res, next) => {
   try {
+   
     const product = await Product.findById(req.params.id);
 
     if (!product) {
@@ -267,6 +268,7 @@ exports.updateStatusProduct = async (req, res, next) => {
         messages: { product: 'product not found' },
       });
     }
+    
     product.status = req.body.status;
     product.updated_by = req.user._id;
     product.updated_at = Date.now();

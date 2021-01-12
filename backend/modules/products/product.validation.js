@@ -86,6 +86,7 @@ exports.updateProductValidator = async (req, res, next) => {
 
 exports.updateStatusProductValidator = async (req, res, next) => {
   try {
+   
     const schema = Joi.object().keys({
       status: Joi.string().required().valid('approved', 'rejected', 'disabled'),
     });

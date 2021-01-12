@@ -6,7 +6,7 @@ import {  Modal  } from 'antd';
 import {Link} from 'react-router-dom';
 import ProfileScreen from './profile';
 import Axios from '../../modules/axios';
-import { createBankNew } from '../../actions/bankAction';
+import { createBankNew, getListBank } from '../../actions/bankAction';
 
 export default function BankingUserScreen(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -18,11 +18,15 @@ export default function BankingUserScreen(props) {
   const [branch, setBranch] = useState('');
   const [province_number, setProvince_number] = useState('');
 
-  const [bankData, setBankData] = useState({});
-  const [branchData, setBranchData] = useState({});
-  const [provinceData, setProvinceData] = useState({});
+  const [bankData, setBankData] = useState([]);
+  const [branchData, setBranchData] = useState([]);
+  const [provinceData, setProvinceData] = useState([]);
   
+  const getListbank = useSelector(state => state.getListbank)
+  const {banks ,loading,error} = getListbank;
+  console.log(banks)
   useEffect(() => {
+    dispatch(getListBank())
     const fetchData = async () => {
       const result = await Axios.get('/api/banks');
       setBankData(result.data);
@@ -43,9 +47,6 @@ export default function BankingUserScreen(props) {
   const showModal = () => {
     setIsModalVisible(true);
   };
-
-  
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -55,10 +56,11 @@ export default function BankingUserScreen(props) {
     e.preventDefault();
     dispatch(createBankNew(
       {
-        account_name,account_number,bank,branch,province_number
+        account_name,account_number,bank_number:bank,branch_number:branch
       }
     ))
   };
+  console.log(account_name,account_number,bank,branch,province_number)
   return <ProfileScreen >  
     <div className="" style={{marginTop : '20px'}}>
       <div className="header__title">
@@ -98,7 +100,7 @@ export default function BankingUserScreen(props) {
                                      >
                                 <option selected >Tỉnh/Thành phố</option>
                                 {
-                                 provinceData.data && provinceData.data.map((option) => (
+                                 provinceData && provinceData.map((option) => (
                                     <option   
                                         key={option.province_id}
                                         value={option.number} 
@@ -116,7 +118,7 @@ export default function BankingUserScreen(props) {
                                   onChange={onChangeBank} >
                                 <option selected >Chọn Ngân hàng</option>
                                 {
-                                 bankData.data && bankData.data.map((option) => (
+                                 bankData && bankData.map((option) => (
                                     <option   
                                    
                                         value={option.number} 
@@ -134,7 +136,7 @@ export default function BankingUserScreen(props) {
                                   onChange={ e => setBranch(e.target.value)} >
                                 <option selected >Chọn chi nhánh ...</option>
                                 {
-                                 branchData.data && branchData.data.map((option) => (
+                                 branchData && branchData.map((option) => (
                                     <option   
                                         key={option.district_id}
                                         value={option.number} 
@@ -151,6 +153,17 @@ export default function BankingUserScreen(props) {
                         <button type="submit" className="btn btn-primary">Thêm địa chỉ mới</button>
                     </form> 
           </Modal>
+        </div>
+        <div>
+          {
+              loading ?   <div className="spinner-border text-primary" role="status">
+                              <span className="sr-only"></span>
+                            </div> :
+              error ? <div className="">{error}</div> :
+              <div className=''>
+                
+              </div>
+          }
         </div>
       </div>
       <hr>

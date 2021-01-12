@@ -96,17 +96,14 @@ const detailsProduct = (productId) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_FAIL, payload: message });
   }
 };
-const updateStateProduct = (productId) => async(dispatch, getState) => {
+const updateStateProduct = (productId,{status}) => async(dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_UPDATE_STATES_REQUEST });
     const {
       userSignin: { userInfo },
     } = getState(); 
-    const { data } = await axios.put('/api/products/update-status/' + productId, {
-      headers: {
-        authorization: 'Bearer ' + userInfo.data.user.access_token,
-      },
-    });
+    console.log("stat",status)
+    const { data } = await axiosClient.put('/api/products/admin/update-status/' + productId,{status});
     dispatch({ type: PRODUCT_UPDATE_STATES_SUCCESS, payload: data });
     }
    catch (error) {

@@ -1,4 +1,4 @@
-import { ORDER_LIST_FAIL, ORDER_LIST_REQUEST, ORDER_LIST_SUCCESS, ORDER_SAVE_FAIL, ORDER_SAVE_REQUEST, ORDER_SAVE_SUCCESS } from "../constants/orderConstants";
+import { ORDER_LIST_ADMIN_FAIL, ORDER_LIST_ADMIN_REQUEST, ORDER_LIST_ADMIN_SUCCESS, ORDER_LIST_FAIL, ORDER_LIST_REQUEST, ORDER_LIST_SUCCESS, ORDER_SAVE_FAIL, ORDER_SAVE_REQUEST, ORDER_SAVE_SUCCESS } from "../constants/orderConstants";
 
 function orderSaveReducer(state = { order : [] }, action) {
     switch (action.type) {
@@ -12,7 +12,27 @@ function orderSaveReducer(state = { order : [] }, action) {
         return state;
     }
   }
-  
+
+function orderListAdminReducer(state = { orders: [], query: {} }, action) {
+    switch (action.type) {
+      case ORDER_LIST_ADMIN_REQUEST:
+        return { ...state, loading: true, orders: [], error: null };
+      case ORDER_LIST_ADMIN_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          orders: action.payload.data,
+          totalPage: action.payload.total_page,
+          total: action.payload.total,
+        };
+      case ORDER_LIST_ADMIN_FAIL:
+        return { ...state, loading: false, error: action.payload };
+ 
+ 
+      default:
+        return state;
+    }
+  }
 function ordersListReducer(state = { orders : [] }, action) {
   switch (action.type) {
     case ORDER_LIST_REQUEST:
@@ -25,4 +45,4 @@ function ordersListReducer(state = { orders : [] }, action) {
       return state;
   }
 }
-  export { orderSaveReducer , ordersListReducer };
+  export { orderSaveReducer , ordersListReducer , orderListAdminReducer };

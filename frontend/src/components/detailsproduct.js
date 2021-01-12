@@ -12,6 +12,8 @@ function DetailsScreen(props) {
   const [size, setSize] = useState("");
   const productDetails = useSelector((state) => state.productDetails);
   const { product, loading, error } = productDetails;
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -109,19 +111,35 @@ function DetailsScreen(props) {
                       </>
                     )}
 
-                    <Link to={`/cart/${product._id}?qty=${qty}&&size=${size}`}>
-                      <button
-                        type="button"
-                        style={{ padding: "15px" }}
-                        className="btn btn-danger"
-                        onClick={addProductTocart}
-                      >
-                        <span>
-                          <i class="bx bxs-cart"></i>
-                        </span>{" "}
-                        THÊM VÀO GIỎ HÀNG
-                      </button>
-                    </Link>
+                   {
+                     !userInfo ?
+                     <Link to={`/register`}>
+                     <button
+                       type="button"
+                       style={{ padding: "15px" }}
+                       className="btn btn-danger"
+                       
+                     >
+                       <span>
+                         <i class="bx bxs-user"></i>
+                       </span>{" "}
+                       ĐĂNG KÍ ĐỂ THÊM
+                     </button>
+                     </Link> :
+                     <Link to={`/cart/${product._id}?qty=${qty}&&size=${size}`}>
+                     <button
+                       type="button"
+                       style={{ padding: "15px" }}
+                       className="btn btn-danger"
+                       onClick={addProductTocart}
+                     >
+                       <span>
+                         <i class="bx bxs-cart"></i>
+                       </span>{" "}
+                       THÊM VÀO GIỎ HÀNG
+                     </button>
+                   </Link>
+                   }
                     {/* comment */}
                     <button
                       type="button"
@@ -157,7 +175,8 @@ function DetailsScreen(props) {
       )}
 
       <div className="details-product container">
-        {product && product && <CommentEle productID={product._id} />}
+        {
+          product && <CommentEle productID={product._id} />}
       </div>
     </HomePage>
   );

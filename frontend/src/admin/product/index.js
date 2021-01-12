@@ -168,26 +168,46 @@ const ProductAdminScreen = (props) => {
       key: "key",
       render: (key) => (
         <>
+        
         <Space size="middle"> 
-          <button className='btn btn-outline-dark'
-                  onClick={() =>deleteproduct(key._id)}
-                  >Xóa</button>
-
-        </Space>
-        <Space size="middle"> 
-        <button className='btn btn-outline-danger'
-                onClick={() =>changeState(key._id)}
-                >
-                  {key.status == 'pending' ? 'bán' : 'ngừng bán'}
-        </button>
+        <select
+                    className="custom-select"
+                    id="inputGroupSelect01"
+                    onChange={e => setUpdateState(e.target.value)}
+                  >
+                    <option value={key.status} selected>{key.status}</option>
+                    <option value='pending'>đang đợi</option>
+                    <option value='approved'>Cho bán</option>
+                    <option value='rejected'>Từ chối</option>
+                    <option value='disabled'>ngừng bán</option>
+                    
+        </select>
                 
       </Space></>
       )
      
+    },,
+    {
+      title: "",
+      key: "key",
+      render: (key) => (
+      
+        <Space size="middle"> 
+          <button className='btn btn-primary'
+                  onClick={() =>changeState(key._id)}
+                  >Cập nhật</button>
+
+        </Space>
+        
+      )
+     
     },
   ];
+  
+  const [updateState,setUpdateState] =useState('')
+  console.log("a",updateState)
   const changeState = (productId) =>{
-      dispatch(updateStateProduct(productId))
+      dispatch(updateStateProduct(productId,{status:updateState}))
   }
   return (
     <DashboardScreen>
