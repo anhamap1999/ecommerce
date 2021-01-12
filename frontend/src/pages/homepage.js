@@ -8,6 +8,7 @@ import { getProductCart } from '../actions/cartActions';
 import { useDispatch } from 'react-redux';
 import { BackTop } from 'antd';
 import { MdKeyboardArrowUp } from 'react-icons/md';
+import { getProvince } from '../actions/addressActions';
 
 function HomePage(props) {
   // const socket = socketIOClient('localhost:5000', {transports: ['websocket']});
@@ -29,6 +30,7 @@ function HomePage(props) {
     dispatch(getCatogoryAll());
     dispatch(getConfig());
     dispatch(getProductCart());
+    dispatch(getProvince());
   }, []);
   return (
     <>

@@ -9,6 +9,7 @@ exports.createBankAccountValidator = async (req, res, next) => {
       account_name: Joi.string().required(),
       bank_number: Joi.number().required(),
       branch_number: Joi.number().required(),
+      province_number: Joi.string().required(),
     });
     const result = await validate(req.body, schema);
     req.body = result;

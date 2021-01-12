@@ -17,6 +17,7 @@ import {
   Slider,
   Tabs,
 } from 'antd';
+import utils from '../modules/utils';
 const { TabPane } = Tabs;
 const sortOptions = [
   { label: 'Giá: tăng dần', value: 'price' },
@@ -248,6 +249,7 @@ function ProductScreen(props) {
                               </div>
                               <div className='product-text'>
                                 <h3> {product.name} </h3>
+                                <h5> {utils.vndFormat(product.price)} </h5>
                                 {/* <div>{product.price}</div> */}
                                 <Link to={'/product/' + product._id}>
                                   {' '}

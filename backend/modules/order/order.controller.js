@@ -4,6 +4,7 @@ const Stock = require('../stock/stock.model');
 const Notification = require('../notification/notification.model');
 const StockHistory = require('../stock_history/stock_history.model');
 const Revenue = require('../revenue/revenue.model');
+const Cart = require('../cart/cart.model');
 const moment = require('moment');
 
 exports.getOrders = async (req, res, next) => {
@@ -128,21 +129,17 @@ exports.saveOrder = async (req, res) => {
         });
       }
     });
-    // order_items.forEach(async (item) => {
-    //   const product = await Product.findById(item.product_id);
-    //   if (!product) {
-    //     throw new Error({
-    //       statusCode: 404,
-    //       message: 'product.notFound',
-    //       messages: { product: 'product not found' },
-    //     });
-    //   }
-    //   product.sold_count+= item.quantity;
-    //   await Product.findByIdAndUpdate(item.product_id, product);
-    //   const stock = await Stock.findOne({ product_id: item.product_id });
-    //   stock.stock -= item.quantity;
-    //   await Stock.findOneAndUpdate({ product_id: item.product_id }, stock);
-    // });
+    order_items.forEach(async (item) => {
+      const cart = await Cart.findOne({ product_id: item.product_id, size: item.size });
+      if (!cart) {
+        throw new Error({
+          statusCode: 404,
+          message: 'cart.notFound',
+          messages: { cart: 'cart not found' },
+        });
+      }
+      await Cart.findByIdAndRemove(cart._id);
+    });
     const newOrder = new Order({
       order_items: req.body.order_items,
       created_by: req.user._id,

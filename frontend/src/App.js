@@ -21,6 +21,11 @@ import OrderAdminScreen from './admin/order';
 import StaffAdminScreen from './admin/staff';
 import CategoryAdminScreen from './admin/category';
 import CartScreen from './components/cart';
+import StorageAdminScreen from './admin/storage';
+import RuleAdminScreen from './admin/rule';
+import PlaceOrderScreen from './components/placeorder';
+import Shipping from './components/shipping';
+import Payment from './components/payment';
 function App() {
   
   return (
@@ -38,13 +43,17 @@ function App() {
       <Route path='/register' component={RegisterScreen} />
       <Route path='/createproduct' component={CreateProductScreen} />
       <Route path='/signin'  component={SigninScreen}></Route>
-  
+      <Route path='/place-order' component={PlaceOrderScreen} />
+      <Route path='/shipping' component={Shipping} />
+      <Route path='/payment' component={Payment} />
     
       <Route path="/admin/customer" component={CustomerAdminScreen} />   
       <Route path="/admin/products" component={ProductAdminScreen} />   
       <Route path="/admin/orders" component={OrderAdminScreen} />
       <Route path="/admin/staff" component={StaffAdminScreen} />
       <Route path="/admin/category" component={CategoryAdminScreen} />
+      <Route path="/admin/rule" component={RuleAdminScreen} />
+      <Route path="/admin/storage" component={StorageAdminScreen} />
     </BrowserRouter>
   );
 }

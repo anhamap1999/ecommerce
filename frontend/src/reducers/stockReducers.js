@@ -13,15 +13,15 @@ function stockReducer(
       return state;
     }
     case constants.CREATE_STOCK_REQUEST:
-      return { loading: true, stocks: [], error: null };
+      return { ...state, loading: true, error: null };
     case constants.CREATE_STOCK_SUCCESS: {
-      return { loading: false, stocks: action.payload };
+      return { ...state, loading: false, stocks: action.payload };
     }
     case constants.CREATE_STOCK_FAIL:
-      return { loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
 
     case constants.GET_STOCK_REQUEST:
-      return { loading: true, stocks: [], error: null };
+      return { ...state, loading: true, stocks: [], error: null };
     case constants.GET_STOCK_SUCCESS:
       return {
         loading: false,
@@ -30,23 +30,24 @@ function stockReducer(
         totalPage: action.payload.total_page,
       };
     case constants.GET_STOCK_FAIL:
-      return { loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
 
     case constants.IMPORT_STOCK_REQUEST:
       return {
+        ...state, 
         updatingLoading: true,
-        stocks: [],
         error: null,
         updatingIndex: action.payload,
       };
     case constants.IMPORT_STOCK_SUCCESS:
       return {
+        ...state, 
         updatingLoading: false,
         stocks: action.payload,
         updatingIndex: -1,
       };
     case constants.IMPORT_STOCK_FAIL:
-      return { updatingLoading: false, error: action.payload };
+      return { ...state, updatingLoading: false, error: action.payload };
     default:
       return state;
   }

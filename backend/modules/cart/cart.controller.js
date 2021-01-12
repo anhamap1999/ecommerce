@@ -74,6 +74,11 @@ exports.updateCart = async (req, res, next) => {
         messages: { cart: 'cart not found' },
       });
     }
+    // const duplicateCart = await Cart.findOne({ product_id: cart.product_id, size: req.body.size });
+    // if (duplicateCart) {
+    //   duplicateCart.quantity += req.body.quantity;
+    //   await Cart.findByIdAndUpdate(duplicateCart._id, duplicateCart);
+    // }
     cart = { ...cart._doc, ...req.body };
     cart.updated_at = Date.now();
     await Cart.findByIdAndUpdate(req.params.id, cart);

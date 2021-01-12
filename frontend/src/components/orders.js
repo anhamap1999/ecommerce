@@ -5,8 +5,8 @@ import {Link} from 'react-router-dom';
 import { getListOrders } from '../actions/orderAction';
 import HomePage from '../pages/homepage';
 function OrdersScreen(props) {
-  const odersList = useSelector(state => state.odersList);
-  const { loading, error, orders } = odersList ;
+  const ordersList = useSelector(state => state.ordersList);
+  const { loading, error, orders } = ordersList ;
   const dispatch = useDispatch();
   console.log("data: " ,orders);
   useEffect(() => {

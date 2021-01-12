@@ -4,7 +4,8 @@ import {
   productDetailsReducer,
   productAddReducer,
   productRemoveReducer,
-  productNewListReducer
+  productNewListReducer,
+  productListAdminReducer
 } from './reducers/productReducers';
 import thunk from 'redux-thunk';
 import { getProductCartReducer } from './reducers/cartReducers';
@@ -23,9 +24,9 @@ import { addRessListReducer } from './reducers/delivery_addressReduce';
 import { getCommentProductReducer } from './reducers/commentReducer';
 import { configReducer } from './reducers/configReducers';
 import { stockReducer } from './reducers/stockReducers';
+import { addressReducer } from './reducers/addressReducers';
+import { bankReducer } from './reducers/bankReducers';
 
-
-const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
 const initialState = {
   shipping: {},
@@ -34,16 +35,17 @@ const initialState = {
 };
 const reducer = combineReducers({
   productList: productListReducer,
+  productListAdmin: productListAdminReducer,
   productDetails: productDetailsReducer,
-  cart: getProductCartReducer,
+  cartUser: getProductCartReducer,
   getFullInfo: getFullInfoReducer,
   userSignin: userSigninReducer,
   userRegister: userRegisterReducer,
   createProduct: productAddReducer,
   removeProduct: productRemoveReducer,
   saveCategory: categorySaveReducer,
-  orderSave: orderSaveReducer,
-  odersList: ordersListReducer,
+  // orderSave: orderSaveReducer,
+  ordersList: ordersListReducer,
   listAddress: addRessListReducer,
   getUserAdmin: getUserInfoAdminReducer,
   listCategories: getListCategoriesReducer,
@@ -51,6 +53,8 @@ const reducer = combineReducers({
   listNewProduct: productNewListReducer,
   config: configReducer,
   stock: stockReducer,
+  address: addressReducer,
+  bank: bankReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

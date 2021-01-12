@@ -24,9 +24,11 @@ export const ProductWrapper = styled.div`
     }
 `;
 export const ProductImg = styled.div`
-    & img{
-        width: 290px;
+        width: 240px;
         height: 190px;
+    & img{
+        width: 100%;
+        height: 100%;
         transform: rotate(25deg);
     }
   

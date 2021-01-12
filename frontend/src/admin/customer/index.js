@@ -26,7 +26,7 @@ const CustomerAdminScreen = (props) => {
                             <span className="sr-only"></span>
                          </div> :
             error ? <div className="">{error}</div> :
-            <CustomerAdminInfo usersData ={ users.data } />
+            <CustomerAdminInfo usersData ={ users } />
             }
         </DashboardScreen>     
 }

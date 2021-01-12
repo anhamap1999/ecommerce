@@ -53,7 +53,6 @@ exports.createOrderValidator = async (req, res, next) => {
       shipping_price: Joi.number().required(),
       total_price: Joi.number().required(),
       is_paid: Joi.boolean().optional(),
-      is_delivered: Joi.boolean().optional(),
       status: Joi.string()
         .optional()
         .valid(
@@ -66,7 +65,7 @@ exports.createOrderValidator = async (req, res, next) => {
           'shop_cancel',
           'lost_damage'
         ),
-        payment: paymentSchema
+      payment: paymentSchema
     });
     const result = await validate(req.body, schema);
     req.body = result;

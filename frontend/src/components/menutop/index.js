@@ -47,7 +47,7 @@ const NavbarTop = () => {
   const { configs, loading: loadingConfig, error: errorConfig } = config;
   const index = configs && configs.findIndex((item) => item.key === 'brand');
   const brands = configs[index] ? configs[index].value : [];
-  const { cartItems } = useSelector((state) => state.cart);
+  const { cartItems } = useSelector((state) => state.cartUser);
 
   const location = useLocation();
   const categoryIndex =

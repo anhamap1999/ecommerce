@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import './styles.css'
 const MenuTopAdmin = () => {
     
-    return  <div className="container-fluid" style={{ background :'#5058C7'}}>
+    return  <div className="container-fluid" style={{ background :'#5058C7',    height: '70px',
+                                                      boxShadow :'2px 3px 9px black' ,marginBottom:'10px'}}>
         <div className="" >
             <div className="row">
                 <div className="col-md-4">
