@@ -291,7 +291,7 @@ const NavbarTop = () => {
                         {userInfo.user.isAdmin ? (
                           <>
                             <li>
-                              <Link to='/admin/customer'>Quản Trị Web</Link>
+                              <Link to='/admin/products'>Quản Trị Web</Link>
                             </li>
                           </>
                         ) : (

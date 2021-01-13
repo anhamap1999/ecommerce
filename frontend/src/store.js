@@ -20,6 +20,7 @@ import {
 import {
   categorySaveReducer,
   getListCategoriesReducer,
+  getCategoriesAdminReducer
 } from './reducers/categoryReducers';
 import {
   orderListAdminReducer,
@@ -53,7 +54,7 @@ const reducer = combineReducers({
   // createProduct: productAddReducer,
   // removeProduct: productRemoveReducer,
   saveCategory: categorySaveReducer,
-  // orderSave: orderSaveReducer,
+  orderSave: orderSaveReducer,
   ordersList: ordersListReducer,
   listAddress: addRessListReducer,
   getUserAdmin: getUserInfoAdminReducer,
@@ -68,6 +69,7 @@ const reducer = combineReducers({
   bank: bankReducer,
   searchProduct: searchProductReducer,
   productState: productReducer,
+  categoryAdmin: getCategoriesAdminReducer
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

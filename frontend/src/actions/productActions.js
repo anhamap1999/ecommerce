@@ -63,7 +63,7 @@ const listProductsAdmin = ({ page, limit, ...query }) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_ADMIN_LIST_REQUEST });
     const queryString = utils.formatQuery({ page, limit, ...query });
-    const { data, total_page, total } = await axios.get(`/api/products/admin`);
+    const { data, total_page, total } = await axios.get(`/api/products/admin${queryString}`);
     if (data) {
       dispatch({
         type: PRODUCT_ADMIN_LIST_SUCCESS,
@@ -125,18 +125,18 @@ const updateStateProduct = (productId, { status }) => async (
     dispatch({ type: PRODUCT_UPDATE_STATES_FAIL, payload: error.message });
   }
 };
-const addProduct = (product) => async (dispatch, getState) => {
+const addProduct = ({ id, ...product}) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_ADD_REQUEST, payload: product });
 
-    if (!product._id) {
+    if (!id) {
       const { data } = await axiosClient.post(
         '/api/products/admin',
         JSON.stringify(product)
       );
       dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data });
     } else {
-      const { data } = await axios.put('/api/products/' + product._id,
+      const { data } = await axios.put('/api/products/admin/' + id,
       JSON.stringify(product));
 
       dispatch({ type: PRODUCT_ADD_SUCCESS, payload: data });

@@ -10,8 +10,8 @@ function PlaceOrderScreen(props) {
   const cart = useSelector((state) => state.cartUser);
   const { shipping, payment, cartItems } = cart;
 
-  const { loading, success, error, orders } = useSelector(
-    (state) => state.ordersList
+  const { loading, success, error } = useSelector(
+    (state) => state.orderSave
   );
   //   const { loading, success, error, order } = orderSave;
   const { provinces, districts, wards } = useSelector((state) => state.address);

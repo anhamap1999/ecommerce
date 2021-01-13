@@ -45,18 +45,17 @@ const getStocks = (query) => async (dispatch, getState) => {
   }
 };
 
-const importStock = ({ index, id, key, value, name }) => async (
+const importStock = ({ id, stock, price }) => async (
   dispatch,
   getState
 ) => {
-  dispatch({ type: constants.IMPORT_STOCK_REQUEST, payload: index });
+  dispatch({ type: constants.IMPORT_STOCK_REQUEST });
   try {
     const { data } = await Axios.put(
-      '/api/stock/admin/' + id,
+      '/api/stock/' + id,
       JSON.stringify({
-        key,
-        value,
-        name,
+        stock,
+        price,
       })
     );
     const { stocks } = getState().stock;

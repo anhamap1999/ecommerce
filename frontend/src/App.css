@@ -601,9 +601,14 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 5px;
+}
+.flex-box-space-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   /* margin: 5px; */
 }
-
 .review-actions {
   display: table-cell;
   line-height: 28px;
@@ -1068,7 +1073,7 @@ form:not(.ant-form-vertical) .ant-input-group-wrapper {
   background-color: #5ac370;
 }
 .label-handling {
-  background-color: #f7872b;
+  background-color: #f0b32f;
 }
 .label-pending {
   background-color: #fba930;
@@ -1101,7 +1106,7 @@ form:not(.ant-form-vertical) .ant-input-group-wrapper {
 .label-delivered {
   background: #1890ff;
 }
-.label-user_canceled,
+.label-user_cancel,
 .label-expired {
   background: #eb2f96;
 }
@@ -1110,7 +1115,7 @@ form:not(.ant-form-vertical) .ant-input-group-wrapper {
 }
 /* .label-company_rejected {
 } */
-.label-company_canceled,
+.label-company_cancel,
 .label-lost_damage {
   background: #722ed1;
 }
@@ -1131,4 +1136,7 @@ form:not(.ant-form-vertical) .ant-input-group-wrapper {
 
 .form-create-product label {
   font-weight: 700;
+}
+.bg-light-focus {
+  background-color: #dae0e5 !important;
 }

@@ -39,11 +39,11 @@ const getConfig = () => async (dispatch, getState) => {
   }
 };
 
-const updateConfig = ({ index, id, key, value, name }) => async (
+const updateConfig = ({ id, key, value, name }) => async (
   dispatch,
   getState
 ) => {
-  dispatch({ type: constants.UPDATE_CONFIG_REQUEST, payload: index });
+  dispatch({ type: constants.UPDATE_CONFIG_REQUEST, payload: key });
   try {
     const { data } = await Axios.put(
       '/api/config/admin/' + id,

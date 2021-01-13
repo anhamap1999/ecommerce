@@ -75,7 +75,7 @@ function getUserInfoAdminReducer(state = { users: [] }, action) {
     case GET_USER_INFO_ADMIN_REQUEST:
       return { loading: true, users: [] };
     case GET_USER_INFO_ADMIN_SUCCESS:
-      return { loading: false, users: action.payload };
+      return { loading: false, users: action.payload.data, total: action.payload.total };
     case GET_USER_INFO_ADMIN_FAIL:
       return { loading: false, error: action.payload };
     default:

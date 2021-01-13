@@ -7,7 +7,7 @@ import {
   updateStateProduct,
   changeAddProductFields,
   changeFields,
-  changeAdminProductFields
+  changeAdminProductFields,
 } from '../../actions/productActions';
 import DashboardScreen from '../dashboard';
 import { Space, Table, Avatar, Tooltip } from 'antd';
@@ -15,6 +15,10 @@ import { getConfig } from '../../actions/configAction';
 import Column from 'antd/lib/table/Column';
 import utils from '../../modules/utils';
 import CreateProduct from './createProduct';
+import { AiFillEdit } from 'react-icons/ai';
+import { FaEye } from 'react-icons/fa';
+
+import { Link } from 'react-router-dom';
 
 const statusDefined = {
   approved: 'Đang bán',
@@ -23,6 +27,7 @@ const statusDefined = {
   disabled: 'Ngừng kinh doanh',
 };
 const ProductAdminScreen = (props) => {
+  const [updateState, setUpdateState] = useState('');
   const { products, loading, total, error, query } = useSelector(
     (state) => state.productState
   );
@@ -36,8 +41,18 @@ const ProductAdminScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  const onPaginationChange = () => {
-    dispatch(listProductsAdmin({ page: 1, limit: 30 }));
+  const onPaginationChange = ({ pageSize, current }) => {
+    dispatch(
+      changeAdminProductFields({
+        'query.page': current,
+        'query.limit': pageSize,
+      })
+    );
+    dispatch(listProductsAdmin({ page: current, limit: pageSize }));
+  };
+  const changeState = async (productId, state) => {
+    await dispatch(updateStateProduct(productId, { status: state }));
+    await dispatch(listProductsAdmin(query));
   };
   useEffect(() => {
     dispatch(listProductsAdmin({ page: 1, limit: 30 }));
@@ -61,9 +76,9 @@ const ProductAdminScreen = (props) => {
   //   return () => {};
   // }, [successful, successdelete]);
   // useEffect(() => {
-    // if (successful) {
-    //   setModalVisible(false);
-    // }
+  // if (successful) {
+  //   setModalVisible(false);
+  // }
   //   return () => {};
   // }, [successdelete]);
 
@@ -82,8 +97,10 @@ const ProductAdminScreen = (props) => {
           'product.brand': product.brand,
           'product.color': product.color,
           'product.price': product.price,
-          'product.category_id': product.category_id,
-          'product.id': product.id,
+          'product.category_id': product.category_id
+            ? product.category_id._id
+            : '',
+          'product.id': product._id,
           modalVisible: true,
         })
       );
@@ -98,7 +115,7 @@ const ProductAdminScreen = (props) => {
       title: '#',
       dataIndex: 'key',
       key: 'key',
-      render: (text) => text + 1
+      render: (text) => text + 1,
     },
     {
       title: 'Tên sản phẩm',
@@ -127,7 +144,34 @@ const ProductAdminScreen = (props) => {
       title: 'Màu',
       dataIndex: 'color',
       key: 'color',
-      render: (text) => (colors[text] ? colors[text] : text),
+      render: (text) => (
+        <Tooltip title={colors ? colors[text] : ''}>
+          <span
+            className={`color-circle`}
+            style={{
+              margin: '5px',
+              backgroundColor: text,
+              textAlign: 'center',
+            }}
+            key={text}
+          ></span>
+        </Tooltip>
+      ),
+    },
+    {
+      title: 'Lượt thích',
+      dataIndex: 'likes_count',
+      key: 'likes_count',
+    },
+    {
+      title: 'Đã bán',
+      dataIndex: 'sold_count',
+      key: 'sold_count',
+    },
+    {
+      title: 'Đánh giá',
+      dataIndex: 'rating',
+      key: 'rating',
     },
     {
       title: 'Trạng thái',
@@ -142,23 +186,30 @@ const ProductAdminScreen = (props) => {
     {
       title: 'Tùy chỉnh',
       // key: 'key',
-      render: (key) => (
+      render: (key, record) => (
         <>
-          {/* <Space size='middle'>
+          <Space size='middle'>
             <select
               className='custom-select'
               id='inputGroupSelect01'
-              onChange={(e) => setUpdateState(e.target.value)}
+              onChange={(e) => changeState(record._id, e.target.value)}
             >
               <option value={key.status} selected>
-                {key.status}
+                {statusDefined[key.status] ? statusDefined[key.status] : ''}
               </option>
-              <option value='pending'>đang đợi</option>
-              <option value='approved'>Cho bán</option>
-              <option value='rejected'>Từ chối</option>
-              <option value='disabled'>ngừng bán</option>
+              {key.status !== 'rejected'
+                ? Object.entries(statusDefined)
+                    .filter(
+                      (i) =>
+                        i[0] !== key.status &&
+                        ((key.status === 'pending' && i[0] !== 'disabled') ||
+                          (['approved', 'disabled'].includes(key.status) &&
+                            i[0] !== 'pending'))
+                    )
+                    .map((i) => <option value={i[0]}>{i[1]}</option>)
+                : ''}
             </select>
-          </Space> */}
+          </Space>
         </>
       ),
     },
@@ -167,10 +218,26 @@ const ProductAdminScreen = (props) => {
       key: 'key',
       render: (key, record) => (
         <Space size='middle'>
-          <button className='btn btn-primary' onClick={() => openModal()}>
-            Cập nhật
-          </button>
+          {/* <button className='btn btn-primary' onClick={() => openModal(record)}>
+            Sửa
+          </button> */}
+          <Tooltip title='Sửa'>
+            <span
+              onClick={() => openModal(record)}
+              style={{ cursor: 'pointer' }}
+            >
+              <AiFillEdit style={{ fontSize: '20px' }} />
+            </span>
+          </Tooltip>
         </Space>
+      ),
+    },
+    {
+      title: 'Xem chi tiết',
+      render: (record) => (
+        <Link to={`/product/${record._id}`}>
+          <FaEye style={{ fontSize: '20px', cursor: 'pointer' }} />
+        </Link>
       ),
     },
   ];

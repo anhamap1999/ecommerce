@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getUserInfoAdmin } from '../../actions/userActions';
@@ -6,25 +6,22 @@ import DashboardScreen from '../dashboard';
 import CustomerAdminInfo from './customer';
 const CustomerAdminScreen = (props) => {
   const getUserAdmin = useSelector((state) => state.getUserAdmin);
-  const { users, loading, error } = getUserAdmin;
+  const { users, loading = false, error, total } = getUserAdmin;
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(30);
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getUserInfoAdmin());
+    dispatch(getUserInfoAdmin({ page, limit, role: 'customer' }));
     return () => {};
-  }, []);
+  }, [page, limit]);
   return (
     <DashboardScreen>
       <div className="maine">
         <h3>Khách hàng</h3>
       </div>
-      {loading ? (
-        <div className="spinner-border text-primary" role="status">
-          <span className="sr-only"></span>
-        </div>
-      ) : error ? (
-        <div className="">{error}</div>
-      ) : (
-        <CustomerAdminInfo usersData={users} />
+      {(
+        <CustomerAdminInfo usersData={users} total={total} loading={loading} page={page} setPage={setPage} limit={limit} setLimit={setLimit} />
       )}
     </DashboardScreen>
   );

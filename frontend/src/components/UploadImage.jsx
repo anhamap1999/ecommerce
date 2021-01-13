@@ -77,6 +77,9 @@ class ImageList extends React.Component {
       }
       return item;
     });
+    if (this.props.onChange) {
+      this.props.onChange(fileList);
+    }
     return fileList;
   };
 

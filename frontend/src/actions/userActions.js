@@ -22,6 +22,7 @@ import {
   USER_SIGNIN_SUCCESS,
   CHANGE_USER_INFO_FIELDS
 } from '../constants/userConstants';
+import utils from '../modules/utils';
 
 const signin = (userName, password) => async (dispatch) => {
   dispatch({ type: USER_SIGNIN_REQUEST, payload: { userName, password } });
@@ -67,14 +68,15 @@ const getFullInfoUser = () => async (dispatch, getState) => {
   }
 };
 
-const getUserInfoAdmin = () => async (dispatch, getState) => {
+const getUserInfoAdmin = (query) => async (dispatch, getState) => {
   try {
     dispatch({ type: GET_USER_INFO_ADMIN_REQUEST });
     const {
       userSignin: { userInfo },
     } = getState();
-    const { data } = await axios.get('/api/users/admin');
-    dispatch({ type: GET_USER_INFO_ADMIN_SUCCESS, payload: data });
+    const queryString = utils.formatQuery(query);
+    const { data, total } = await axios.get('/api/users/admin' + queryString);
+    dispatch({ type: GET_USER_INFO_ADMIN_SUCCESS, payload: {data, total} });
     return data;
   } catch (error) {
     dispatch({ type: GET_USER_INFO_ADMIN_FAIL, payload: error.message });

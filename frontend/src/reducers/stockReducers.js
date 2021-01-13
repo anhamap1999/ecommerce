@@ -2,7 +2,11 @@ import constants from '../constants/stockConstant';
 import _ from 'lodash';
 
 function stockReducer(
-  state = { stocks: [], updatingIndex: -1, query: {} },
+  state = {
+    stocks: [],
+    query: { page: 1, limit: 30 },
+    updating: { modalVisible: false, updatingIndex: -1, updatingLoading: false, success: false },
+  },
   action
 ) {
   switch (action.type) {
@@ -10,7 +14,7 @@ function stockReducer(
       for (const key in action.payload) {
         _.set(state, key, action.payload[key]);
       }
-      return state;
+      return { ...state };
     }
     case constants.CREATE_STOCK_REQUEST:
       return { ...state, loading: true, error: null };
@@ -35,19 +39,33 @@ function stockReducer(
     case constants.IMPORT_STOCK_REQUEST:
       return {
         ...state,
-        updatingLoading: true,
         error: null,
-        updatingIndex: action.payload,
+        updating: {
+          ...state.updating,
+          updatingLoading: true,
+        },
       };
     case constants.IMPORT_STOCK_SUCCESS:
       return {
         ...state,
-        updatingLoading: false,
         stocks: action.payload,
-        updatingIndex: -1,
+        updating: {
+          ...state.updating,
+          updatingLoading: false,
+          updatingIndex: -1,
+        },
+        success: true
       };
     case constants.IMPORT_STOCK_FAIL:
-      return { ...state, updatingLoading: false, error: action.payload };
+      return {
+        ...state,
+        error: action.payload,
+        updating: {
+          ...state.updating,
+          updatingLoading: false,
+        },
+        success: false
+      };
     default:
       return state;
   }

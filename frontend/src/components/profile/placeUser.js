@@ -156,7 +156,7 @@ export default function PlaceUserScreen(props) {
                       setWard_number(e.target.value);
                     }}
                   >
-                    <option selected>Tòa nhà , Tên Đường</option>
+                    <option selected>Xã / Phường</option>
                     {wardData &&
                       wardData.map((option) => (
                         <option key={option.district_id} value={option.number}>
@@ -173,7 +173,7 @@ export default function PlaceUserScreen(props) {
                     onChange={(e) => {
                       setText(e.target.value);
                     }}
-                    placeholder="Ghi chú"
+                    placeholder="Địa chỉ cụ thể"
                   />
                 </div>
                 <div className="form-group form-check"></div>

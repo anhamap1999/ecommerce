@@ -145,7 +145,7 @@ function ProductScreen(props) {
                       (item) =>
                         item.type === 2 &&
                         (item.parent_id._id === category._id ||
-                          category._id === item._id)
+                          (category.parent_id && category.parent_id._id === item.parent_id._id))
                     )
                     .map((i) => (
                       <TabPane tab={i.name} key={i._id} />

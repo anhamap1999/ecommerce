@@ -27,6 +27,9 @@ import {
   CHANGE_SEARCH_FIELDS,
   CHANGE_ADD_PRODUCT_FIELDS,
   CHANGE_ADMIN_PRODUCT_FIELDS,
+  PRODUCT_UPDATE_STATES_REQUEST,
+  PRODUCT_UPDATE_STATES_SUCCESS,
+  PRODUCT_UPDATE_STATES_FAIL,
 } from '../constants/productConstants';
 import _ from 'lodash';
 
@@ -195,7 +198,7 @@ function productReducer(
     modalVisible: false,
     updatingIndex: -1,
     total: 0,
-    newProducts: []
+    newProducts: [],
   },
   action
 ) {
@@ -203,13 +206,24 @@ function productReducer(
     case PRODUCT_ADD_REQUEST:
       return { ...state, loading: true, error: null };
     case PRODUCT_ADD_SUCCESS: {
-      const list = state.products.length > state.limit ? state.products.pop() : state.products;
+      const index = state.products.length
+        ? state.products.findIndex((i) => i._id === action.payload.data._id)
+        : -1;
+      let list = state.products;
+      if (index >= 0) {
+        list[index] = [...list[index], ...action.payload];
+      } else if (state.products.length > state.limit) {
+        list = state.products.pop();
+        list = [action.payload, ...list]
+      } else {
+        list = state.products;
+      }
       return {
         ...state,
         loading: false,
         success: true,
         product: action.payload,
-        products: [ action.payload, ...list ]
+        products: [...list],
       };
     }
     case PRODUCT_ADD_FAIL:
@@ -243,6 +257,27 @@ function productReducer(
         total: action.payload.total,
       };
     case PRODUCT_ADMIN_LIST_FAIL:
+      return { ...state, loading: false, error: action.payload };
+
+    case PRODUCT_UPDATE_STATES_REQUEST:
+      return { ...state, loading: true, error: null };
+    case PRODUCT_UPDATE_STATES_SUCCESS: {
+      const index = state.products.length
+        ? state.products.findIndex((i) => i._id === action.payload.data._id)
+        : -1;
+      let list = state.products;
+      if (index >= 0) {
+        list[index] = [...list[index], ...action.payload];
+      }
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        product: action.payload,
+        products: [...list],
+      };
+    }
+    case PRODUCT_UPDATE_STATES_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   addProduct,
   changeAdminProductFields,
+  listProductsAdmin
 } from '../../actions/productActions';
 import { Checkbox, Tooltip, Modal, Spin } from 'antd';
 import UploadImage from '../../components/UploadImage';
@@ -13,8 +14,11 @@ const CreateProduct = (props) => {
     success: successful,
     error: errorAdd,
     product = {},
+    query,
     modalVisible,
   } = useSelector((state) => state.productState);
+  const [imagesRef, setImagesRef] = useState(null);
+  const [thumbnailRef, setThumbnailRef] = useState(null);
 
   const listCategories = useSelector((state) => state.listCategories);
   const { categories } = listCategories;
@@ -30,7 +34,7 @@ const CreateProduct = (props) => {
     configs && configs.findIndex((item) => item.key === 'brand');
   const brands = configs[brandIndex] ? configs[brandIndex].value : [];
   const {
-    id = null,
+    id,
     name = '',
     images = [],
     brand = '',
@@ -60,6 +64,7 @@ const CreateProduct = (props) => {
   }, [successful]);
 
   const onChange = (key, value) => {
+      console.log(key, value)
     dispatch(changeAdminProductFields({ ['product.' + key]: value }));
   };
   const submitHandler = async (e) => {
@@ -69,15 +74,21 @@ const CreateProduct = (props) => {
     //   const result = await uploadFile(image[i]);
     //   array.push(result);
     // }
+    let [savedImages, savedThumbnail] = await Promise.all([
+        imagesRef.onUpdateImage({ imageUrls: images }),
+        thumbnailRef.onUpdateImage({ imageUrls: [thumbnail] }),
+      ]);
+
     await dispatch(
       addProduct({
         ...product,
-        images: images.map((i) => i.url),
+        images: savedImages.map((i) => i.url),
         thumbnail:
-          thumbnail && thumbnail.length && thumbnail[0] ? thumbnail[0].url : '',
+          savedThumbnail && savedThumbnail.length && savedThumbnail[0] ? savedThumbnail[0].url : thumbnail,
       })
     );
     onCancel();
+    await dispatch(listProductsAdmin(query));
   };
 
   const onReset = () => {
@@ -115,16 +126,18 @@ const CreateProduct = (props) => {
                 maxLength={20}
                 imageWidth={1200}
                 onChange={(images) => onChange('images', images)}
+                customRef={ref => setImagesRef(ref)}
               />
             </div>
 
             <div className='form-group'>
               <label htmlFor='brand'>Ảnh kèm</label>
               <UploadImage
-                imageUrls={thumbnail}
+                imageUrls={[thumbnail]}
                 maxLength={1}
                 imageWidth={200}
-                onChange={(images) => onChange('thumbnail', images)}
+                onChange={(images) => onChange('thumbnail', images[0])}
+                customRef={ref => setThumbnailRef(ref)}
               />
             </div>
             <div className='form-group'>

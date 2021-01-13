@@ -5,6 +5,9 @@ const {
   GET_CATEGORY_ALL_REQUEST,
   GET_CATEGORY_ALL_SUCCESS,
   GET_CATEGORY_ALL_FAIL,
+  GET_CATEGORY_ADMIN_REQUEST,
+  GET_CATEGORY_ADMIN_SUCCESS,
+  GET_CATEGORY_ADMIN_FAIL,
 } = require('../constants/categoryConstants');
 
 function getListCategoriesReducer(
@@ -22,6 +25,21 @@ function getListCategoriesReducer(
       return state;
   }
 }
+function getCategoriesAdminReducer(
+  state = { categories: [] },
+  action
+) {
+  switch (action.type) {
+    case GET_CATEGORY_ADMIN_REQUEST:
+      return { ...state, loading: true, categories: [] };
+    case GET_CATEGORY_ADMIN_SUCCESS:
+      return { ...state, loading: false, categories: action.payload };
+    case GET_CATEGORY_ADMIN_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return { ...state };
+  }
+}
 function categorySaveReducer(state = { category: {} }, action) {
   switch (action.type) {
     case CATEGORY_SAVE_REQUEST:
@@ -34,4 +52,4 @@ function categorySaveReducer(state = { category: {} }, action) {
       return state;
   }
 }
-export { categorySaveReducer, getListCategoriesReducer };
+export { categorySaveReducer, getListCategoriesReducer, getCategoriesAdminReducer };
