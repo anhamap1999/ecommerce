@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import './styles.css';
 const SlideBarAdmin = () => {
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   const location = useLocation();
+  const isAdmin = userInfo && userInfo.user ? userInfo.user.isAdmin : false;
   return (
     <div
       className=' border-right'
@@ -26,6 +30,7 @@ const SlideBarAdmin = () => {
         >
           Khách hàng{' '}
         </Link>
+        {isAdmin ? (
         <Link
           to='/admin/staff'
           className={`list-group-item list-group-item-action bg-light ${
@@ -34,6 +39,8 @@ const SlideBarAdmin = () => {
         >
           Nhân viên{' '}
         </Link>
+        ) : null}
+        {isAdmin ? (
         <Link
           to='/admin/category'
           className={`list-group-item list-group-item-action bg-light ${
@@ -42,6 +49,7 @@ const SlideBarAdmin = () => {
         >
           Danh Mục{' '}
         </Link>
+        ) : null}
         <Link
           to='/admin/orders'
           className={`list-group-item list-group-item-action bg-light ${
@@ -50,6 +58,7 @@ const SlideBarAdmin = () => {
         >
           Đơn hàng{' '}
         </Link>
+        {isAdmin ? (
         <Link
           to='/admin/rule'
           className={`list-group-item list-group-item-action bg-light ${
@@ -58,6 +67,7 @@ const SlideBarAdmin = () => {
         >
           Quy Định
         </Link>
+        ) : null}
         <Link
           to='/admin/storage'
           className={`list-group-item list-group-item-action bg-light ${

@@ -288,7 +288,7 @@ const NavbarTop = () => {
                           {' '}
                           <Link to='/profile/user'>Tài khoản của bạn</Link>{' '}
                         </li>
-                        {userInfo.user.isAdmin ? (
+                        {userInfo.user.role === 'staff' || userInfo.user.isAdmin ? (
                           <>
                             <li>
                               <Link to='/admin/products'>Quản Trị Web</Link>
