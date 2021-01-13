@@ -96,34 +96,38 @@ exports.importStock = async (req, res, next) => {
         messages: { stock: 'stock not found' },
       });
     }
-    if (stock.created_by !== req.user._id) {
-      throw new Error({
-        statusCode: 404,
-        message: 'stock.doNotHavePermission',
-        messages: { stock: 'do not have permission' },
-      });
-    }
+    // if (stock.created_by !== req.user._id) {
+    //   throw new Error({
+    //     statusCode: 404,
+    //     message: 'stock.doNotHavePermission',
+    //     messages: { stock: 'do not have permission' },
+    //   });
+    // }
     stock.updated_at = Date.now();
     stock.updated_by = req.user._id;
     stock = { ...stock._doc, stock: stock.stock + req.body.stock };
     await Stock.findByIdAndUpdate(req.params.id, stock);
     const stock_history = new StockHistory({
-      ...stock._doc,
+      product_id: stock.product_id._id,
+      size: stock.size,
       stock: req.body.stock,
       price: req.body.price,
       type: 'import',
     });
-    await stock_history.save();
+    const bef = await stock_history.save();
+    console.log('STOCK HISTORY', bef);
+
     const existedRevenue = await Revenue.findOne({
-      date: moment().startOf('date').toISOString,
+      date: moment().startOf('date').toISOString(),
     });
     if (!existedRevenue) {
       const revenue = new Revenue({
         total_expenditure: req.body.price * req.body.stock,
         total: -req.body.price * req.body.stock,
-        date: moment().startOf('date').toISOString,
+        date: moment().startOf('date').toISOString(),
       });
-      await revenue.save();
+      const abc = await revenue.save();
+      console.log('REVENUE', abc);
     } else {
       existedRevenue.total_expenditure += req.body.price * req.body.stock;
       existedRevenue.total -= req.body.price * req.body.stock;

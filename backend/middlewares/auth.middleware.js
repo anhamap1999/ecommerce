@@ -44,27 +44,36 @@ exports.isAuth = async (req, res, next) => {
 };
 
 exports.isStaff = (req, res, next) => {
-  if (req.user && (req.user.role === 'staff' || req.user.isAdmin)) {
-    return next();
+  try {
+    if (req.user && (req.user.role === 'customer')) {
+      throw new Error({
+        statusCode: 401,
+        message: 'permission.notStaff',
+        messages: { auth: 'do not have permission' },
+      });
+    }
+    next();
+    
+  } catch(error) {
+    next(error);
   }
-  const error = new Error({
-    statusCode: 401,
-    message: 'permission.notStaff',
-    messages: { auth: 'do not have permission' },
-  });
-  next(error);
+  
   // return res.status(401).send({ message: 'Admin Token is not valid.' });
 };
 
 exports.isAdmin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
-    return next();
+  try {
+    if (req.user && !req.user.isAdmin) {
+      throw new Error({
+        statusCode: 401,
+        message: 'permission.notAdmin',
+        messages: { auth: 'do not have permission' },
+      });
+    }
+    next();
+    
+  } catch(error) {
+    next(error);
   }
-  const error = new Error({
-    statusCode: 401,
-    message: 'permission.notAdmin',
-    messages: { auth: 'do not have permission' },
-  });
-  next(error);
   // return res.status(401).send({ message: 'Admin Token is not valid.' });
 };

@@ -33,7 +33,7 @@ exports.getCategory = async (req, res, next) => {
   }
 };
 
-exports.addCategory = async (req, res) => {
+exports.addCategory = async (req, res, next) => {
   try {
     const category = new Category(req.body);
 

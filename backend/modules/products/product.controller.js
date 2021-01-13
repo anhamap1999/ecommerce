@@ -8,11 +8,11 @@ const Category = require('../category/category.model');
 
 const _ = require('lodash');
 
-exports.getProduct = async (req, res) => {
+exports.getProduct = async (req, res, next) => {
   const products = await Product.find({});
   res.send(products);
 };
-exports.getProductdetails = async (req, res) => {
+exports.getProductdetails = async (req, res, next) => {
   const product = await Product.findOne({ _id: req.params.id });
   if (product) {
     res.send(product);
@@ -20,7 +20,7 @@ exports.getProductdetails = async (req, res) => {
     res.status(404).send({ message: 'Product Not Found.' });
   }
 };
-exports.saveProduct = async (req, res) => {
+exports.saveProduct = async (req, res, next) => {
   const product = new Product({
     name: req.body.name,
     image: req.body.image,
@@ -41,7 +41,7 @@ exports.saveProduct = async (req, res) => {
     return res.status(401).send({ message: 'failed' });
   }
 };
-exports.updateProduct = async (req, res) => {
+exports.updateProduct = async (req, res, next) => {
   const productId = req.params.id;
   const product = await Product.findById(productId);
   if (product) {
@@ -62,7 +62,7 @@ exports.updateProduct = async (req, res) => {
   }
   return res.status(500).send({ message: 'failed' });
 };
-exports.deteleProduct = async (req, res) => {
+exports.deteleProduct = async (req, res, next) => {
   const deletepro = await Product.findById(req.params.id);
   if (deletepro) {
     await deletepro.remove();
@@ -142,6 +142,7 @@ exports.getProductsByAdmin = async (req, res, next) => {
     await Product.paginate(query, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
+          console.log(result.totalDocs)
           const products = await Product.populate(result.docs, [
             { path: 'category_id' },
           ]);
@@ -149,7 +150,7 @@ exports.getProductsByAdmin = async (req, res, next) => {
             .addField('data', products)
             .addField('total_page', result.totalPages)
             .addField('page', result.page)
-            .addField('total', result.totalDocs);
+            .addField('total', result.docs.length);
         } else {
           success.addField('data', []);
         }
@@ -216,7 +217,7 @@ exports.createProduct = async (req, res, next) => {
     product.user_id = req.user._id;
     product.pure_name = utils.removeAccents(product.name);
     product.created_by = req.user._id;
-    const result = await product.save();
+    await product.save();
     // const stock = new Stock({
     //   product_id: result._id,
     //   stock: 0,
@@ -231,6 +232,9 @@ exports.createProduct = async (req, res, next) => {
         created_by: req.user._id,
       });
       await stock.save();
+    });
+    const result = await Product.findById(product._id).populate({
+      path: 'category_id',
     });
     const success = new Success({ data: result });
     res.status(200).send(success);

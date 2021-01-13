@@ -21,7 +21,7 @@ router.put(
   '/admin/:id',
   isAuth,
   isStaff,
-  validator.createOrderValidator,
+  validator.updateOrderByAdminValidator,
   controller.updateOrderByAdmin
 );
 router.get('/:id', isAuth, controller.getOrderById);

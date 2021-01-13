@@ -27,6 +27,7 @@ const notificationSchema = new mongoose.Schema({
       'user_change_password',
       'category_add',
       'admin_add',
+      'order_update_delivered'
     ],
   },
   is_read: { type: Boolean, required: true, default: false },

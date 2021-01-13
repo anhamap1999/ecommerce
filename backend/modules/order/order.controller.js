@@ -6,6 +6,7 @@ const StockHistory = require('../stock_history/stock_history.model');
 const Revenue = require('../revenue/revenue.model');
 const Cart = require('../cart/cart.model');
 const moment = require('moment');
+const { Error, Success } = require('../../utils');
 
 exports.getOrders = async (req, res, next) => {
   try {
@@ -80,7 +81,7 @@ exports.getOrdersByAdmin = async (req, res, next) => {
   }
 };
 
-exports.getOrderById = async (req, res) => {
+exports.getOrderById = async (req, res, next) => {
   try {
     const order = await Order.findOne({
       _id: req.params.id,
@@ -105,7 +106,7 @@ exports.getOrderById = async (req, res) => {
   }
 };
 
-exports.saveOrder = async (req, res) => {
+exports.saveOrder = async (req, res, next) => {
   try {
     const { order_items } = req.body;
     order_items.forEach(async (item) => {
@@ -122,6 +123,13 @@ exports.saveOrder = async (req, res) => {
           product_id: item.product_id,
           size: item.size,
         });
+        if (!stock) {
+          throw new Error({
+            statusCode: 404,
+            message: 'stock.notFound',
+            messages: { stock: 'stock is not found' },
+          });
+        }
         if (stock.stock < item.quantity) {
           throw new Error({
             statusCode: 404,
@@ -199,13 +207,14 @@ exports.saveOrder = async (req, res) => {
   }
 };
 
-exports.updateOrderByAdmin = async (req, res) => {
+exports.updateOrderByAdmin = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id).populate([
       { path: 'shipping' },
       { path: 'order_items', populate: 'product_id' },
       { path: 'created_by' },
     ]);
+    const { order_items } = order;
     if (!order) {
       throw new Error({
         statusCode: 404,
@@ -252,7 +261,7 @@ exports.updateOrderByAdmin = async (req, res) => {
         }
         order_items.forEach(async (item) => {
           try {
-            const product = await Product.findById(item.product_id);
+            const product = await Product.findById(item.product_id._id);
             if (!product) {
               throw new Error({
                 statusCode: 404,
@@ -261,7 +270,7 @@ exports.updateOrderByAdmin = async (req, res) => {
               });
             }
             const stock = await Stock.findOne({
-              product_id: item.product_id,
+              product_id: item.product_id._id,
               size: item.size,
             });
             if (stock.stock < item.quantity) {
@@ -276,16 +285,16 @@ exports.updateOrderByAdmin = async (req, res) => {
           }
         });
         let revenue = await Revenue.findOne({
-          date: moment().startOf('date').toISOString,
+          date: moment().startOf('date').toISOString(),
         });
         if (!revenue) {
           revenue = new Revenue({
-            date: moment().startOf('date').toISOString,
+            date: moment().startOf('date').toISOString(),
           });
         }
         order_items.forEach(async (item) => {
           try {
-            const product = await Product.findById(item.product_id);
+            const product = await Product.findById(item.product_id._id);
             if (!product) {
               throw new Error({
                 statusCode: 404,
@@ -295,11 +304,11 @@ exports.updateOrderByAdmin = async (req, res) => {
             }
             product.sold_count += item.quantity;
             const stock = await Stock.findOne({
-              product_id: item.product_id,
+              product_id: item.product_id._id,
               size: item.size,
             });
             stock.stock -= item.quantity;
-            const stocks = await Stock.find({ product_id: item.product_id });
+            const stocks = await Stock.find({ product_id: item.product_id._id });
             const total_stock = stocks.reduce(
               (item, total) => item.stock + total,
               0
@@ -307,28 +316,29 @@ exports.updateOrderByAdmin = async (req, res) => {
             if (total_stock <= 0) {
               product.out_of_stock = true;
             }
-            await Product.findByIdAndUpdate(item.product_id, product);
+            await Product.findByIdAndUpdate(item.product_id._id, product);
             await Stock.findOneAndUpdate(
-              { product_id: item.product_id, size: item.size },
+              { product_id: item.product_id._id, size: item.size },
               stock
             );
             const stock_history = new StockHistory({
-              ...stock._doc,
+              size: stock.size,
+              product_id: stock.product_id._id,
               stock: item.quantity,
               price: item.price,
             });
             await stock_history.save();
-            revenue.total_revenue += item.quantity * item.price;
+            revenue.total_revenue += parseInt(item.quantity * item.price);
           } catch (error) {
             next(error);
           }
         });
-        revenue.total_revenue += order.tax_price + order.shipping_price;
-        revenue.total_additional_fee += order.tax_price + order.shipping_price;
+        revenue.total_revenue += order.total_price ? order.total_price : 0;
+        revenue.total_additional_fee += order.tax_price ? order.tax_price : 0 + order.shipping_price ? order.shipping_price : 0;
         revenue.total =
           revenue.total_revenue -
           revenue.total_additional_fee -
-          revenue.total_expenditure;
+          revenue.total_expenditure ? revenue.total_expenditure : 0;
         await revenue.save();
 
         const notification = new Notification({
@@ -432,11 +442,11 @@ exports.updateOrderByAdmin = async (req, res) => {
         res.io.emit(order.created_by._id, created_notification);
 
         let revenue = await Revenue.findOne({
-          date: moment().startOf('date').toISOString,
+          date: moment().startOf('date').toISOString(),
         });
         if (!revenue) {
           revenue = new Revenue({
-            date: moment().startOf('date').toISOString,
+            date: moment().startOf('date').toISOString(),
           });
         }
         revenue.total_revenue -=
@@ -463,7 +473,7 @@ exports.updateOrderByAdmin = async (req, res) => {
   }
 };
 
-exports.updateOrder = async (req, res) => {
+exports.updateOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id).populate([
       { path: 'shipping' },
