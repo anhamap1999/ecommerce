@@ -150,7 +150,7 @@ exports.getProductsByAdmin = async (req, res, next) => {
             .addField('data', products)
             .addField('total_page', result.totalPages)
             .addField('page', result.page)
-            .addField('total', result.docs.length);
+            .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }
