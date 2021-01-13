@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 import ProfileScreen from './profile';
-import { getListOrders } from '../../actions/orderAction';
+import { getListOrders, updateStatusOrder } from '../../actions/orderAction';
 import { Spin, Avatar, Row, Col } from 'antd';
 import utils from '../../modules/utils';
 import { BsDot } from 'react-icons/bs';
@@ -30,10 +30,15 @@ export default function OrderUserScreen(props) {
     dispatch(getListOrders());
     return () => {};
   }, []);
+
+  const onUpdateStatus = async(order, status) => {
+    await dispatch(updateStatusOrder(order, { status }));
+    await dispatch(getListOrders());
+  }
   return (
-    <ProfileScreen>
-      <div style={{ marginTop: '20px' }}>
-        <div className='col-sm-8'>
+    <ProfileScreen >
+      <div style={{ marginTop: '100px' }}>
+        <div className="col-sm-8">
           <h4>Đơn hàng của tôi</h4>
         </div>
         <hr></hr>
@@ -62,8 +67,11 @@ export default function OrderUserScreen(props) {
                   <div className='text-muted' style={{ height: '35px' }}>
                     Thông tin vận chuyển
                   </div>
+                  {order.status === 'handling' ? (<div className='text-muted' style={{ height: '35px' }}>
+                    <button className='btn btn-success' onClick={() => onUpdateStatus(order, 'completed')}>Hủy đơn hàng</button>
+                  </div>) : null}
                   {order.status === 'delivered' ? (<div className='text-muted' style={{ height: '35px' }}>
-                    <button className='btn btn-success'>Hoàn tất</button>
+                    <button className='btn btn-success' onClick={() => onUpdateStatus(order, 'completed')}>Hoàn tất</button>
                   </div>) : null}
                 </div>
                 <div className='col-sm-3'>

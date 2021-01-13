@@ -11,10 +11,12 @@ const {
   GET_USER_INFO_ADMIN_REQUEST,
   GET_USER_INFO_ADMIN_SUCCESS,
   GET_USER_INFO_ADMIN_FAIL,
-  CHANGE_USER_INFO_FIELDS,
   UPDATE_INFO_REQUEST,
   UPDATE_INFO_SUCCESS,
   UPDATE_INFO_FAIL,
+  CHANGE_PWD_REQUEST,
+  CHANGE_PWD_SUCCESS,
+  CHANGE_PWD_FAIL,
 } = require('../constants/userConstants');
 const _ = require('lodash');
 function userSigninReducer(state = {}, action) {
@@ -48,24 +50,21 @@ function getFullInfoReducer(state = {}, action) {
     case GET_FULL_INFO_SUCCESS:
       return { ...state, loading: false, userFullInfo: action.payload };
     case GET_FULL_INFO_FAIL:
-      return { ...state, loading: false, error: action.payload };
-    case CHANGE_USER_INFO_FIELDS: {
-      for (const key in action.payload) {
-        _.set(state, key, action.payload[key]);
-      }
-
-      return { ...state };
-    }
-    case UPDATE_INFO_REQUEST:
-      return { ...state, loading: true, error: null };
-    case UPDATE_INFO_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        userFullInfo: { ...action.payload },
-      };
-    case UPDATE_INFO_FAIL:
-      return { ...state, loading: false, error: action.payload };
+      return { loading: false, error: action.payload };
+      
+    case UPDATE_INFO_REQUEST :
+      return { loading: true, users: [] };
+    case UPDATE_INFO_SUCCESS :
+      return { ...state, loading: false, users:  action.payload }
+    case UPDATE_INFO_FAIL :
+      return { loading: false, error: action.payload };
+    
+    case CHANGE_PWD_REQUEST :
+      return { loading: true, users: [] };
+    case CHANGE_PWD_SUCCESS :
+      return { ...state, loading: false, users:  action.payload }
+    case CHANGE_PWD_FAIL :
+      return { loading: false, error: action.payload };
     default:
       return state;
   }
@@ -77,7 +76,8 @@ function getUserInfoAdminReducer(state = { users: [] }, action) {
     case GET_USER_INFO_ADMIN_SUCCESS:
       return { loading: false, users: action.payload.data, total: action.payload.total };
     case GET_USER_INFO_ADMIN_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: true, users: [] };
+      
     default:
       return state;
   }

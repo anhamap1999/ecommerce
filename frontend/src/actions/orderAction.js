@@ -52,17 +52,18 @@ const saveOrder = (order) => async (dispatch, getState) => {
   }
 };
 
-const updateStatusOrder = (id, { status }) => async (
+const updateStatusOrder = (order, { status }) => async (
   dispatch,
   getState
 ) => {
+  const { _id: id } = order;
   try {
     dispatch({ type: ORDER_UPDATE_STATUS_REQUEST });
     const {
       userSignin: { userInfo },
     } = getState();
     let url = '';
-    if (userInfo && userInfo.user && userInfo.user.role === 'customer') {
+    if (userInfo && userInfo.user && order && order.created_by && (userInfo.user._id ===  order.created_by._id)) {
       url = '/api/order/' + id;
     } else {
       url = '/api/order/admin/' + id;

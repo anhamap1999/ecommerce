@@ -121,13 +121,13 @@ const CommentEle = ({ productID }) => {
       ) : error ? (
         <div> {error} </div>
       ) : (
-        comment &&
+        
         comment &&
         comment.length > 0 &&
         comment.map(
-          (con) =>
-          con.product_id && con.product_id._id === productID && (
-              <CommentedProduct key={con.product_id._id} content={con} />
+          (con) =>con.product_id&&
+            con.product_id._id === productID && (
+              <CommentedProduct content={con} />
             )
         )
       )}

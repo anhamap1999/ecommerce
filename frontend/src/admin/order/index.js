@@ -47,8 +47,8 @@ const OrderAdminScreen = (props) => {
     setLimit(pageSize);
     dispatch(getListOrdersAdmin({ page: current, limit: pageSize, status }));
   };
-  const changeState = async (id, status) => {
-    await dispatch(updateStatusOrder(id, { status }));
+  const changeState = async (order, status) => {
+    await dispatch(updateStatusOrder(order, { status }));
     setStatus('');
     await dispatch(getListOrdersAdmin({ page, limit, status: '' }));
   };
@@ -176,7 +176,7 @@ const OrderAdminScreen = (props) => {
                 <select
                   className='custom-select'
                   id='inputGroupSelect01'
-                  onChange={(e) => changeState(record._id, e.target.value)}
+                  onChange={(e) => changeState(record, e.target.value)}
                 >
                   <option value={key.status} selected>
                     {statusDefined[key.status] ? statusDefined[key.status] : ''}

@@ -38,7 +38,7 @@ const ProductsNew = (props) => {
           {!loading ? (
             <Row>
               <Col md={{ span: 8 }}>
-                {products && products[0] && (
+                {products&&products[0] && (
                   <ProductsNewEle>
                     <ProductNewEleImg>
                       <img
@@ -53,7 +53,7 @@ const ProductsNew = (props) => {
                       </ProductNewPrice>
                       <Link to={`/product/${products[0]._id}`}>
                         <ProductNewButton>
-                          Xem <i className="bx bx-right-arrow-alt"></i>
+                          Xem thêm <i className="bx bx-right-arrow-alt"></i>
                         </ProductNewButton>
                       </Link>
                     </ProductNewText>
@@ -62,7 +62,7 @@ const ProductsNew = (props) => {
               </Col>
               <Col md={{ span: 16 }}>
                 <ProductNewContainer>
-                  {products.length > 2 &&
+                  {products &&products.length > 2 &&
                     products.map((item, index) => {
                       if (index > 0 && index < 5) {
                         return (

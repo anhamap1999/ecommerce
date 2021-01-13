@@ -116,10 +116,16 @@ i.bx.bx-shopping-bag {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+.ant-notification{
+  top: 80px !important;
+    z-index: 20000;
+}
 .main {
   margin-top: 140px;
   position: relative;
   bottom: 50px;
+
 }
 i.bx.bx-user {
   font-size: 32px;
@@ -127,7 +133,7 @@ i.bx.bx-user {
   position: absolute;
 }
 body {
-  font-family: 'Poppins', sans-serif !important;
+ 
   margin: 0;
   width: 100%;
   height: auto;
@@ -148,8 +154,15 @@ body {
 .userInfo i {
   font-size: 20px;
   position: absolute;
-  right: 70px;
+  right: 0px;
   line-height: 50px;
+}
+.order-bg {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .userInfo i:hover ul {
   display: block !important;
@@ -365,10 +378,17 @@ li {
   border: none;
   border-radius: 5px;
   background-color: #ccc;
-  width: 100px;
+  width: 135px;
   height: 40px;
   color: rgb(65, 35, 35);
   font-weight: 700;
+  transition: .5s;
+}
+.product-text button:hover {
+  outline: #000;
+  background-color: rgb(65, 35, 35);
+  color:#ccc;
+  transform: scale(1.5,1.5);
 }
 .total-cart {
   border: 1px solid #ccc;
@@ -379,7 +399,24 @@ li {
   box-shadow: 4px 5px 6px #ccc;
   background-color: white;
 }
+.btn-3 {
+  background: lighten(#E1332D, 3%);  
+  border: 1px solid darken(#E1332D, 4%);
+  box-shadow: 0px 2px 0 darken(#E1332D, 5%), 2px 4px 6px darken(#E1332D, 2%);
+  font-weight: 900;
+  letter-spacing: 1px;
+  transition: all 150ms linear;
+}
 
+.btn-3:hover {
+  background: darken(#E1332D, 1.5%);
+  border: 1px solid rgba(#000, .05);
+  box-shadow: 1px 1px 2px rgba(#fff, .2);
+  color: lighten(#E1332D, 18%); 
+  text-decoration: none;
+  text-shadow: -1px -1px 0 darken(#E1332D, 9.5%);
+  transition: all 250ms linear;
+}
 select {
   margin-left: 7px;
   padding: 0px;
@@ -388,7 +425,7 @@ select {
   font-size: 16px;
 }
 .yourcart img {
-  width: 150px;
+  width: 100px;
   height: 100px;
 }
 
@@ -399,6 +436,7 @@ select {
   border-radius: 5px;
   padding: 15px;
   box-shadow: 4px 5px 6px #ccc;
+  margin-bottom: 15px;
 }
 .yourcart {
   border: 1px solid #ccc;
@@ -542,9 +580,10 @@ ul {
   border-bottom: 3px solid rgb(161, 142, 30);
 }
 .placeorder .general {
-  border: 1px solid black;
+  border: 1px solid #ccc;
   width: 100%;
   height: min-content;
+  background-color: #f2f2f2;
   padding: 10px;
   border-radius: 5px;
   margin-top: 10px;
@@ -559,7 +598,8 @@ ul {
   height: auto !important;
 }
 .order {
-  border: 1px solid black;
+  border: 1px solid #ccc;
+  background-color: #f2f2f2;
   width: 100%;
   height: auto;
   padding: 10px;
@@ -571,7 +611,10 @@ ul {
   height: 50px;
   border: none;
   border-radius: 5px;
-  background-color: rgb(158, 184, 190);
+  background: rgb(61,135,222);
+  background: linear-gradient(90deg, rgba(61,135,222,1) 0%, rgba(61,135,222,0.544321952413778) 100%);
+
+
   color: white;
   font-size: 20px;
   font-weight: 700;
@@ -1035,6 +1078,10 @@ form:not(.ant-form-vertical) .ant-input-group-wrapper {
   /* border: none !important; */
   height: 26px !important;
   margin: auto !important;
+}
+.ant-input-search {
+  height: min-content;
+  margin: auto;
 }
 .label-custom {
   padding: 3px 5px;

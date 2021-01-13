@@ -89,10 +89,10 @@ function ShippingScreen(props) {
   };
   return (
     <HomePage>
-      <div>
+      <div className="order-bg">
         <CheckoutSteps step1 step2></CheckoutSteps>
         <form onSubmit={submitHandler} className="border rounded">
-          <h3>Địa chỉ giao hàng</h3>
+          <h3 className='text-center'>Địa chỉ giao hàng</h3>
 
           {addressList && addressList.length ? (
             <div>

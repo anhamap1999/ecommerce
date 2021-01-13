@@ -7,7 +7,6 @@ const Revenue = require('../revenue/revenue.model');
 const Cart = require('../cart/cart.model');
 const moment = require('moment');
 const { Error, Success } = require('../../utils');
-
 exports.getOrders = async (req, res, next) => {
   try {
     const { select, sort, page, limit, ...query } = req.query;

@@ -6,6 +6,7 @@ const Footer = () => {
       <div className="footer-copyright text-center py-3">
         © 2020 Copyright: E-commerce
       </div>
+     
     </footer>
   );
 };

@@ -13,6 +13,7 @@ import {
   GET_BRANCH_REQUEST,
   GET_BRANCH_SUCCESS,
 } from '../constants/bankConstant';
+import axiosClient from '../modules/axios';
 
 const createBankNew = ({
   account_name,
@@ -24,7 +25,7 @@ const createBankNew = ({
   dispatch({ type: CREATE_BANK_NEW_REQUEST });
   try {
     const { banks } = getState().bank;
-    const { data } = await Axios.post(
+    const { data } = await axiosClient.post(
       '/api/bank-account',
       JSON.stringify({
         account_name,

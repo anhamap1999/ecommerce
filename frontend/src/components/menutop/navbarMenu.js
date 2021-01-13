@@ -8,7 +8,7 @@ export const NavbarHeader = styled.header`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 10000;
   color: #141414;
   padding-top: 10px;
   padding-bottom: 10px;

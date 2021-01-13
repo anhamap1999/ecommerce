@@ -112,10 +112,10 @@ function PaymentSreen(props) {
   };
   return (
     <HomePage>
-      <div>
+      <div className='order-bg'>
         <CheckoutSteps step1 step2 step3></CheckoutSteps>
         <form onSubmit={submitHandler} className="border rounded">
-          <h3>Thanh toán</h3>
+          <h3 className='text-center'>Thanh toán</h3>
           <div>
             <h5>Phương thức thanh toán</h5>
             <div>
