@@ -104,7 +104,7 @@ exports.createComment = async (req, res, next) => {
       for: 'staff',
     });
     const createdNotification = await notification.save();
-    res.io.emit('staff_notification', createdNotification);
+    //res.io.emit('staff_notification', createdNotification);
     const success = new Success({ data: result });
     res.status(200).send(success);
   } catch (error) {
