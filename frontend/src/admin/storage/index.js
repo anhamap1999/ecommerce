@@ -51,7 +51,7 @@ const StorageAdminScreen = (props) => {
       title: '#',
       dataIndex: 'key',
       key: 'key',
-      render: (text) => limit * (page - 1) + text + 1,
+      render: (text) => limit ? limit : 30 * (page ? page : 1 - 1) + text + 1,
     },
     {
       title: 'Tên sản phẩm',
