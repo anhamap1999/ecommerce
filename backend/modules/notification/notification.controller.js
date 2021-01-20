@@ -17,15 +17,28 @@ exports.getNotifications = async (req, res, next) => {
     await Notification.paginate({ user_id: req.user._id, ...query }, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const notifications = await Notification.populate(result.docs, [
-            { path: 'user_id' },
-            { path: 'object_id' },
-          ]);
-          success
-            .addField('data', notifications)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
+          try {
+            const notifications = await Notification.populate(result.docs, [
+              { path: 'user_id' },
+              { path: 'object_id' },
+            ]);
+            success
+              .addField('data', notifications)
+              .addField('total_page', result.totalPages)
+              .addField('page', result.page)
+              .addField('total', result.totalDocs);
+          }catch(error) {
+            next(error);
+          }
+          // const notifications = await Notification.populate(result.docs, [
+          //   { path: 'user_id' },
+          //   { path: 'object_id' },
+          // ]);
+          // success
+          //   .addField('data', notifications)
+          //   .addField('total_page', result.totalPages)
+          //   .addField('page', result.page)
+          //   .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }
@@ -53,15 +66,28 @@ exports.adminGetNotification = async (req, res, next) => {
     await Notification.paginate({ for: 'admin', ...query }, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const notifications = await Notification.populate(result.docs, [
-            { path: 'user_id' },
-            { path: 'object_id' },
-          ]);
-          success
-            .addField('data', notifications)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
+          try {
+            const notifications = await Notification.populate(result.docs, [
+              { path: 'user_id' },
+              { path: 'object_id' },
+            ]);
+            success
+              .addField('data', notifications)
+              .addField('total_page', result.totalPages)
+              .addField('page', result.page)
+              .addField('total', result.totalDocs);
+          }catch(error) {
+            next(error);
+          }
+          // const notifications = await Notification.populate(result.docs, [
+          //   { path: 'user_id' },
+          //   { path: 'object_id' },
+          // ]);
+          // success
+          //   .addField('data', notifications)
+          //   .addField('total_page', result.totalPages)
+          //   .addField('page', result.page)
+          //   .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }
@@ -89,15 +115,28 @@ exports.staffGetNotification = async (req, res, next) => {
     await Notification.paginate({ for: 'staff', ...query }, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const notifications = await Notification.populate(result.docs, [
-            { path: 'user_id' },
-            { path: 'object_id' },
-          ]);
-          success
-            .addField('data', notifications)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
+          try {
+            const notifications = await Notification.populate(result.docs, [
+              { path: 'user_id' },
+              { path: 'object_id' },
+            ]);
+            success
+              .addField('data', notifications)
+              .addField('total_page', result.totalPages)
+              .addField('page', result.page)
+              .addField('total', result.totalDocs);
+          }catch(error) {
+            next(error);
+          }
+          // const notifications = await Notification.populate(result.docs, [
+          //   { path: 'user_id' },
+          //   { path: 'object_id' },
+          // ]);
+          // success
+          //   .addField('data', notifications)
+          //   .addField('total_page', result.totalPages)
+          //   .addField('page', result.page)
+          //   .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }

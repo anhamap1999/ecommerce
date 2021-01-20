@@ -19,16 +19,30 @@ exports.getComments = async (req, res, next) => {
     await Comment.paginate({ ...query, reply_to: null }, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const comments = await Comment.populate(result.docs, [
-            { path: 'created_by' },
-            { path: 'product_id' },
-            { path: 'reply_to' },
-          ]);
-          success
-            .addField('data', comments)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
+          try {
+            const comments = await Comment.populate(result.docs, [
+              { path: 'created_by' },
+              { path: 'product_id' },
+              { path: 'reply_to' },
+            ]);
+            success
+              .addField('data', comments)
+              .addField('total_page', result.totalPages)
+              .addField('page', result.page)
+              .addField('total', result.totalDocs);
+          } catch(error) {
+            next(error);
+          }
+          // const comments = await Comment.populate(result.docs, [
+          //   { path: 'created_by' },
+          //   { path: 'product_id' },
+          //   { path: 'reply_to' },
+          // ]);
+          // success
+          //   .addField('data', comments)
+          //   .addField('total_page', result.totalPages)
+          //   .addField('page', result.page)
+          //   .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }

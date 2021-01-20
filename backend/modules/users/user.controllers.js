@@ -149,14 +149,26 @@ exports.getUsers = async (req, res, next) => {
     await User.paginate(query, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const users = await User.populate(result.docs, [
-            { path: 'like_products' },
-          ]);
-          success
-            .addField('data', users)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
+          try {
+            const users = await User.populate(result.docs, [
+              { path: 'like_products' },
+            ]);
+            success
+              .addField('data', users)
+              .addField('total_page', result.totalPages)
+              .addField('page', result.page)
+              .addField('total', result.totalDocs);
+          }catch(error) {
+            next(error);
+          }
+          // const users = await User.populate(result.docs, [
+          //   { path: 'like_products' },
+          // ]);
+          // success
+          //   .addField('data', users)
+          //   .addField('total_page', result.totalPages)
+          //   .addField('page', result.page)
+          //   .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }
