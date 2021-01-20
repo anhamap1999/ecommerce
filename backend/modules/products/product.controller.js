@@ -101,14 +101,26 @@ exports.getProducts = async (req, res, next) => {
     await Product.paginate({ ...query, status: 'approved' }, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const products = await Product.populate(result.docs, [
-            { path: 'category_id' },
-          ]);
-          success
-            .addField('data', products)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
+          try {
+            const products = await Product.populate(result.docs, [
+              { path: 'category_id' },
+            ]);
+            success
+              .addField('data', products)
+              .addField('total_page', result.totalPages)
+              .addField('page', result.page)
+              .addField('total', result.totalDocs);
+          }catch(error) {
+            next(error);
+          }
+          // const products = await Product.populate(result.docs, [
+          //   { path: 'category_id' },
+          // ]);
+          // success
+          //   .addField('data', products)
+          //   .addField('total_page', result.totalPages)
+          //   .addField('page', result.page)
+          //   .addField('total', result.totalDocs);
           // res.setHeader("Access-Control-Allow-Origin", "*");
           // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
           // //res.io.emit('chat message', result);
@@ -142,15 +154,26 @@ exports.getProductsByAdmin = async (req, res, next) => {
     await Product.paginate(query, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          console.log(result.totalDocs)
-          const products = await Product.populate(result.docs, [
-            { path: 'category_id' },
-          ]);
-          success
-            .addField('data', products)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
+          try {
+            const products = await Product.populate(result.docs, [
+              { path: 'category_id' },
+            ]);
+            success
+              .addField('data', products)
+              .addField('total_page', result.totalPages)
+              .addField('page', result.page)
+              .addField('total', result.totalDocs);
+          }catch(error) {
+            next(error);
+          }
+          // const products = await Product.populate(result.docs, [
+          //   { path: 'category_id' },
+          // ]);
+          // success
+          //   .addField('data', products)
+          //   .addField('total_page', result.totalPages)
+          //   .addField('page', result.page)
+          //   .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }

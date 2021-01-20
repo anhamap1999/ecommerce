@@ -21,16 +21,30 @@ exports.getOrders = async (req, res, next) => {
     await Order.paginate({ created_by: req.user._id, ...query }, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const orders = await Order.populate(result.docs, [
-            { path: 'shipping' },
-            { path: 'order_items', populate: 'product_id' },
-            { path: 'created_by' },
-          ]);
-          success
-            .addField('data', orders)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
+          try {
+            const orders = await Order.populate(result.docs, [
+              { path: 'shipping' },
+              { path: 'order_items', populate: 'product_id' },
+              { path: 'created_by' },
+            ]);
+            success
+              .addField('data', orders)
+              .addField('total_page', result.totalPages)
+              .addField('page', result.page)
+              .addField('total', result.totalDocs);
+          }catch(error) {
+            next(error);
+          }
+          // const orders = await Order.populate(result.docs, [
+          //   { path: 'shipping' },
+          //   { path: 'order_items', populate: 'product_id' },
+          //   { path: 'created_by' },
+          // ]);
+          // success
+          //   .addField('data', orders)
+          //   .addField('total_page', result.totalPages)
+          //   .addField('page', result.page)
+          //   .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }
@@ -57,16 +71,30 @@ exports.getOrdersByAdmin = async (req, res, next) => {
     await Order.paginate(query, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const orders = await Order.populate(result.docs, [
-            { path: 'shipping' },
-            { path: 'order_items', populate: 'product_id' },
-            { path: 'created_by' },
-          ]);
-          success
-            .addField('data', orders)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
+          try {
+            const orders = await Order.populate(result.docs, [
+              { path: 'shipping' },
+              { path: 'order_items', populate: 'product_id' },
+              { path: 'created_by' },
+            ]);
+            success
+              .addField('data', orders)
+              .addField('total_page', result.totalPages)
+              .addField('page', result.page)
+              .addField('total', result.totalDocs);
+          }catch(error) {
+            next(error);
+          }
+          // const orders = await Order.populate(result.docs, [
+          //   { path: 'shipping' },
+          //   { path: 'order_items', populate: 'product_id' },
+          //   { path: 'created_by' },
+          // ]);
+          // success
+          //   .addField('data', orders)
+          //   .addField('total_page', result.totalPages)
+          //   .addField('page', result.page)
+          //   .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }

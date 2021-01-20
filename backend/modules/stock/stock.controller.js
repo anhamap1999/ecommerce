@@ -21,14 +21,26 @@ exports.getStocks = async (req, res, next) => {
     await Stock.paginate(query, options)
       .then(async (result) => {
         if (result.totalDocs && result.totalDocs > 0) {
-          const stocks = await Stock.populate(result.docs, [
-            { path: 'product_id' },
-          ]);
-          success
-            .addField('data', stocks)
-            .addField('total_page', result.totalPages)
-            .addField('page', result.page)
-            .addField('total', result.totalDocs);
+          try {
+            const stocks = await Stock.populate(result.docs, [
+              { path: 'product_id' },
+            ]);
+            success
+              .addField('data', stocks)
+              .addField('total_page', result.totalPages)
+              .addField('page', result.page)
+              .addField('total', result.totalDocs);
+          }catch(error) {
+            next(error);
+          }
+          // const stocks = await Stock.populate(result.docs, [
+          //   { path: 'product_id' },
+          // ]);
+          // success
+          //   .addField('data', stocks)
+          //   .addField('total_page', result.totalPages)
+          //   .addField('page', result.page)
+          //   .addField('total', result.totalDocs);
         } else {
           success.addField('data', []);
         }
