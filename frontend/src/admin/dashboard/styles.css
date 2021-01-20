@@ -1,0 +1,8 @@
+div#page-content-wrapper {
+    width: 100%;
+    height: 100vh;
+}
+.sidebar-heading h3 {
+    padding: 10px;
+    color: brown;
+}

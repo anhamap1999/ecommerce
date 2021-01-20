@@ -1,28 +1,81 @@
-import { CART_ADD_ITEM,CART_REMOVE_ITEM, CART_SAVE_PAYMENT, CART_SAVE_SHIPPING } from "../constants/cartConstants";
+import {
+  GET_PRODUCT_CART_FAIL,
+  GET_PRODUCT_CART_REQUEST,
+  GET_PRODUCT_CART_SUCCESS,
+  UPDATE_PRODUCT_CART_FAIL,
+  UPDATE_PRODUCT_CART_REQUEST,
+  UPDATE_PRODUCT_CART_SUCCESS,
+  DELETE_PRODUCT_CART_FAIL,
+  DELETE_PRODUCT_CART_REQUEST,
+  DELETE_PRODUCT_CART_SUCCESS,
+  CHANGE_FIELDS,
+} from '../constants/cartConstants';
+import _ from 'lodash';
 
-function cartReducer(state = { cartItems  : [] , shipping : {} ,payment :{} }, action) {
-    switch (action.type) {
-      case CART_ADD_ITEM:
-        const item = action.payload;
-        const product = state.cartItems.find(x => x.product === item.product);
-        if(product){
-            return {
-                cartItems:
-                    state.cartItems.map(x => x.product === product.product ? item : x)
-            }
-        }
-        return { cartItems: [...state.cartItems,item] };
-      case CART_REMOVE_ITEM:
-          return {
-            cartItems:
-                    state.cartItems.filter(x => x.product !== action.payload)
-          }
-      case CART_SAVE_SHIPPING:
-        return {...state, shipping : action.payload }; 
-      case CART_SAVE_PAYMENT:
-        return {...state, payment : action.payload }; 
-      default:
-        return state;
+function getProductCartReducer(
+  state = { cartItems: [], shipping: {}, payment: {}, isGotten: false },
+  action
+) {
+  switch (action.type) {
+    case GET_PRODUCT_CART_REQUEST:
+      return { ...state, loading: true, cartItems: [], error: null };
+    case GET_PRODUCT_CART_SUCCESS:
+      return { ...state, loading: false, cartItems: action.payload };
+    case GET_PRODUCT_CART_FAIL:
+      return { ...state, loading: false, error: action.payload };
+
+    case UPDATE_PRODUCT_CART_REQUEST:
+      return {
+        ...state,
+        loadingUpdate: true,
+        error: null,
+        updatingId: action.payload,
+      };
+    case UPDATE_PRODUCT_CART_SUCCESS:
+      return {
+        ...state,
+        loadingUpdate: false,
+        cartItems: action.payload,
+        updatingId: -1,
+      };
+    case UPDATE_PRODUCT_CART_FAIL:
+      return {
+        ...state,
+        loadingUpdate: false,
+        error: action.payload,
+        updatingId: -1,
+      };
+
+    case DELETE_PRODUCT_CART_REQUEST:
+      return {
+        ...state,
+        loadingUpdate: true,
+        error: null,
+        updatingId: action.payload,
+      };
+    case DELETE_PRODUCT_CART_SUCCESS:
+      return {
+        ...state,
+        loadingUpdate: false,
+        cartItems: action.payload,
+        updatingId: -1,
+      };
+    case DELETE_PRODUCT_CART_FAIL:
+      return {
+        ...state,
+        loadingUpdate: false,
+        error: action.payload,
+        updatingId: -1,
+      };
+
+    case CHANGE_FIELDS: {
+      for (const key in action.payload) {
+        _.set(state, key, action.payload[key]);
+      }
+      return { ...state };
     }
+    default:
+      return state;
   }
-  export { cartReducer };
+}
+export { getProductCartReducer };

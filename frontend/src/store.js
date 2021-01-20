@@ -1,28 +1,80 @@
-import {createStore, combineReducers,applyMiddleware, compose} from 'redux';
-import { productListReducer, productDetailsReducer, productAddReducer, productRemoveReducer } from './reducers/productReducers';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import {
+  productListReducer,
+  productDetailsReducer,
+  // productAddReducer,
+  // productRemoveReducer,
+  productNewListReducer,
+  // productListAdminReducer,
+  searchProductReducer,
+  productReducer
+} from './reducers/productReducers';
 import thunk from 'redux-thunk';
-import { cartReducer } from './reducers/cartReducers';
-import Cookie from 'js-cookie';
-import { userRegisterReducer, userSigninReducer } from './reducers/userReducers';
+import { getProductCartReducer } from './reducers/cartReducers';
+import {
+  getFullInfoReducer,
+  getUserInfoAdminReducer,
+  userRegisterReducer,
+  userSigninReducer,
+} from './reducers/userReducers';
+import {
+  categorySaveReducer,
+  getListCategoriesReducer,
+  getCategoriesAdminReducer
+} from './reducers/categoryReducers';
+import {
+  orderListAdminReducer,
+  orderSaveReducer,
+  ordersListReducer,
+} from './reducers/orderReduces';
+import { addRessListReducer } from './reducers/delivery_addressReduce';
+import { getCommentProductReducer } from './reducers/commentReducer';
+import { configReducer } from './reducers/configReducers';
+import { getListOrdersAdmin } from './actions/orderAction';
+import { getBankAccountReducer } from './reducers/bankReducer';
 
-const cartItems = Cookie.getJSON("cartItems") || [];
-const userInfo = Cookie.getJSON('userInfo') || null;
-const initialState = { cart : { cartItems },shipping: {}, payment: {},
-                       userSignin : { userInfo }} ;
+import { stockReducer } from './reducers/stockReducers';
+import { addressReducer } from './reducers/addressReducers';
+import { bankReducer } from './reducers/bankReducers';
+
+const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
+const initialState = {
+  shipping: {},
+  payment: {},
+  userSignin: { userInfo },
+};
 const reducer = combineReducers({
-    productList : productListReducer,
-    productDetails : productDetailsReducer,
-    cart : cartReducer,
-    userSignin : userSigninReducer,
-    userRegister :userRegisterReducer,
-    createProduct: productAddReducer,
-    removeProduct :productRemoveReducer,
-    
+  productList: productListReducer,
+  // productListAdmin: productListAdminReducer,
+  productDetails: productDetailsReducer,
+  cartUser: getProductCartReducer,
+  getFullInfo: getFullInfoReducer,
+  userSignin: userSigninReducer,
+  userRegister: userRegisterReducer,
+  // createProduct: productAddReducer,
+  // removeProduct: productRemoveReducer,
+  saveCategory: categorySaveReducer,
+  orderSave: orderSaveReducer,
+  ordersList: ordersListReducer,
+  listAddress: addRessListReducer,
+  getUserAdmin: getUserInfoAdminReducer,
+  listCategories: getListCategoriesReducer,
+  listCommentProduct: getCommentProductReducer,
+  listNewProduct: productNewListReducer,
+  config: configReducer,
+  listOrderAdmin: orderListAdminReducer,
+  getListbank: getBankAccountReducer,
+  stock: stockReducer,
+  address: addressReducer,
+  bank: bankReducer,
+  searchProduct: searchProductReducer,
+  productState: productReducer,
+  categoryAdmin: getCategoriesAdminReducer
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
-    reducer,
-    initialState,
-    composeEnhancer(applyMiddleware(thunk))
-  );
+  reducer,
+  initialState,
+  composeEnhancer(applyMiddleware(thunk))
+);
 export default store;

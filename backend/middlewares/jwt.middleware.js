@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 exports.generateToken = (user, secretSignature, tokenLife) => {
   return new Promise((resolve, reject) => {
@@ -11,7 +11,7 @@ exports.generateToken = (user, secretSignature, tokenLife) => {
     jwt.sign(
       { data: userData },
       secretSignature,
-      { algorithm: "HS256", expiresIn: tokenLife },
+      { algorithm: 'HS256', expiresIn: tokenLife },
       (err, token) => {
         if (err) {
           reject(err);
