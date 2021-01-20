@@ -63,34 +63,34 @@ app.use(express.json());
 
 app.use(bodyParser.json());
 
-const http = require('http').createServer(app);
+// const http = require('http').createServer(app);
 
-const io = require('socket.io')(http, {
-  log: false,
-  agent: false,
-  origins: '*:*',
-  transports: ['websocket', 'polling'],
-  cors: {
-    origin: '*',
-    methods: 'GET,PUT,POST,DELETE,OPTIONS'.split(','),
-    credentials: true,
-  },
-});
+// const io = require('socket.io')(http, {
+//   log: false,
+//   agent: false,
+//   origins: '*:*',
+//   transports: ['websocket', 'polling'],
+//   cors: {
+//     origin: '*',
+//     methods: 'GET,PUT,POST,DELETE,OPTIONS'.split(','),
+//     credentials: true,
+//   },
+// });
 
-io.on('connection', (socket) => {
-  console.log('SOCKET CONNECTION');
-  // socket.on('chat message', msg => {
-  // io.emit('chat message', 'msg');
-  // });
-  socket.on('DISCONNECTION', (socket) => {
-    console.log('SOCKET DISCONNECTION');
-  });
-});
+// io.on('connection', (socket) => {
+//   console.log('SOCKET CONNECTION');
+//   // socket.on('chat message', msg => {
+//   // io.emit('chat message', 'msg');
+//   // });
+//   socket.on('DISCONNECTION', (socket) => {
+//     console.log('SOCKET DISCONNECTION');
+//   });
+// });
 
-app.use((req, res, next) => {
-  res.io = io;
-  next();
-});
+// app.use((req, res, next) => {
+//   //res.io = io;
+//   next();
+// });
 app.use('/api/auth', authRouter);
 app.use('/api/categories', categoryRouter);
 // app.use("/api/orders",orderRouter);

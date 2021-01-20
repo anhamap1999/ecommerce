@@ -111,7 +111,7 @@ exports.getProducts = async (req, res, next) => {
             .addField('total', result.totalDocs);
           // res.setHeader("Access-Control-Allow-Origin", "*");
           // res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-          // res.io.emit('chat message', result);
+          // //res.io.emit('chat message', result);
         } else {
           success.addField('data', result.docs);
         }
