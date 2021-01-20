@@ -1,4 +1,4 @@
-# ecommerce
+# Build an E-commerce website based on NodeJS and ReactJS technology - UIT - 2020
  
 ## SET UP
 ```
