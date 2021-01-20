@@ -1,14 +1,24 @@
 # ecommerce
  
-## INSTALL AND RUN GUIDE
+## SET UP
+`
+cd backend
+npm install
 
-### BACKEND
-`cd backend`
-`npm install`
-`npm run serve`
+cd ../frontend
+npm install
+`
 
-### FRONTEND
+## RUN THE PROJECT
+### Start the server
+`
+cd backend
+npm run serve
+`
+
+### Start the app
 Run a new terminal
-`cd frontend`
-`npm install`
-`npm start`
+`
+cd frontend
+npm start
+`
