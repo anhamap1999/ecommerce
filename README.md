@@ -1,6 +1,6 @@
 # ecommerce
  
-## INSTALL AND RUN GUILD
+## INSTALL AND RUN GUIDE
 
 ### BACKEND
 `cd backend`
